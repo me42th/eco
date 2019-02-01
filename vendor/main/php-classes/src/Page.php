@@ -18,8 +18,8 @@
             
             $config = array(
             //configuro a pasta de views
-            "tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/eco/views/",
-            "cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/eco/views-cache/",
+            "tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/eco/views/store/",
+            "cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/eco/views-cache/store/",
             "debug"         => true // set to false to improve the speed
             );
             Tpl::configure( $config );
