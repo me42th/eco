@@ -1,12 +1,12 @@
 <?php
-require_once("vendor/autoload.php");
+    require_once('config.php');
+    $app = new \Slim\Slim();
+    $app->config('debug',true);
 
-$app = new \Slim\Slim();
-// http://localhost/eco/index.php/fck
-$app->get('/fck', function () {
-
-    echo "Hello, " ;
-});
-$app->run();
-
+    // http://localhost/eco/index.php/fck
+    $app->get('/fck', function () {
+        echo "Hello, " ;
+    });
+    
+    $app->run();
 ?>
