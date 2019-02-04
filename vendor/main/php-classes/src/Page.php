@@ -7,6 +7,8 @@
         private $tpl;
         private $options = []; 
         private $defaults = [
+            "header" => true,
+            "footer" => true,
             "data" => []
         ];
 
@@ -27,13 +29,15 @@
             // envio os dados para o template
             $this->setData($this->options["data"]);            
             // desenha header
-            $this->tpl->draw("header");
+            if($this->options["header"])
+                $this->tpl->draw("header");
         }
 
         public function __destruct()
         {
             // desenha footer
-            $this->tpl->draw("footer");
+            if($this->options["footer"])
+                $this->tpl->draw("footer");
         }
         
         //configuro os dados no template
