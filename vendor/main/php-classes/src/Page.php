@@ -10,7 +10,7 @@
             "data" => []
         ];
 
-        public function __construct($debug,$opts = array())
+        public function __construct($debug,$opts = array(),$tpl_dir = "/eco/views/store/")
         {
             
             //mescla default e opts, dando prioridade a opts
@@ -18,7 +18,7 @@
             
             $config = array(
             //configuro a pasta de views
-            "tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/eco/views/store/",
+            "tpl_dir"       => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
             "cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/eco/views-cache/store/",
             "debug"         => true // set to false to improve the speed
             );

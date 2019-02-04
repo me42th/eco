@@ -3,11 +3,18 @@
     
     use \Slim\Slim;
     use \main\Page;
+    use \main\PageAdmin;
+
     $app = new Slim();
     $app->config('debug',debug());
     
     $app->get('/',function(){
         $page = new Page(debug());
+        $page->setTpl("index");
+    });
+
+    $app->get('/admin',function(){
+        $page = new PageAdmin(debug());
         $page->setTpl("index");
     });
 
