@@ -97,16 +97,37 @@
 
     $app->get("/admin/forgot", function(){
         $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
-
         $page->setTpl("forgot");
     });
 
     $app->post("/admin/forgot", function(){
        // $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
         $email = $_POST['email'];
-        User::getForgot($email);
+        $user = User::getForgot($email);
+        header("Location: /eco/index.php/admin/forgot/sent");
+        exit;
+    });
+
+    $app->get('/admin/forgot/reset/:code',function($code){
+        if(User::verifyCode($code)){
+            $user = new User;
+            $user->setdata(User::find(json_decode(User::decodeForgot($code),true)["user"]));
+            
+            $page = new PageAdmin(debug(),['header' => false, 'footer' => false]);
+            $page->setTpl("forgot-reset",array("code" => $code, 'name' => $user->getdesperson()));
+        }else{
+            header("Location: /eco/index.php/admin/forgot");
+            exit;
+        }
         
     });
+
+    $app->get('/admin/forgot/sent',function(){
+        $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+        $page->setTpl("forgot-sent");
+    });
+
+    
     
     $app->run();
 ?>

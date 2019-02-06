@@ -3,6 +3,7 @@ namespace main\Model;
 
 use \main\DB\Sql;
 use \main\Model;
+use \main\Mailer;
 
 define('SECRET_IV', pack('a16','senha'));
 define('SECRET', pack('a16','senha'));
@@ -119,22 +120,40 @@ class User extends Model{
         if(count($sql->select("select * from tb_persons where desemail = '$email';") > 0)){
             $user = new User; 
             $user->setdata( $sql->select("select * from tb_persons a join tb_users b on a.idperson = b.idperson where desemail = '$email';")[0]);
+            //captura os dados do cliente solicitante
             $user_ip = $_SERVER['REMOTE_ADDR'];
             $user_id = $user->getiduser();
+            //registra a solicitação na tabela de log
             $sql->query("insert into tb_userspasswordsrecoveries values (default,'$user_id','$user_ip',null,default);");
             $log_id = $sql->select("select max(idrecovery) from tb_userspasswordsrecoveries;")[0]["max(idrecovery)"];
-            $code = User::ssl_crypt(array('id' => $log_id));
-            $link = "http://localhost/eco/index.php/admin/forgot/reset?code=".$code;
+            //gera a url com o codigo cifrado
+            $code = User::ssl_crypt(array("log" => $log_id,"user" => $user_id));
+            $link = "http://localhost/eco/index.php/admin/forgot/reset/".$code;
+            $mailer = new Mailer($user->getdesemail(),$user->getdesperson(),"Rec de Senha","forgot",array('name'=>$user->getdesperson(),'link'=>$link));
+            $mailer->send();
+            return $user;
+            
+
         }else{
             echo "email inválido";
         };
     }
 
+    public static function verifyCode($code){
+        if(User::ssl_decrypt($code)) return true;
+        else return false;
+    }
+
+    public static function decodeForgot($code){
+        return User::ssl_decrypt($code);
+    }
+
+
     private static function ssl_decrypt($data){
 
 
         $open_ssl = openssl_decrypt(
-            $data, //dados que serão encriptados
+            base64_decode($data), //dados que serão encriptados
             'AES-128-CBC',      //algoritmo
             SECRET,             //chave    
             0,                  //...
@@ -152,7 +171,7 @@ class User extends Model{
             0,                  //...
             SECRET_IV           //chave II
         );        
-        return $open_ssl;
+        return base64_encode($open_ssl);
     }
 
     private static function paz_sword_cripta($password){
