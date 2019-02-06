@@ -1,6 +1,6 @@
 <?php
     require_once("vendor/autoload.php");
-    $debug = false;
+    $debug = true;
 
     function debug(){
         global $debug;
