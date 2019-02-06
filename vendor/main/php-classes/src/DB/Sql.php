@@ -34,7 +34,7 @@ class Sql {
 
 	public function query($rawQuery, $params = array())
 	{
-		var_dump($rawQuery);
+		
 		$stmt = $this->conn->prepare($rawQuery);
 		$this->setParams($stmt, $params);
 		$stmt->execute();
@@ -42,6 +42,7 @@ class Sql {
 
 	public function select($rawQuery, $params = array()):array
 	{
+	
 		$stmt = $this->conn->prepare($rawQuery);		
 		$this->setParams($stmt, $params);
 		$stmt->execute();

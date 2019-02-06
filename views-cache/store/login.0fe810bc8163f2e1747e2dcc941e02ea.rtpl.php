@@ -61,7 +61,7 @@
    
     <!-- /.social-auth-links -->
 
-    <a href="#">Esqueci a senha</a><br>
+    <a href="/eco/index.php/admin/forgot">Esqueci a senha</a><br>
     <a href="register.html" class="text-center">Novo usuário</a>
 
   </div>

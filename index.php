@@ -90,10 +90,22 @@
         exit;        
     });
 
-
     // http://localhost/eco/index.php/fck
     $app->get('/fck', function () {
         echo "Hello, " ;
+    });
+
+    $app->get("/admin/forgot", function(){
+        $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+
+        $page->setTpl("forgot");
+    });
+
+    $app->post("/admin/forgot", function(){
+       // $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+        $email = $_POST['email'];
+        User::getForgot($email);
+        
     });
     
     $app->run();

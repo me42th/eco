@@ -4,10 +4,14 @@ namespace main\Model;
 use \main\DB\Sql;
 use \main\Model;
 
+define('SECRET_IV', pack('a16','senha'));
+define('SECRET', pack('a16','senha'));
+    
+
 class User extends Model{
 
     const SESSION = "User";
-
+    
     public static function verifyLogin(){
         //verifico se existe uma sessão para aquele cliente
         if(
@@ -44,13 +48,10 @@ class User extends Model{
         $deslogin = $data['deslogin'];
         $despassword = isset($data['despassword'])?User::paz_sword_cripta($data['despassword']):$this->getdespassword();
         $inadmin = isset($data['inadmin'])?1:0;
-
         $sql->query("update tb_users set deslogin = :deslogin, despassword = :despassword, inadmin = :inadmin where iduser = :iduser;",array(":deslogin" => $deslogin,":despassword" => $despassword,":inadmin" => $inadmin,":iduser" => $this->getiduser()));
-
         $desperson = $data['desperson'];
         $desemail = $data['desemail'];
         $nrphone = $data['nrphone'];
-
         $sql->query("update tb_persons set desperson = :desperson, desemail = :desemail, nrphone = :nrphone where idperson = :idperson;",array(":desperson" => $desperson,":desemail" => $desemail,":nrphone" => $nrphone,":idperson" => $this->getidperson()));
 
 
@@ -94,7 +95,6 @@ class User extends Model{
     }
 
     public static function create_person($data){
-    
         $sql = new Sql();
         $desperson = $data["desperson"];
         $desemail = $data["desemail"];
@@ -105,7 +105,6 @@ class User extends Model{
     }
 
     public static function create_user($data){
-
         $sql = new Sql();
         $idperson = User::create_person($data);
         $deslogin = $data['deslogin'];
@@ -115,8 +114,51 @@ class User extends Model{
 
     }
 
+    public static function getForgot($email){
+        $sql = new Sql;
+        if(count($sql->select("select * from tb_persons where desemail = '$email';") > 0)){
+            $user = new User; 
+            $user->setdata( $sql->select("select * from tb_persons a join tb_users b on a.idperson = b.idperson where desemail = '$email';")[0]);
+            $user_ip = $_SERVER['REMOTE_ADDR'];
+            $user_id = $user->getiduser();
+            $sql->query("insert into tb_userspasswordsrecoveries values (default,'$user_id','$user_ip',null,default);");
+            $log_id = $sql->select("select max(idrecovery) from tb_userspasswordsrecoveries;")[0]["max(idrecovery)"];
+            $code = User::ssl_crypt(array('id' => $log_id));
+            $link = "http://localhost/eco/index.php/admin/forgot/reset?code=".$code;
+        }else{
+            echo "email inválido";
+        };
+    }
+
+    private static function ssl_decrypt($data){
+
+
+        $open_ssl = openssl_decrypt(
+            $data, //dados que serão encriptados
+            'AES-128-CBC',      //algoritmo
+            SECRET,             //chave    
+            0,                  //...
+            SECRET_IV           //chave II
+        );        
+        return $open_ssl;
+    }    
+
+    private static function ssl_crypt($data){
+                
+        $open_ssl = openssl_encrypt(
+            json_encode($data), //dados que serão encriptados
+            'AES-128-CBC',      //algoritmo
+            SECRET,             //chave    
+            0,                  //...
+            SECRET_IV           //chave II
+        );        
+        return $open_ssl;
+    }
+
     private static function paz_sword_cripta($password){
-        return $password;
+        return password_hash($password, PASSWORD_DEFAULT, [
+            "cost"=>12
+        ]);
     }
 }
 
