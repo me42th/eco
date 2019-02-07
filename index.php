@@ -95,6 +95,7 @@
         echo "Hello, " ;
     });
 
+
     $app->get("/admin/forgot", function(){
         $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
         $page->setTpl("forgot");
@@ -109,10 +110,9 @@
     });
 
     $app->get('/admin/forgot/reset/:code',function($code){
-        if(User::verifyCode($code)){
+        if(User::verifyCode($code) && User::verifyTimeCode($code)){
             $user = new User;
-            $user->setdata(User::find(json_decode(User::decodeForgot($code),true)["user"]));
-            
+            $user->setdata(User::find(json_decode(User::ssl_decrypt($code),true)["user"]));
             $page = new PageAdmin(debug(),['header' => false, 'footer' => false]);
             $page->setTpl("forgot-reset",array("code" => $code, 'name' => $user->getdesperson()));
         }else{
@@ -120,6 +120,17 @@
             exit;
         }
         
+    });
+ 
+    $app->post('/admin/forgot/reset', function(){
+        if(User::verifyCode($_POST['code']) && User::verifyTimeCode($_POST['code'])){
+            User::paz_sword_update($_POST['code'],$_POST['password']);
+            header("Location: /eco/index.php/admin/login");
+            exit;
+        } else {
+            header("Location: /eco/index.php/admin/forgot");
+            exit;
+        }
     });
 
     $app->get('/admin/forgot/sent',function(){

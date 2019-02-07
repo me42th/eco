@@ -7,7 +7,7 @@ use \main\Mailer;
 
 define('SECRET_IV', pack('a16','senha'));
 define('SECRET', pack('a16','senha'));
-    
+date_default_timezone_set('America/Bahia');    
 
 class User extends Model{
 
@@ -144,12 +144,31 @@ class User extends Model{
         else return false;
     }
 
-    public static function decodeForgot($code){
-        return User::ssl_decrypt($code);
+    public static function verifyTimeCode($code){
+        $log = json_decode(User::ssl_decrypt($code),true)['log'];
+        $sql = new Sql;
+        $log = $sql->select("select * from tb_userspasswordsrecoveries where idrecovery = '$log';")[0];
+        $time_log = $log['dtregister'];
+        $use_time_log = !isset($log['dtrecovery']);
+       
+
+        if((time()-strtotime($time_log))/3600 < 1)
+            return ((bool)true*$use_time_log);
+        return false;          
     }
 
+    public static function paz_sword_update($code,$paz_sword){
+       $sql = new Sql;
+       $user_id = json_decode(User::ssl_decrypt($code),true)['user'];
+       $log_id = json_decode(User::ssl_decrypt($code),true)['log'];
+       $paz_sword = User::paz_sword_cripta($paz_sword);
+       $now = date('Y-m-d H:i:s',time());
+       $sql->select("update tb_users set despassword = '$paz_sword' where iduser = '$user_id';");
+       $sql->select("update tb_userspasswordsrecoveries set dtrecovery = '$now' where idrecovery = '$log_id';");
+        
+    }
 
-    private static function ssl_decrypt($data){
+    public static function ssl_decrypt($data){
 
 
         $open_ssl = openssl_decrypt(

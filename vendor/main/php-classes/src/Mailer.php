@@ -7,7 +7,7 @@ class Mailer{
 
     const EMAIL = "me42th@gmail.com";
     const NAME = 'me42th';
-    const PAZ_SWORD = 'password';
+    const PAZ_SWORD = 'deadcafe';
 
     private $mail;
     
