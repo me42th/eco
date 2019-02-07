@@ -7,6 +7,8 @@
     use \main\Page;
     use \main\PageAdmin;
     use \main\Model\User;
+    use \main\Model\Category;
+
 
     $app = new Slim();
     $app->config('debug',debug());
@@ -136,6 +138,52 @@
     $app->get('/admin/forgot/sent',function(){
         $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
         $page->setTpl("forgot-sent");
+    });
+
+    $app->get('/admin/categories/:idcategory/delete',function($idcategory){
+        User::verifyLogin();
+        Category::del($idcategory);
+        header('Location: /eco/index.php/admin/categories');
+        exit;
+
+    });
+
+
+    $app->get('/admin/categories/create',function(){
+        User::verifyLogin();       
+        $page = new PageAdmin(debug());
+        $page->setTpl("categories-create");
+
+    });
+
+    $app->post('/admin/categories/create',function(){
+        User::verifyLogin();
+        Category::create($_POST);
+        header('Location: /eco/index.php/admin/categories');
+        exit;
+    });
+
+    $app->get('/admin/categories/:idcategory',function($idcategory){
+        User::verifyLogin();
+        $category = Category::find($idcategory);
+        $page = new PageAdmin(debug());
+        $page->setTpl('categories-update',["category" => $category]);
+    });
+
+    $app->post('/admin/categories/:idcategory',function($idcategory){
+        User::verifyLogin();
+        Category::update(['id' => $idcategory, 'descategory' => $_POST['descategory']]);
+        header('Location: /eco/index.php/admin/categories');
+        exit;
+    });
+
+
+    $app->get('/admin/categories',function(){
+        User::verifyLogin();
+        $categories = Category::listAll();        
+        $page = new PageAdmin(debug());
+        $page->setTpl("categories",["categories" => $categories]);
+
     });
 
     
