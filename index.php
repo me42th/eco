@@ -2,13 +2,12 @@
     //startar session
     session_start();
     require_once('config.php');
-    
+
     use \Slim\Slim;
     use \main\Page;
     use \main\PageAdmin;
     use \main\Model\User;
     use \main\Model\Category;
-
 
     $app = new Slim();
     $app->config('debug',debug());
@@ -38,9 +37,7 @@
     $app->post('/admin/login',function(){
         User::login($_POST["login"],$_POST["password"]);
         header("Location: /eco/index.php/admin");
-        exit;
-        //$page = new PageAdmin(debug(),['header' => false,'footer'=>false]);
-        //$page->setTpl("login");
+        exit; 
     });
 
     $app->get("/admin/users",function(){
@@ -49,7 +46,6 @@
         $page = new PageAdmin(debug());
         $page->setTpl("users",array("users" => $users));
     });
-
 
     $app->get("/admin/users/create",function(){
         User::verifyLogin();
@@ -94,7 +90,7 @@
 
     // http://localhost/eco/index.php/fck
     $app->get('/fck', function () {
-        echo "Hello, " ;
+        echo "Hello, ";
     });
 
 
@@ -120,8 +116,7 @@
         }else{
             header("Location: /eco/index.php/admin/forgot");
             exit;
-        }
-        
+        }        
     });
  
     $app->post('/admin/forgot/reset', function(){
@@ -145,15 +140,12 @@
         Category::del($idcategory);
         header('Location: /eco/index.php/admin/categories');
         exit;
-
     });
-
 
     $app->get('/admin/categories/create',function(){
         User::verifyLogin();       
         $page = new PageAdmin(debug());
         $page->setTpl("categories-create");
-
     });
 
     $app->post('/admin/categories/create',function(){
@@ -177,7 +169,6 @@
         exit;
     });
 
-
     $app->get('/admin/categories',function(){
         User::verifyLogin();
         $categories = Category::listAll();        
@@ -186,7 +177,13 @@
 
     });
 
-    
+    $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
+        $category = new Category;
+        $category->setdata(Category::find($idcategoria));
+        $page = new Page(debug());
+        $page->setTpl("category",["category" => $category->getdata()]);
+    });    
     
     $app->run();
+
 ?>
