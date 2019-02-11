@@ -9,7 +9,9 @@
         private $defaults = [
             "header" => true,
             "footer" => true,
-            "data" => []
+            "data" => [
+                "active" => ""
+            ]
         ];
 
         public function __construct($debug,$opts = array(),$tpl_dir = "/eco/views/store/")
@@ -27,7 +29,9 @@
             Tpl::configure( $config );
             $this->tpl = new Tpl;          
             // envio os dados para o template
-            $this->setData($this->options["data"]);            
+            $this->setData($this->options["data"]);    
+        
+     
             // desenha header
             if($this->options["header"])
                 $this->tpl->draw("header");

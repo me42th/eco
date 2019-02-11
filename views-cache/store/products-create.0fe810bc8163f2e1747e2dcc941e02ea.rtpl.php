@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -23,7 +23,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="/eco/index.php/admin/products/create/{$idcategory}" method="post">
+        <form role="form" action="/eco/index.php/admin/products/create/<?php echo htmlspecialchars( $idcategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>" method="post">
           <div class="box-body">
             <div class="form-group">
               <label for="desproduct">Nome da produto</label>
@@ -33,7 +33,7 @@
               <label for="vlprice">Preço</label>
               <input type="number" class="form-control" id="vlprice" name="vlprice" step="0.01" placeholder="0.00">
             </div>
-              <input type="hidden" name="idcategory" value="{$idcategory}">
+              <input type="hidden" name="idcategory" value="<?php echo htmlspecialchars( $idcategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>">
             <div class="form-group">
               <label for="vlwidth">Largura</label>
               <input type="number" class="form-control" id="vlwidth" name="vlwidth" step="0.01" placeholder="0.00">

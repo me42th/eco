@@ -239,7 +239,7 @@ desired effect
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-
+    
       <!-- search form (Optional) -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
@@ -251,22 +251,23 @@ desired effect
         </div>
       </form>
       <!-- /.search form -->
-
+     
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">CRUD</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="/eco/index.php/admin/users"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
-        <li><a href="/eco/index.php/admin/categories"><i class="fa fa-check"></i> <span>Categorias </span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+        <li <?php if( $active === 'user' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/users"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
+        <li  <?php if( $active === 'category' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/categories"><i class="fa fa-check"></i> <span>Categorias </span></a></li>
+        <li  <?php if( $active === 'product' ){ ?>class="treeview active"<?php } ?>  <?php if( $active != 'product' ){ ?>class="treeview"<?php } ?>>
+          <a href="#"><i class="fa fa-link"></i> <span>Produtos</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
+            <?php $counter1=-1;  if( isset($categories) && ( is_array($categories) || $categories instanceof Traversable ) && sizeof($categories) ) foreach( $categories as $key1 => $value1 ){ $counter1++; ?>  
+                <li><a href="/eco/index.php/admin/products/<?php echo htmlspecialchars( $value1["idcategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
+            <?php } ?>
           </ul>
         </li>
       </ul>
