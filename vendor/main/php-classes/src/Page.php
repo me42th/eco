@@ -10,7 +10,8 @@
             "header" => true,
             "footer" => true,
             "data" => [
-                "active" => ""
+                "active" => "",
+                "category_active" => ""
             ]
         ];
 

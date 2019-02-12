@@ -3,12 +3,13 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Lista de Produtos
+    <?php echo htmlspecialchars( $descategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+
   </h1>
   <ol class="breadcrumb">
     <li><a href="/eco/index.php/admin"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="/eco/index.php/admin/categories">Categorias</a></li>
-    <li class="active"><a href="/eco/index.php/admin/categories/create">Cadastrar</a></li>
+    <li><a href="/eco/index.php/admin/products/<?php echo htmlspecialchars( $idcategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $descategory, ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
+    <li class="active"><a href="/eco/index.php/admin/products/create/<?php echo htmlspecialchars( $idcategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>">Cadastrar</a></li>
   </ol>
 </section>
 
@@ -26,7 +27,7 @@
         <form role="form" action="/eco/index.php/admin/products/create/<?php echo htmlspecialchars( $idcategory, ENT_COMPAT, 'UTF-8', FALSE ); ?>" method="post">
           <div class="box-body">
             <div class="form-group">
-              <label for="desproduct">Nome da produto</label>
+              <label for="desproduct">Nome do produto</label>
               <input type="text" class="form-control" id="desproduct" name="desproduct" placeholder="Digite o nome do produto">
             </div>
             <div class="form-group">
@@ -49,6 +50,10 @@
             <div class="form-group">
               <label for="vlweight">Peso</label>
               <input type="number" class="form-control" id="vlweight" name="vlweight" step="0.01" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label for="vlweight">Sluger</label>
+              <input type="text" class="form-control" id="desurl" name="desurl"  placeholder="Sluger">
             </div>
           </div>
           <!-- /.box-body -->

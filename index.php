@@ -14,10 +14,21 @@
     $app = new Slim();
     $app->config('debug',debug());
 
-   function get_config_header($activearea){
-        $data = ["active" => $activearea,"categories" => Category::listAll()];
+   function get_config_header($activearea,$category_active = ""){
+        $data = ["active" => $activearea,"categories" => Category::listAll(),'category_active' => $category_active];
         return array("data" => $data);
+    }
 
+    function get_category_header(){
+        return get_config_header('category');    
+    }
+
+    function get_user_header(){
+        return get_config_header('user');
+    }
+
+    function get_product_header($category_active){
+        return get_config_header('product',$category_active);
     }
     
     $app->get('/',function(){
@@ -27,7 +38,7 @@
 
     $app->get('/admin',function(){
         User::verifyLogin();
-        $page = new PageAdmin(debug());
+        $page = new PageAdmin(debug(),get_config_header("index"));
         $page->setTpl("index");
     });
 
@@ -51,13 +62,13 @@
     $app->get("/admin/users",function(){
         User::verifyLogin();
         $users = User::listAll();
-        $page = new PageAdmin(debug(),get_config_header("user"));
+        $page = new PageAdmin(debug(),get_user_header());
         $page->setTpl("users",array("users" => $users));
     });
 
     $app->get("/admin/users/create",function(){
         User::verifyLogin();
-        $page = new PageAdmin(debug(),get_config_header("user"));
+        $page = new PageAdmin(debug(),get_user_header());
         $page->setTpl("users-create");
     });
 
@@ -76,7 +87,7 @@
     $app->get("/admin/users/:iduser",function($iduser){
         $user = User::find($iduser);
         User::verifyLogin();
-        $page = new PageAdmin(debug(),get_config_header("user"));
+        $page = new PageAdmin(debug(),get_user_header());
         $page->setTpl("users-update",array('user'=>$user));
     });
 
@@ -152,7 +163,7 @@
 
     $app->get('/admin/categories/create',function(){
         User::verifyLogin();       
-        $page = new PageAdmin(debug(),get_config_header("category"));
+        $page = new PageAdmin(debug(),get_category_header());
         $page->setTpl("categories-create");
     });
 
@@ -166,7 +177,7 @@
     $app->get('/admin/categories/:idcategory',function($idcategory){
         User::verifyLogin();
         $category = Category::find($idcategory);
-        $page = new PageAdmin(debug(),get_config_header("category"));
+        $page = new PageAdmin(debug(),get_category_header());
         $page->setTpl('categories-update',["category" => $category]);
     });
 
@@ -180,7 +191,7 @@
     $app->get('/admin/categories',function(){
         User::verifyLogin();
         $categories = Category::listAll();        
-        $page = new PageAdmin(debug(),get_config_header("category"));
+        $page = new PageAdmin(debug(),get_category_header());
         $page->setTpl("categories",["categories" => $categories]);
 
     });
@@ -192,23 +203,50 @@
         $page->setTpl("category",["category" => $category->getdata()]);
     });    
 
+    $app->get('/admin/products/all',function(){
+        User::verifyLogin();
+       
+        $category_name = 'Produtos';
+        $products = Product::listAll();
+        $page = new PageAdmin(debug(),get_product_header(0));
+        $page->setTpl("products",["products" => $products,"descategory" => $category_name,"idcategory" => 0]);
+
+    });
+
     $app->get('/admin/products/:idcategory',function($idcategory){
         User::verifyLogin();
+        $category_name = Category::find($idcategory)['descategory'];
         $products = Product::list_by_category($idcategory);
-        $page = new PageAdmin(debug(),get_config_header("product"));
-        $page->setTpl("products",["products" => $products,"idcategory" => $idcategory]);
+        $page = new PageAdmin(debug(),get_product_header($idcategory));
+        $page->setTpl("products",["products" => $products,"descategory" => $category_name,"idcategory" => $idcategory]);
 
     });
-
+ 
     $app->get('/admin/products/create/:idcategory',function($idcategory){
-        User::verifyLogin();       
-        $page = new PageAdmin(debug(),get_config_header("product"));
-        $page->setTpl("products-create",["idcategory" => $idcategory]);
+        User::verifyLogin();
+        $category_name = Category::find($idcategory)['descategory'];       
+        $page = new PageAdmin(debug(),get_product_header($idcategory));
+        $page->setTpl("products-create",["idcategory" => $idcategory,"descategory" => $category_name]);
     });
+
+    $app->get('/admin/products/edit/:idproduct',function($idproduct){
+        header('Location: /eco/index.php/admin/products/all');
+        exit;
+    });
+
+    $app->get('/admin/products/delete/:idproduct',function($idproduct){
+        Product::del($idproduct);    
+        header('Location: /eco/index.php/admin/products/all');
+        exit;
+        
+    });
+
+    
 
     $app->post('/admin/products/create/:idcategory',function($idcategory){
         User::verifyLogin();     
-        print_r($_POST);
+        Product::create($_POST);        
+        header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;
     });
 
