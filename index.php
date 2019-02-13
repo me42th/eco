@@ -10,7 +10,9 @@
     use \main\Model\Category;
     use \main\Model\Product;
 
-
+   
+    
+    
     $app = new Slim();
     $app->config('debug',debug());
 
@@ -229,12 +231,15 @@
         $page->setTpl("products-create",["idcategory" => $idcategory,"descategory" => $category_name]);
     });
 
-    $app->get('/admin/products/edit/:idproduct',function($idproduct){
+    $app->get('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
+        User::verifyLogin();
+         
         header('Location: /eco/index.php/admin/products/all');
         exit;
     });
 
     $app->get('/admin/products/delete/:idproduct',function($idproduct){
+        User::verifyLogin();
         Product::del($idproduct);    
         header('Location: /eco/index.php/admin/products/all');
         exit;
@@ -244,7 +249,8 @@
     
 
     $app->post('/admin/products/create/:idcategory',function($idcategory){
-        User::verifyLogin();     
+        User::verifyLogin();
+
         Product::create($_POST);        
         header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;

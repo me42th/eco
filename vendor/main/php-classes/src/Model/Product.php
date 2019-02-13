@@ -58,8 +58,50 @@ class Product extends Model{
         return $sql->select("select * from tb_products where idproduct = '$id_product';")[0];
     }
 
-    
+    public function __construct(){
+        
+    }
 
+    //recupera a atual imagem do produto ou a default
+    //imagens excluidas possuem o _ no inicio do arquivo
+    //o nome do arquivo contem a data de criação do mesmo
+    private function setImg()
+    {
+        $files = scandir($this->getImgFolder());
+        unset($files[0]);
+        unset($files[1]);
+        $file =  $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR
+        .'eco'.DIRECTORY_SEPARATOR
+        .'prdimg'.DIRECTORY_SEPARATOR 
+        .'default.jpg';        
+        foreach($files as $temp_file){
+            if(count(explode('_',$temp_file)) == 1){
+                $file = $this->getImgFolder().DIRECTORY_SEPARATOR.$temp_file;
+            };
+            echo count(explode('_',$temp_file)).'<br>';
+        }    
+        $this->setdesphoto($file);
+           
+    }
+
+    //identifica a pasta de imagens do produto
+    private function getImgFolder(){
+        $folder = 
+            $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR
+            .'eco'.DIRECTORY_SEPARATOR
+            .'prdimg'.DIRECTORY_SEPARATOR.        
+            $this->getidproduct();
+        
+        if(!file_exists($folder))
+            mkdir($folder);
+        return $folder;    
+    }
+
+    public function setData($data = array()){
+        parent::setData($data);
+        $this->setImg();
+        
+    }
 
 }
 ?>
