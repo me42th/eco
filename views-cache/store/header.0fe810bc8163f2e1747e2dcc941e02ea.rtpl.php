@@ -266,11 +266,11 @@ desired effect
           </a>
           <ul class="treeview-menu">
             <?php $counter1=-1;  if( isset($categories) && ( is_array($categories) || $categories instanceof Traversable ) && sizeof($categories) ) foreach( $categories as $key1 => $value1 ){ $counter1++; ?>  
-                <li><a href="/eco/index.php/admin/products/<?php echo htmlspecialchars( $value1["idcategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?> <?php if( $category_active === $value1["idcategory"] ){ ?><small class="label pull-right bg-green">Atual</small><?php } ?></a> 
+                <li><a href="/eco/index.php/admin/products/<?php echo htmlspecialchars( $value1["idcategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">  <?php if( $category_active === $value1["idcategory"] ){ ?><i class="fa fa-circle-o text-aqua"></i><?php } ?><?php if( $category_active != $value1["idcategory"] ){ ?><i class="fa fa-circle-o"></i><?php } ?><?php echo htmlspecialchars( $value1["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a> 
                   
                 </li>
             <?php } ?>
-            <li><a href="/eco/index.php/admin/products/all"> Exibir Tudo <?php if( $category_active === 0 ){ ?><small class="label pull-right bg-green">Atual</small><?php } ?> </a>
+            <li><a href="/eco/index.php/admin/products/all"> <?php if( $category_active === 0 ){ ?><i class="fa fa-circle-o text-aqua"></i><?php } ?><?php if( $category_active != 0 ){ ?><i class="fa fa-circle-o"></i><?php } ?> Exibir Tudo  </a>
                   
             </li>
           </ul>

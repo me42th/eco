@@ -266,11 +266,11 @@ desired effect
           </a>
           <ul class="treeview-menu">
             {loop="$categories"}  
-                <li><a href="/eco/index.php/admin/products/{$value.idcategory}">{$value.descategory} {if="$category_active === $value.idcategory"}<small class="label pull-right bg-green">Atual</small>{/if}</a> 
+                <li><a href="/eco/index.php/admin/products/{$value.idcategory}">  {if="$category_active === $value.idcategory"}<i class="fa fa-circle-o text-aqua"></i>{/if}{if="$category_active != $value.idcategory"}<i class="fa fa-circle-o"></i>{/if}{$value.descategory}</a> 
                   
                 </li>
             {/loop}
-            <li><a href="/eco/index.php/admin/products/all"> Exibir Tudo {if="$category_active === 0"}<small class="label pull-right bg-green">Atual</small>{/if} </a>
+            <li><a href="/eco/index.php/admin/products/all"> {if="$category_active === 0"}<i class="fa fa-circle-o text-aqua"></i>{/if}{if="$category_active != 0"}<i class="fa fa-circle-o"></i>{/if} Exibir Tudo  </a>
                   
             </li>
           </ul>
