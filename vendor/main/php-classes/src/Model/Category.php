@@ -36,6 +36,8 @@ class Category extends Model{
     }
 
     public static function find($idcategory){
+        if($idcategory == 0)
+            return array('idcategory' => 0, 'descategory' => 'Produtos', 'dtregister' => null);
         $sql = new Sql;
         return $sql->select("select * from tb_categories where idcategory = '$idcategory';")[0];
     }

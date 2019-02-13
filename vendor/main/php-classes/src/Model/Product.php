@@ -34,11 +34,27 @@ class Product extends Model{
         
     }
 
+    public static function update($data)
+    {
+        $sql = new Sql;
+        
+        $idproduct = $data['idproduct'];
+        $desproduct = $data['desproduct'];
+        $vlprice = $data['vlprice'];
+        $vlwidth = $data['vlwidth'];
+        $vlheight = $data['vlheight'];
+        $vllength = $data['vllength'];
+        $vlweight = $data['vlweight'];
+        $desurl = $data['desurl'];
+
+        $sql->select("update tb_products set desproduct = '$desproduct', vlprice = '$vlprice', vlwidth = '$vlwidth', vlheight = '$vlheight', vllength = '$vllength', vlweight = '$vlweight', desurl = '$desurl' where idproduct = '$idproduct';");
+
+      
+    }
 
     public static function create($data)
     {
         $sql = new Sql;
-        print_r($data);
         $desproduct = $data['desproduct'];
         $vlprice = $data['vlprice'];
         $vlwidth = $data['vlwidth'];
@@ -47,10 +63,12 @@ class Product extends Model{
         $vlweight = $data['vlweight'];
         $desurl = $data['desurl'];
         $sql->select("insert into tb_products values (default, '$desproduct','$vlprice','$vlwidth','$vlheight','$vllength','$vlweight','$desurl',default);");
-        
-        $id_product = $sql->select("select max(idproduct) from tb_products;")[0]['max(idproduct)'];
-        $id_category = $data['idcategory'];
-        $sql->select("insert into tb_productscategories values ('$id_category','$id_product');");
+        if($data['idcategory'] != 0)
+        {
+            $id_product = $sql->select("select max(idproduct) from tb_products;")[0]['max(idproduct)'];
+            $id_category = $data['idcategory'];
+            $sql->select("insert into tb_productscategories values ('$id_category','$id_product');");
+        }    
     }
 
     public static function find($id_product){
@@ -58,9 +76,7 @@ class Product extends Model{
         return $sql->select("select * from tb_products where idproduct = '$id_product';")[0];
     }
 
-    public function __construct(){
-        
-    }
+   
 
     //recupera a atual imagem do produto ou a default
     //imagens excluidas possuem o _ no inicio do arquivo
@@ -70,13 +86,10 @@ class Product extends Model{
         $files = scandir($this->getImgFolder());
         unset($files[0]);
         unset($files[1]);
-        $file =  $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR
-        .'eco'.DIRECTORY_SEPARATOR
-        .'prdimg'.DIRECTORY_SEPARATOR 
-        .'default.jpg';        
+        $file = '/eco/prdimg/default.jpg';        
         foreach($files as $temp_file){
             if(count(explode('_',$temp_file)) == 1){
-                $file = $this->getImgFolder().DIRECTORY_SEPARATOR.$temp_file;
+                $file = '/eco/prdimg/'.$this->getidproduct.'/'.$temp_file;
             };
             echo count(explode('_',$temp_file)).'<br>';
         }    

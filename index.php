@@ -217,6 +217,7 @@
 
     $app->get('/admin/products/:idcategory',function($idcategory){
         User::verifyLogin();
+        
         $category_name = Category::find($idcategory)['descategory'];
         $products = Product::list_by_category($idcategory);
         $page = new PageAdmin(debug(),get_product_header($idcategory));
@@ -233,17 +234,29 @@
 
     $app->get('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
         User::verifyLogin();
-         
-        header('Location: /eco/index.php/admin/products/all');
-        exit;
+        $category_name = Category::find($idcategory)['descategory'];    
+        $product = new Product;
+        $product->setdata(Product::find($idproduct));       
+        $page = new PageAdmin(debug(),get_product_header($idcategory));
+        $page->setTpl("products-update",["idcategory" => $idcategory,"descategory" => $category_name,'product' => $product->getdata()]);
+
     });
 
-    $app->get('/admin/products/delete/:idproduct',function($idproduct){
+    $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
+        User::verifyLogin();
+        Product::update($_POST);
+        $idcategory = ($idcategory==0)?'all':$idcategory;   
+        header('Location: /eco/index.php/admin/products/'.$idcategory);
+        exit;
+
+    });
+
+    $app->get('/admin/products/delete/:idproduct/:idcategory',function($idproduct,$idcategory){
         User::verifyLogin();
         Product::del($idproduct);    
-        header('Location: /eco/index.php/admin/products/all');
+        $idcategory = ($idcategory==0)?'all':$idcategory;   
+        header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;
-        
     });
 
     
@@ -251,7 +264,8 @@
     $app->post('/admin/products/create/:idcategory',function($idcategory){
         User::verifyLogin();
 
-        Product::create($_POST);        
+        Product::create($_POST);      
+        $idcategory = ($idcategory==0)?'all':$idcategory;  
         header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;
     });
