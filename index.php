@@ -245,7 +245,12 @@
     $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
         User::verifyLogin();
         Product::update($_POST);
-        $idcategory = ($idcategory==0)?'all':$idcategory;   
+        $product = new Product;
+        $product->setdata(Product::find($idproduct));
+        $idcategory = ($idcategory==0)?'all':$idcategory;
+     
+        $product->addPhoto($_FILES['file']);
+        
         header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;
 

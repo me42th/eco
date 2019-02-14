@@ -31,6 +31,14 @@ class Product extends Model{
         $sql = new Sql;
         $sql->select("delete from tb_productscategories where idproduct = '$id_product';");
         $sql->select("delete from tb_products where idproduct = '$id_product';");
+        $prod = new Product;
+        $prod->setidproduct($id_product);
+        $directory = $prod->getImgFolder();
+
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory,\FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $file){
+           $file->isFile() ? unlink($file->getPathname()) : rmdir($file->getPathname());
+        }
+        rmdir($directory);
         
     }
 
@@ -89,12 +97,10 @@ class Product extends Model{
         $file = '/eco/prdimg/default.jpg';        
         foreach($files as $temp_file){
             if(count(explode('_',$temp_file)) == 1){
-                $file = '/eco/prdimg/'.$this->getidproduct.'/'.$temp_file;
-            };
-            echo count(explode('_',$temp_file)).'<br>';
+                $file = '/eco/prdimg/'.$this->getidproduct().'/'.$temp_file;
+            };           
         }    
-        $this->setdesphoto($file);
-           
+        $this->setdesphoto($file);           
     }
 
     //identifica a pasta de imagens do produto
@@ -110,10 +116,19 @@ class Product extends Model{
         return $folder;    
     }
 
+    public function addPhoto($file){
+        $extension = explode('.',$file['name']);
+        $extension = end($extension);
+        $function_name = 'imagecreatefrom'.(($extension == 'jpg')?'jpeg':$extension);
+        $image = $function_name($file["tmp_name"]);
+        imagejpeg($image,$this->getImgFolder().DIRECTORY_SEPARATOR.date("Y-m-d h:i:s")).'jpg';
+        imagedestroy($image);
+        $this->setImg();        
+    }
+
     public function setData($data = array()){
         parent::setData($data);
-        $this->setImg();
-        
+        $this->setImg();        
     }
 
 }
