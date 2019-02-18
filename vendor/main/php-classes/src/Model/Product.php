@@ -12,17 +12,31 @@ class Product extends Model{
         return $sql->select("SELECT * FROM tb_products;");
     }
 
-    public static function list_by_category_with_pagination($idcategory, $page = 1, $itemsPerPage = 3){
+    public static function list_by_category_with_pagination($idcategory, $page = 1, $itemsPerPage = 8){
+        $start = $page - 1;
         $sql = new Sql();
-        $id_products = $sql->select("select * from tb_productscategories where idcategory = '$id_category';");
-        $products = array();
-         
-        foreach($id_products as $id_product){
+        $products = $sql->select("
+            select sql_calc_found_rows * from tb_products a
+            join tb_productscategories b on a.idproduct = b.idproduct
+            join tb_categories c on b.idcategory = c.idcategory
+            where c.idcategory = '$idcategory' limit $start, $itemsPerPage;"
+        );       
+        
+        $total = $sql->select("
+            select FOUND_ROWS() AS total;
+        ")[0]['total'];
+        
+        foreach($products as &$row){
             $product = new Product;
-            $product->setdata(Product::find($id_product['idproduct']));
-            array_push($products,$product->getdata());       
+            $product->setdata($row);
+            $row = $product->getdata();     
         }
-        return $products;
+
+        return [
+            'products' => $products,
+            'total' => $total,
+            'pages' => ceil($total/$itemsPerPage)
+        ];
 
     }
 
@@ -171,9 +185,11 @@ class Product extends Model{
         $this->setImg();        
     }
 
-    public function setData($data = array()){
-        parent::setData($data);
+    public function setdata($data = array()){
+        parent::setdata($data);
+        
         $this->setImg();
+       
         $this->setCat();        
 
     }
