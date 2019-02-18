@@ -48,7 +48,21 @@
             <div class="form-group">
                 <label for="vlweight">Sluger</label>
                 <input type="text" class="form-control" id="desurl" name="desurl"  placeholder="Sluger" value="{$product.desurl}">
-              </div>
+            </div>
+            <div class="form-group">
+              <label >Categorias</label>
+              {loop="$categories"}
+                <div class="input-group">
+                      <span class="input-group-addon">
+                        <input name="cat_{$value.idcategory}" value="true" type="checkbox" {if="hasCategory($value.idcategory,$product.categories)"}checked{/if}>
+                      </span>
+                     
+                  <input type="text" value="{$value.descategory}" class="form-control">
+                  
+                </div>
+              {/loop}  
+              <!-- /input-group -->
+            </div>
             <div class="form-group">
               <label for="file">Foto</label>
               <input type="file" class="form-control" id="file" name="file" value="{$product.vlweight}">

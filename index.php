@@ -187,9 +187,28 @@
 
     $app->get('/admin/categories/:idcategory',function($idcategory){
         User::verifyLogin();
+        $productsRelated = Category::getProducts($idcategory);
+        $productsNotRelated = Category::getProducts($idcategory,false);
+        
         $category = Category::find($idcategory);
         $page = new PageAdmin(debug(),get_category_header());
-        $page->setTpl('categories-update',["category" => $category]);
+        $page->setTpl('categories-update',["category" => $category,"productsRelated" => $productsRelated ,"productsNotRelated" => $productsNotRelated]);
+    });
+    
+
+    $app->get('/admin/categories/:idcategory/products/:idproduct/remove',
+    function($idcategory, $idproduct){
+        Category::del_pivot_prod($idcategory, $idproduct);
+        header('Location: /eco/index.php/admin/categories/'.$idcategory);
+        exit;
+    });
+
+
+    $app->get('/admin/categories/:idcategory/products/:idproduct/add',
+    function($idcategory, $idproduct){
+        Category::new_pivot_prod($idcategory, $idproduct);
+        header('Location: /eco/index.php/admin/categories/'.$idcategory);
+        exit;
     });
 
     $app->post('/admin/categories/:idcategory',function($idcategory){
@@ -245,11 +264,17 @@
         User::verifyLogin();
         $category_name = Category::find($idcategory)['descategory'];    
         $product = new Product;
+        
         $product->setdata(Product::find($idproduct));       
+        $idcategory = ($idcategory == '0')?$idcategory+0:$idcategory;//+= 0;
+       
+       
         $page = new PageAdmin(debug(),get_product_header($idcategory));
         $page->setTpl("products-update",["idcategory" => $idcategory,"descategory" => $category_name,'product' => $product->getdata()]);
 
     });
+
+
 
     $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
         User::verifyLogin();
@@ -257,9 +282,10 @@
         $product = new Product;
         $product->setdata(Product::find($idproduct));
         $idcategory = ($idcategory==0)?'all':$idcategory;
-     
-        $product->addPhoto($_FILES['file']);
         
+        if(isset($_FILES['files'])){
+            $product->addPhoto($_FILES['file']);
+        }
         header('Location: /eco/index.php/admin/products/'.$idcategory);
         exit;
 

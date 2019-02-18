@@ -18,6 +18,25 @@ class Category extends Model{
         Category::updateFile();
     }
 
+    public static function del_pivot_prod($idcategory, $idproduct){
+        $sql = new Sql;
+        $sql->select("delete from tb_productscategories where idcategory = '$idcategory' and idproduct = '$idproduct';");
+    }
+
+    public static function new_pivot_prod($idcategory, $idproduct){
+        $sql = new Sql;
+        $sql->select("insert into tb_productscategories values ('$idcategory','$idproduct');");
+    }
+
+    public static function getProducts($idcategory, $releated = true){
+        $sql = new Sql;
+        if($releated){
+            return $sql->select("select * from tb_products join tb_productscategories on tb_products.idproduct = tb_productscategories.idproduct where tb_productscategories.idcategory = '$idcategory';");
+        }else{
+            return $sql->select("select * from tb_products join tb_productscategories on tb_products.idproduct = tb_productscategories.idproduct where tb_productscategories.idcategory <> '$idcategory';");
+        }
+    }
+
     public static function update($data){
         $category_name = $data['descategory'];
         $id_category = $data['id'];

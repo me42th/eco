@@ -48,7 +48,22 @@
             <div class="form-group">
                 <label for="vlweight">Sluger</label>
                 <input type="text" class="form-control" id="desurl" name="desurl"  placeholder="Sluger" value="<?php echo htmlspecialchars( $product["desurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-              </div>
+            </div>
+            <div class="form-group">
+              <label >Categorias</label>
+              <?php $counter1=-1;  if( isset($categories) && ( is_array($categories) || $categories instanceof Traversable ) && sizeof($categories) ) foreach( $categories as $key1 => $value1 ){ $counter1++; ?>
+
+                <div class="input-group">
+                      <span class="input-group-addon">
+                        <input name="cat_<?php echo htmlspecialchars( $value1["idcategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" value="true" type="checkbox" <?php if( hasCategory($value1["idcategory"],$product["categories"]) ){ ?>checked<?php } ?>>
+                      </span>
+                     
+                  <input type="text" value="<?php echo htmlspecialchars( $value1["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="form-control">
+                  
+                </div>
+              <?php } ?>  
+              <!-- /input-group -->
+            </div>
             <div class="form-group">
               <label for="file">Foto</label>
               <input type="file" class="form-control" id="file" name="file" value="<?php echo htmlspecialchars( $product["vlweight"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">

@@ -42,6 +42,8 @@ class Product extends Model{
         
     }
 
+    
+
     public static function update($data)
     {
         $sql = new Sql;
@@ -54,10 +56,27 @@ class Product extends Model{
         $vllength = $data['vllength'];
         $vlweight = $data['vlweight'];
         $desurl = $data['desurl'];
+        $values = "";
 
+        foreach($data as $key => $value){
+            $category = explode('_',$key); 
+            if(count($category) < 2) continue;
+            $category = $category[1];
+            $values = $values.''."('$category','$idproduct')";
+             
+        }    
+        
+        $values = str_replace(')(','),(',$values);
+        
         $sql->select("update tb_products set desproduct = '$desproduct', vlprice = '$vlprice', vlwidth = '$vlwidth', vlheight = '$vlheight', vllength = '$vllength', vlweight = '$vlweight', desurl = '$desurl' where idproduct = '$idproduct';");
+        $sql->select("delete from tb_productscategories where idproduct = '$idproduct';");
 
+        $sql->select("insert into tb_productscategories values $values;");
+        
+        
       
+        
+       
     }
 
     public static function create($data)
@@ -84,6 +103,16 @@ class Product extends Model{
         return $sql->select("select * from tb_products where idproduct = '$id_product';")[0];
     }
 
+    private function setCat(){
+        $id_product = $this->getidproduct();
+        $sql = new Sql;
+        $categorias = $sql->select("select * from tb_productscategories where idproduct = $id_product;");
+        foreach($categorias as &$categoria){
+            $categoria = $categoria['idcategory'];
+        }
+        $this->setcategories($categorias);
+      
+    }
    
 
     //recupera a atual imagem do produto ou a default
@@ -128,7 +157,9 @@ class Product extends Model{
 
     public function setData($data = array()){
         parent::setData($data);
-        $this->setImg();        
+        $this->setImg();
+        $this->setCat();        
+
     }
 
     
