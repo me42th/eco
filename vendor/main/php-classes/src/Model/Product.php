@@ -12,6 +12,20 @@ class Product extends Model{
         return $sql->select("SELECT * FROM tb_products;");
     }
 
+    public static function list_by_category_with_pagination($idcategory, $page = 1, $itemsPerPage = 3){
+        $sql = new Sql();
+        $id_products = $sql->select("select * from tb_productscategories where idcategory = '$id_category';");
+        $products = array();
+         
+        foreach($id_products as $id_product){
+            $product = new Product;
+            $product->setdata(Product::find($id_product['idproduct']));
+            array_push($products,$product->getdata());       
+        }
+        return $products;
+
+    }
+
     public static function list_by_category($id_category){
         
         $sql = new Sql();

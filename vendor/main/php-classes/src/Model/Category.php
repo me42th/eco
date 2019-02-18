@@ -37,6 +37,8 @@ class Category extends Model{
         }
     }
 
+    
+
     public static function update($data){
         $category_name = $data['descategory'];
         $id_category = $data['id'];

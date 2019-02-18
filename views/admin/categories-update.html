@@ -60,7 +60,7 @@
                           {loop="$productsNotRelated"}
                           <tr>
                           <td>{$value.idproduct}</td>
-                          <td>{$value.desproduct}</td>
+                          <td><a href="/eco/index.php/admin/products/edit/{$value.idproduct}/{$category.idcategory}">{$value.desproduct}</a></td>
                           <td>
                               <a href="/eco/index.php/admin/categories/{$category.idcategory}/products/{$value.idproduct}/add" class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-right"></i> Adicionar</a>
                           </td>
@@ -91,7 +91,7 @@
                           {loop="$productsRelated"}
                           <tr>
                           <td>{$value.idproduct}</td>
-                          <td>{$value.desproduct}</td>
+                          <td><a href="/eco/index.php/admin/products/edit/{$value.idproduct}/{$category.idcategory}">{$value.desproduct}</a></td>
                           <td>
                               <a href="/eco/index.php/admin/categories/{$category.idcategory}/products/{$value.idproduct}/remove" class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-left"></i> Remover</a>
                           </td>
