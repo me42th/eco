@@ -118,10 +118,7 @@
         exit;        
     });
 
-    // http://localhost/eco/index.php/fck
-    $app->get('/fck', function () {
-        echo "Hello, ";
-    });
+   
 
 
     $app->get("/admin/forgot", function(){
@@ -229,8 +226,9 @@
     $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
         $category = new Category;
         $category->setdata(Category::find($idcategoria));
+        $products = Product::list_by_category($idcategoria);
         $page = new Page(debug());
-        $page->setTpl("category",["category" => $category->getdata()]);
+        $page->setTpl("category",["category" => $category->getdata(),"products" =>$products]);
     });    
 
     $app->get('/admin/products/all',function(){

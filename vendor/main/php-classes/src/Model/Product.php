@@ -19,7 +19,9 @@ class Product extends Model{
         $products = array();
          
         foreach($id_products as $id_product){
-            array_push($products,Product::find($id_product['idproduct']));       
+            $product = new Product;
+            $product->setdata(Product::find($id_product['idproduct']));
+            array_push($products,$product->getdata());       
         }
 
         return $products;
