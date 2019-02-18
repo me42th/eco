@@ -121,7 +121,7 @@ class Product extends Model{
         $extension = end($extension);
         $function_name = 'imagecreatefrom'.(($extension == 'jpg')?'jpeg':$extension);
         $image = $function_name($file["tmp_name"]);
-        imagejpeg($image,$this->getImgFolder().DIRECTORY_SEPARATOR.date("Y-m-d h:i:s")).'jpg';
+        imagepng($image,$this->getImgFolder().DIRECTORY_SEPARATOR.date("Y-m-d h:i:s").'png');
         imagedestroy($image);
         $this->setImg();        
     }
@@ -130,6 +130,8 @@ class Product extends Model{
         parent::setData($data);
         $this->setImg();        
     }
+
+    
 
 }
 ?>

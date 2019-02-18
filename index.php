@@ -10,8 +10,7 @@
     use \main\Model\Category;
     use \main\Model\Product;
 
-   
-    
+    require_once('functions.php');
     
     $app = new Slim();
     $app->config('debug',debug());
@@ -34,8 +33,18 @@
     }
     
     $app->get('/',function(){
+        $products = Product::listAll();
+        
+        foreach($products as &$value){
+            $product = new Product;
+            $product->setdata($value);
+            $value = $product->getdata();
+        }
+
         $page = new Page(debug());
-        $page->setTpl("index");
+        $page->setTpl("index",[
+            'products' => $products
+        ]);
     });
 
     $app->get('/admin',function(){

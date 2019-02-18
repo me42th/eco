@@ -1,1 +1,1 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href='/eco/index.php/categoria/1/Roupa'>Roupa</a></li><li><a href='/eco/index.php/categoria/2/Camisa'>Camisa</a></li>
+<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href='/eco/index.php/categoria/3/Smartphone'>Smartphone</a></li>
