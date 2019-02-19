@@ -23,7 +23,6 @@ $app->get('/',function(){
     ]);
 });
 
-
 $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){       
     $category = new Category;
     $category->setdata(Category::find($idcategoria));    
@@ -39,5 +38,18 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
     }                            
     $page = new Page(debug());
     $page->setTpl("category",["category" => $category->getdata(),"products" => $data['products'],'pages' => $pages]);
-}); 
+});
+
+$app->get('/produto/:desurl',function($desurl){
+    $product = Product::find_by_desurl($desurl);
+    
+    $categories = $product['categories'];
+        foreach($categories as &$category){
+            $category = Category::find($category);
+        }
+   
+    $page = new Page(debug());
+    $page->setTpl("product-detail",["product" => $product, "categories" => $categories]);
+
+});
 ?>

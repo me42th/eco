@@ -37,21 +37,31 @@ class Product extends Model{
             'total' => $total,
             'pages' => ceil($total/$itemsPerPage)
         ];
-
     }
 
-    public static function list_by_category($id_category){
-        
+    public static function find_by_desurl($desurl){
+        $sql = new Sql;
+        $produto_temp = $sql->select("
+            select * from tb_products where desurl = '$desurl';
+        ");    
+
+        if(count($produto_temp) == 0)
+            throw new \Exception('Produto inexistente',204);    
+
+        $produto = new Product;
+        $produto->setdata($produto_temp[0]);    
+        return $produto->getdata();
+    }
+
+    public static function list_by_category($id_category){        
         $sql = new Sql();
         $id_products = $sql->select("select * from tb_productscategories where idcategory = '$id_category';");
-        $products = array();
-         
+        $products = array();         
         foreach($id_products as $id_product){
             $product = new Product;
             $product->setdata(Product::find($id_product['idproduct']));
-            array_push($products,$product->getdata());       
+            array_push($products,$product->getdata());     
         }
-
         return $products;
     }
 
@@ -64,7 +74,6 @@ class Product extends Model{
         $prod = new Product;
         $prod->setidproduct($id_product);
         $directory = $prod->getImgFolder();
-
         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory,\FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $file){
            $file->isFile() ? unlink($file->getPathname()) : rmdir($file->getPathname());
         }
@@ -76,8 +85,7 @@ class Product extends Model{
 
     public static function update($data)
     {
-        $sql = new Sql;
-        
+        $sql = new Sql;        
         $idproduct = $data['idproduct'];
         $desproduct = $data['desproduct'];
         $vlprice = $data['vlprice'];
@@ -87,26 +95,22 @@ class Product extends Model{
         $vlweight = $data['vlweight'];
         $desurl = $data['desurl'];
         $values = "";
-
         foreach($data as $key => $value){
             $category = explode('_',$key); 
             if(count($category) < 2) continue;
             $category = $category[1];
-            $values = $values.''."('$category','$idproduct')";
-             
-        }    
-        
-        $values = str_replace(')(','),(',$values);
-        
-        $sql->select("update tb_products set desproduct = '$desproduct', vlprice = '$vlprice', vlwidth = '$vlwidth', vlheight = '$vlheight', vllength = '$vllength', vlweight = '$vlweight', desurl = '$desurl' where idproduct = '$idproduct';");
-        $sql->select("delete from tb_productscategories where idproduct = '$idproduct';");
-
-        $sql->select("insert into tb_productscategories values $values;");
-        
-        
-      
-        
-       
+            $values = $values.''."('$category','$idproduct')";             
+        }            
+        $values = str_replace(')(','),(',$values);        
+        $sql->select("
+          update tb_products set desproduct = '$desproduct', vlprice = '$vlprice', vlwidth = '$vlwidth', vlheight = '$vlheight', vllength = '$vllength', vlweight = '$vlweight', desurl = '$desurl' where idproduct = '$idproduct';
+        ");
+        $sql->select("
+            delete from tb_productscategories where idproduct = '$idproduct';
+        ");
+        $sql->select("
+            insert into tb_productscategories values $values;
+        ");
     }
 
     public static function create($data)
@@ -168,8 +172,7 @@ class Product extends Model{
             $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR
             .'eco'.DIRECTORY_SEPARATOR
             .'prdimg'.DIRECTORY_SEPARATOR.        
-            $this->getidproduct();
-        
+            $this->getidproduct();        
         if(!file_exists($folder))
             mkdir($folder);
         return $folder;    
@@ -186,12 +189,9 @@ class Product extends Model{
     }
 
     public function setdata($data = array()){
-        parent::setdata($data);
-        
-        $this->setImg();
-       
-        $this->setCat();        
-
+        parent::setdata($data);        
+        $this->setImg();       
+        $this->setCat();      
     }
 
     
