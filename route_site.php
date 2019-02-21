@@ -7,16 +7,13 @@ use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
 
-
 $app->get('/',function(){
-    $products = Product::listAll();
-    
+    $products = Product::listAll();    
     foreach($products as &$value){
         $product = new Product;
         $product->setdata($value);
         $value = $product->getdata();
     }
-
     $page = new Page(debug());
     $page->setTpl("index",[
         'products' => $products
@@ -40,16 +37,19 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
     $page->setTpl("category",["category" => $category->getdata(),"products" => $data['products'],'pages' => $pages]);
 });
 
+$app->get('/carrinho',function(){
+    $page = new Page(debug());
+    $page->setTpl("cart");
+});
+
 $app->get('/produto/:desurl',function($desurl){
-    $product = Product::find_by_desurl($desurl);
-    
+    $product = Product::find_by_desurl($desurl);    
     $categories = $product['categories'];
-        foreach($categories as &$category){
-            $category = Category::find($category);
-        }
-   
+    foreach($categories as &$category){
+        $category = Category::find($category);
+    }    
     $page = new Page(debug());
     $page->setTpl("product-detail",["product" => $product, "categories" => $categories]);
-
 });
+
 ?>

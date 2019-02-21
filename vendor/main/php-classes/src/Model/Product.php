@@ -187,14 +187,11 @@ class Product extends Model{
         imagedestroy($image);
         $this->setImg();        
     }
-
+    
     public function setdata($data = array()){
         parent::setdata($data);        
         $this->setImg();       
         $this->setCat();      
-    }
-
-    
-
+    }   
 }
 ?>
