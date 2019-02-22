@@ -8,81 +8,67 @@ use \main\Mailer;
 
 class Cart extends Model{
 
-    // 16:06
-    const SESSION = "Cart";
+    
+    const SESSION = "cart";
 
     public static function get_from_session()
     {
         
-        $cart = new Cart;
-             
+        $cart = array();
         if(isset($_SESSION[Cart::SESSION]) && ((int)$_SESSION[Cart::SESSION]['idcart']) > 0){
-            $cart->setdata(Cart::find($_SESSION[Cart::SESSION]['idcart']));
-        } else if(($by_session = Cart::find_by_session()) > 0){
-            $cart->setdata($by_session);
+            $cart = Cart::find(Cart::find($_SESSION[Cart::SESSION]['idcart']));
+        } else if(count($by_session = Cart::find_by_session()) > 0){
+            $cart = Cart::find_by_session($by_session);
+            
         } else {
 
         }
 
     }
 
-    public static function find_by_session($idsession)
+    public static function find_by_session()
     {
-
+        $session_id = session_id();
+        $sql = new Sql;
+        $cart = $sql->select("select * from tb_carts where desssessionid = '$session_id';");
+        return $cart;
     }
 
     public static function find($idcart)
     {
-
+        $sql = new Sql;
+        $cart = $sql->select("select * from tb_carts where idcart = '$idcart';");
+        return $cart;
     }
 
 
-    //implementar a procedure nas functions abaixo
-    /*
-          CREATE PROCEDURE `sp_carts_save`(
-            pidcart INT,
-            pdessessionid VARCHAR(64),
-            piduser INT,
-            pdeszipcode CHAR(8),
-            pvlfreight DECIMAL(10,2),
-            pnrdays INT
-            )
-            BEGIN
-            
-                IF pidcart > 0 THEN
-                    
-                    UPDATE tb_carts
-                    SET
-                        dessessionid = pdessessionid,
-                        iduser = piduser,
-                        deszipcode = pdeszipcode,
-                        vlfreight = pvlfreight,
-                        nrdays = pnrdays
-                    WHERE idcart = pidcart;
-                    
-                ELSE
-                    
-                    INSERT INTO tb_carts (dessessionid, iduser, deszipcode, vlfreight, nrdays)
-                    VALUES(pdessessionid, piduser, pdeszipcode, pvlfreight, pnrdays);
-                    
-                    SET pidcart = LAST_INSERT_ID();
-                    
-                END IF;
-                
-                SELECT * FROM tb_carts WHERE idcart = pidcart;
-            
-            END$$
-            
-        */
-
     public static function update($data)
     {
+        /*
+            UPDATE tb_carts
+            SET
+                dessessionid = pdessessionid,
+                iduser = piduser,
+                deszipcode = pdeszipcode,
+                vlfreight = pvlfreight,
+                nrdays = pnrdays
+            WHERE idcart = pidcart;
+
+            SELECT * FROM tb_carts WHERE idcart = pidcart;
+        */
 
     }
 
     public static function create($data)
     {
-        
+        $dessessionid = $data["dessessionid"];
+        $iduser = isset($data["iduser"])?$data["iduser"]:"0";
+        $deszipcode = isset($data["deszipecode"])?$data["deszipecode"]:"0";
+        $vlfreight = isset($data["vlfreight"])?$data["vlfreight"]:"0";
+        $nrdays = isset($data["nrdays"])?$data["nrdays"]:"0";
+        $sql = new Sql;
+        $sql->select("insert into tb_carts values (default, '$dessessionid', '$iduser', '$deszipcode', '$vlfreight', '$nrdays', default);");
+        return $sql->select("select max(idcart) from tb_carts;")[0]['max(idcart)'];
     }
     
 }

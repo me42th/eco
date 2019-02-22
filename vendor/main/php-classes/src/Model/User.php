@@ -13,6 +13,14 @@ class User extends Model{
 
     const SESSION = "User";
     
+    public static function find_by_session(){
+        $user = array();
+        if(isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION] > 0){
+            $user = $_SESSION[User::SESSION];
+        }
+        return $user;
+    }
+
     public static function verifyLogin(){
         //verifico se existe uma sessão para aquele cliente
         if(
