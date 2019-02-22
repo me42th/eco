@@ -9,7 +9,7 @@ use \main\Model\Product;
 
 
 $app->get('/admin',function(){
-    User::verifyLogin();
+    User::verify_admin_login();
     $page = new PageAdmin(debug(),get_config_header("index"));
     $page->setTpl("index");
 });

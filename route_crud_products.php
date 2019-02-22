@@ -9,7 +9,7 @@ use \main\Model\Product;
 
 
 $app->get('/admin/products/all',function(){
-    User::verifyLogin();
+    User::verify_admin_login();
     $category_name = 'Produtos';
     $products = Product::listAll();
     $page = new PageAdmin(debug(),get_product_header(0));
@@ -17,7 +17,7 @@ $app->get('/admin/products/all',function(){
 });
 
 $app->get('/admin/products/:idcategory',function($idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
     $category_name = Category::find($idcategory)['descategory'];
     $products = Product::list_by_category($idcategory);
     $page = new PageAdmin(debug(),get_product_header($idcategory));
@@ -25,14 +25,14 @@ $app->get('/admin/products/:idcategory',function($idcategory){
 });
 
 $app->get('/admin/products/create/:idcategory',function($idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
     $category_name = Category::find($idcategory)['descategory'];       
     $page = new PageAdmin(debug(),get_product_header($idcategory));
     $page->setTpl("products-create",["idcategory" => $idcategory,"descategory" => $category_name]);
 });
 
 $app->get('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
     $category_name = Category::find($idcategory)['descategory'];    
     $product = new Product;
     $product->setdata(Product::find($idproduct));       
@@ -44,7 +44,7 @@ $app->get('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idc
 
 
 $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
     Product::update($_POST);
     $product = new Product;
     $product->setdata(Product::find($idproduct));
@@ -59,7 +59,7 @@ $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$id
 });
 
 $app->get('/admin/products/delete/:idproduct/:idcategory',function($idproduct,$idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
     Product::del($idproduct);    
     $idcategory = ($idcategory==0)?'all':$idcategory;   
     header('Location: /eco/index.php/admin/products/'.$idcategory);
@@ -69,7 +69,7 @@ $app->get('/admin/products/delete/:idproduct/:idcategory',function($idproduct,$i
 
 
 $app->post('/admin/products/create/:idcategory',function($idcategory){
-    User::verifyLogin();
+    User::verify_admin_login();
 
     Product::create($_POST);      
     $idcategory = ($idcategory==0)?'all':$idcategory;  

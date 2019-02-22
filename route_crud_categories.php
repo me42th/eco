@@ -9,27 +9,27 @@
 
 
     $app->get('/admin/categories/:idcategory/delete',function($idcategory){
-        User::verifyLogin();
+        User::verify_admin_login();
         Category::del($idcategory);
         header('Location: /eco/index.php/admin/categories');
         exit;
     });
 
     $app->get('/admin/categories/create',function(){
-        User::verifyLogin();       
+        User::verify_admin_login();       
         $page = new PageAdmin(debug(),get_category_header());
         $page->setTpl("categories-create");
     });
 
     $app->post('/admin/categories/create',function(){
-        User::verifyLogin();
+        User::verify_admin_login();
         Category::create($_POST);
         header('Location: /eco/index.php/admin/categories');
         exit;
     });
 
     $app->get('/admin/categories/:idcategory',function($idcategory){
-        User::verifyLogin();
+        User::verify_admin_login();
         $productsRelated = Category::getProducts($idcategory);
         $productsNotRelated = Category::getProducts($idcategory,false);
         
@@ -55,14 +55,14 @@
     });
 
     $app->post('/admin/categories/:idcategory',function($idcategory){
-        User::verifyLogin();
+        User::verify_admin_login();
         Category::update(['id' => $idcategory, 'descategory' => $_POST['descategory']]);
         header('Location: /eco/index.php/admin/categories');
         exit;
     });
 
     $app->get('/admin/categories',function(){
-        User::verifyLogin();
+        User::verify_admin_login();
         $categories = Category::listAll();        
         $page = new PageAdmin(debug(),get_category_header());
         $page->setTpl("categories",["categories" => $categories]);

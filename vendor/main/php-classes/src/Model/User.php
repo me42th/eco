@@ -21,22 +21,36 @@ class User extends Model{
         return $user;
     }
 
-    public static function verifyLogin(){
+    public static function check_login($inadmin = true){
         //verifico se existe uma sessão para aquele cliente
         if(
-                //verifico se a sessão existe 
+            //verifico se a sessão existe 
             !isset($_SESSION[User::SESSION])
             ||  //sessão vazia
             !$_SESSION[User::SESSION]
             ||  //valida id
             !(int)$_SESSION[User::SESSION]["iduser"] > 0
-            ||  //verifico se user é admin
-            !(bool)$_SESSION[User::SESSION]["inadmin"]
-            )
-        {
-            //redireciono para a tela de login
-            header("Location: /eco/index.php/admin/login");
-            exit;    
+        ){ 
+             //ñ ta logado
+            return false;
+        //verifico se o usuário está em área administrativa    
+        }else if($inadmin === true){
+            if((bool)$_SESSION[User::SESSION]["inadmin"] === true)
+                return true;
+            else
+                return false;
+        }
+            return true; 
+    }
+
+    public static function verify_admin_login(){
+        //verifico se existe uma sessão para aquele cliente
+        if(!User::check_login(true))
+        {     
+             //redireciono para a tela de login
+                header("Location: /eco/index.php/admin/login");
+                exit;
+                  
         } 
     }
 
