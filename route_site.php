@@ -6,6 +6,7 @@ use \main\PageAdmin;
 use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
+use \main\Model\Cart;
 
 $app->get('/',function(){
     $products = Product::listAll();    
@@ -38,6 +39,8 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
 });
 
 $app->get('/carrinho',function(){
+    print_r(Cart::find_by_session());
+    exit;
     $page = new Page(debug());
     $page->setTpl("cart");
 });
