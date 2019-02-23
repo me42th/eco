@@ -9,8 +9,26 @@ use \main\Model\User;
 
 class Cart extends Model{
 
-    
     const SESSION = "cart";
+
+    public static function add_prod($idcart, $idproduct)
+    {
+       
+        $sql = new Sql;
+        $sql->select(
+            "insert into tb_cartsproducts values (default,'$idcart','$idproduct',null,default);"
+        );
+    }
+
+    public static function rmv_prod($idcart, $idproduct, $all = false)
+    {           
+        $sql = new Sql;
+        //caso não queria remover todos limito o update para um elemento
+        $all = $all?'':' limit 1 ';
+        $sql->select(
+            "update tb_cartsproducts set dtremoved = now() where dtremoved is null and idcart = '$idcart' and idproduct = '$idproduct' $all;"
+        );       
+    }
 
     public static function find_by_session()
     {  
@@ -39,32 +57,34 @@ class Cart extends Model{
     {
         $session_id = session_id();
         $sql = new Sql;
-        $cart = $sql->select("select * from tb_carts where desssessionid = '$session_id';");
+        $cart = $sql->select(
+            "select * from tb_carts where desssessionid = '$session_id';"
+        );
         return $cart;
     }
 
     public static function find($idcart)
     {
         $sql = new Sql;
-        $cart = $sql->select("select * from tb_carts where idcart = '$idcart';");
+        $cart = $sql->select(
+            "select * from tb_carts where idcart = '$idcart';"
+        );
         return $cart;
     }
 
 
     public static function update($data)
     {
-        /*
-            UPDATE tb_carts
-            SET
-                dessessionid = pdessessionid,
-                iduser = piduser,
-                deszipcode = pdeszipcode,
-                vlfreight = pvlfreight,
-                nrdays = pnrdays
-            WHERE idcart = pidcart;
-
-            SELECT * FROM tb_carts WHERE idcart = pidcart;
-        */
+        $idcart = "'".$data["idcart"]."'";
+        $dessessionid = "'".$data["dessessionid"]."'";
+        $iduser = isset($data["iduser"])?"'".$data["iduser"]."'":"null";
+        $deszipcode = isset($data["deszipecode"])?"'".$data["deszipecode"]."'":"null";
+        $vlfreight = isset($data["vlfreight"])?"'".$data["vlfreight"]."'":"null";
+        $nrdays = isset($data["nrdays"])?"'".$data["nrdays"]."'":"null";
+        $sql = new Sql;
+        $sql->select(
+            "update tb_carts set dessessionid = $dessessionid, iduser = $iduser, deszipcode = $deszipcode, vlfreight = $vlfreight, nrdays = $nrdays where idcart = $idcart;"
+        );
 
     }
 
@@ -76,9 +96,12 @@ class Cart extends Model{
         $vlfreight = isset($data["vlfreight"])?"'".$data["vlfreight"]."'":"null";
         $nrdays = isset($data["nrdays"])?"'".$data["nrdays"]."'":"null";
         $sql = new Sql;
-        $sql->select("insert into tb_carts values (default, $dessessionid, $iduser, $deszipcode, $vlfreight, $nrdays, default);");
+        $sql->select(
+            "insert into tb_carts values (default, $dessessionid, $iduser, $deszipcode, $vlfreight, $nrdays, default);"
+        );
         return $sql->select("select max(idcart) from tb_carts;")[0]['max(idcart)'];
-    }
-    
+    }    
 }
 ?>
+
+

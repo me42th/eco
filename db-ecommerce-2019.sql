@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `db_ecommerce`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `db_ecommerce` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `db_ecommerce`;
+
+--
 -- Table structure for table `tb_addresses`
 --
 
@@ -65,7 +73,7 @@ CREATE TABLE `tb_carts` (
   PRIMARY KEY (`idcart`),
   KEY `FK_carts_users_idx` (`iduser`),
   CONSTRAINT `fk_carts_users` FOREIGN KEY (`iduser`) REFERENCES `tb_users` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +82,7 @@ CREATE TABLE `tb_carts` (
 
 LOCK TABLES `tb_carts` WRITE;
 /*!40000 ALTER TABLE `tb_carts` DISABLE KEYS */;
+INSERT INTO `tb_carts` VALUES (11,'ts518knt1k7g3adkmht73fvjh4',NULL,NULL,NULL,NULL,'2019-02-22 23:47:10'),(12,'bnk4dlau0k9ir3vcmqlluvqt17',8,NULL,NULL,NULL,'2019-02-22 23:52:37'),(13,'bnk4dlau0k9ir3vcmqlluvqt17',8,NULL,NULL,NULL,'2019-02-22 23:52:51'),(14,'ts518knt1k7g3adkmht73fvjh4',8,NULL,NULL,NULL,'2019-02-22 23:54:22'),(15,'ts518knt1k7g3adkmht73fvjh4',8,NULL,NULL,NULL,'2019-02-22 23:54:29'),(16,'ts518knt1k7g3adkmht73fvjh4',8,NULL,NULL,NULL,'2019-02-22 23:58:21'),(17,'ts518knt1k7g3adkmht73fvjh4',NULL,NULL,NULL,NULL,'2019-02-23 01:55:42');
 /*!40000 ALTER TABLE `tb_carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,14 +97,14 @@ CREATE TABLE `tb_cartsproducts` (
   `idcartproduct` int(11) NOT NULL AUTO_INCREMENT,
   `idcart` int(11) NOT NULL,
   `idproduct` int(11) NOT NULL,
-  `dtremoved` datetime NOT NULL,
+  `dtremoved` datetime DEFAULT NULL,
   `dtregister` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcartproduct`),
   KEY `FK_cartsproducts_carts_idx` (`idcart`),
   KEY `FK_cartsproducts_products_idx` (`idproduct`),
   CONSTRAINT `fk_cartsproducts_carts` FOREIGN KEY (`idcart`) REFERENCES `tb_carts` (`idcart`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cartsproducts_products` FOREIGN KEY (`idproduct`) REFERENCES `tb_products` (`idproduct`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,6 +113,7 @@ CREATE TABLE `tb_cartsproducts` (
 
 LOCK TABLES `tb_cartsproducts` WRITE;
 /*!40000 ALTER TABLE `tb_cartsproducts` DISABLE KEYS */;
+INSERT INTO `tb_cartsproducts` VALUES (1,17,4,NULL,'2019-02-23 01:58:26'),(2,17,4,NULL,'2019-02-23 01:58:34'),(3,17,4,NULL,'2019-02-23 01:58:41');
 /*!40000 ALTER TABLE `tb_cartsproducts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,7 +281,7 @@ CREATE TABLE `tb_productscategories` (
 
 LOCK TABLES `tb_productscategories` WRITE;
 /*!40000 ALTER TABLE `tb_productscategories` DISABLE KEYS */;
-INSERT INTO `tb_productscategories` VALUES (4,1),(5,2),(4,3),(3,4),(3,5),(3,6),(4,6),(3,7),(3,8);
+INSERT INTO `tb_productscategories` VALUES (3,1),(4,1),(5,2),(4,3),(4,6);
 /*!40000 ALTER TABLE `tb_productscategories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,7 +311,7 @@ CREATE TABLE `tb_users` (
 
 LOCK TABLES `tb_users` WRITE;
 /*!40000 ALTER TABLE `tb_users` DISABLE KEYS */;
-INSERT INTO `tb_users` VALUES (7,7,'suporte','$2y$12$HFjgUm/mk1RzTy4ZkJaZBe0Mc/BA2hQyoUckvm.lFa6TesjtNpiMe',1,'2017-03-15 19:10:27'),(8,31,'me42th','$2y$12$FKB4Xdm/9GRetvntyzxv1uEHGrQqZoIKwsZajrdtcd0y6dfZh4qoS',1,'2019-02-06 17:26:08'),(10,32,'br_enda','$2y$12$ZAx.ns9lMYayzLfA1G1IWumyqxVxntDLEv2wdICuZxl.cvgDaCEMG',1,'2019-02-08 12:33:55');
+INSERT INTO `tb_users` VALUES (7,7,'me42th','$2y$12$HFjgUm/mk1RzTy4ZkJaZBe0Mc/BA2hQyoUckvm.lFa6TesjtNpiMe',1,'2017-03-15 19:10:27'),(8,31,'me42th','$2y$12$FKB4Xdm/9GRetvntyzxv1uEHGrQqZoIKwsZajrdtcd0y6dfZh4qoS',1,'2019-02-06 17:26:08'),(10,32,'br_enda','$2y$12$ZAx.ns9lMYayzLfA1G1IWumyqxVxntDLEv2wdICuZxl.cvgDaCEMG',1,'2019-02-08 12:33:55');
 /*!40000 ALTER TABLE `tb_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,4 +384,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-21  6:36:54
+-- Dump completed on 2019-02-22 23:00:44

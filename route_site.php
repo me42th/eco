@@ -39,10 +39,24 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
 });
 
 $app->get('/carrinho',function(){
-    print_r(Cart::find_by_session());
+    
+    echo date('Y-m-d H:i:s',time());
     exit;
     $page = new Page(debug());
     $page->setTpl("cart");
+});
+
+$app->get('/carrinho/:idproduct/add',function($idproduct){
+    $idcart = Cart::find_by_session()['idcart'];
+    $idproduct = (int)$idproduct;
+    Cart::add_prod($idcart,$idproduct);
+});
+
+$app->get('/carrinho/:idproduct/:all/rmv',function($idproduct,$all){
+    $idcart = Cart::find_by_session()['idcart'];
+    $idproduct = (int)$idproduct;
+    $all = ($all = 0)?false:true;
+    Cart::rmv_prod($idcart,$idproduct,$all);
 });
 
 $app->get('/produto/:desurl',function($desurl){
