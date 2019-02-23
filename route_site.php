@@ -39,24 +39,37 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
 });
 
 $app->get('/carrinho',function(){
-    
-    echo date('Y-m-d H:i:s',time());
-    exit;
+    //print_r(Cart::get_prod(Cart::find_by_session()['idcart']));exit;
     $page = new Page(debug());
-    $page->setTpl("cart");
+    $resume = Cart::get_resume(Cart::find_by_session()['idcart']);
+    $page->setTpl("cart",[
+        "cart" => $resume['products'],
+        "amount" => $resume['amount']
+         ]);
 });
 
 $app->get('/carrinho/:idproduct/add',function($idproduct){
     $idcart = Cart::find_by_session()['idcart'];
     $idproduct = (int)$idproduct;
     Cart::add_prod($idcart,$idproduct);
+    header("Location: /eco/index.php/carrinho#tabela");
+    exit;
 });
 
-$app->get('/carrinho/:idproduct/:all/rmv',function($idproduct,$all){
+$app->get('/carrinho/:idproduct/rmv',function($idproduct){
     $idcart = Cart::find_by_session()['idcart'];
     $idproduct = (int)$idproduct;
-    $all = ($all = 0)?false:true;
-    Cart::rmv_prod($idcart,$idproduct,$all);
+    Cart::rmv_prod($idcart,$idproduct);
+    header("Location: /eco/index.php/carrinho#tabela");
+    exit;
+});
+
+$app->get('/carrinho/:idproduct/minus',function($idproduct){
+    $idcart = Cart::find_by_session()['idcart'];
+    $idproduct = (int)$idproduct;
+    Cart::rmv_prod($idcart,$idproduct,1);
+    header("Location: /eco/index.php/carrinho#tabela");
+    exit;
 });
 
 $app->get('/produto/:desurl',function($desurl){

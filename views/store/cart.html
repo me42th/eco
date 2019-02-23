@@ -10,23 +10,22 @@
     </div>
 </div> <!-- End Page title area -->
 
-<div class="single-product-area">
+<div class="single-product-area" id="tabela">
     <div class="zigzag-bottom"></div>
     <div class="container">
-        <div class="row">
+        <div class="row" >
             
             <div class="col-md-12">
                 <div class="product-content-right">
-                    <div class="woocommerce">
+                    <div class="woocommerce" >
 
                         <form action="/checkout">
                             
-                            <div class="alert alert-danger" role="alert">
-                            Error!
-                            </div>
+                            
 
                             <table cellspacing="0" class="shop_table cart">
-                                <thead>
+                            
+                                <thead >
                                     <tr>
                                         <th class="product-remove">&nbsp;</th>
                                         <th class="product-thumbnail">&nbsp;</th>
@@ -37,37 +36,45 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    {if="count($cart) == 0"}    
+                                        <div class="alert alert-danger" role="alert">
+                                                Carrinho Vazio!
+                                        </div>
+                                    {/if}    
+                                    {loop="$cart"}    
+                         
                                     <tr class="cart_item">
                                         <td class="product-remove">
-                                            <a title="Remove this item" class="remove" href="#">×</a> 
+                                            <a title="Remove this item" class="remove" onclick="window.location.href = '/eco/index.php/carrinho/{$value["product"]["idproduct"]}/minus'" >×</a> 
                                         </td>
 
                                         <td class="product-thumbnail">
-                                            <a href="#"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="/res/site/img/product-thumb-2.jpg"></a>
+                                            <a href="#"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="
+                                                {$value['product']['desphoto']}
+                                                "></a>
                                         </td>
 
                                         <td class="product-name">
-                                            <a href="#">Ship Your Idea</a> 
+                                            <a href="/eco/index.php/produto/{$value['product']['desurl']}">{$value['product']['desproduct']}</a> 
                                         </td>
 
                                         <td class="product-price">
-                                            <span class="amount">$700.00</span> 
+                                            <span class="amount">R$ {function="formatPrice($value['product']['vlprice'])"}</span> 
                                         </td>
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input type="button" class="minus" value="-" onclick="window.location.href = '#'">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="1" min="0" step="1">
-                                                <input type="button" class="plus" value="+" onclick="window.location.href = '#'">
+                                                <input type="button" class="minus" value="-" onclick="window.location.href = '/eco/index.php/carrinho/{$value["product"]["idproduct"]}/rmv'">
+                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="{$value['qnt']}" min="0" step="1">
+                                                <input type="button" class="plus" value="+" onclick="window.location.href = '/eco/index.php/carrinho/{$value["product"]["idproduct"]}/add'">
                                             </div>
                                         </td>
 
                                         <td class="product-subtotal">
-                                            <span class="amount">$700.00</span> 
+                                            <span class="amount">R$ {function="formatPrice($value['money'])"}</span> 
                                         </td>
                                     </tr>
-                                    
+                                    {/loop}
                                 </tbody>
                             </table>
 
@@ -93,7 +100,7 @@
                                         <tbody>
                                             <tr class="cart-subtotal">
                                                 <th>Subtotal</th>
-                                                <td><span class="amount">$700.00</span></td>
+                                                <td><span class="amount">R$ {function="formatPrice($amount)"}</span></td>
                                             </tr>
 
                                             <tr class="shipping">

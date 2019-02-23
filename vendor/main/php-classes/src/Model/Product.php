@@ -133,8 +133,12 @@ class Product extends Model{
     }
 
     public static function find($id_product){
+        $prod = new Product;
         $sql = new Sql;
-        return $sql->select("select * from tb_products where idproduct = '$id_product';")[0];
+        $prod->setdata($sql->select(
+            "select * from tb_products where idproduct = '$id_product';"
+            )[0]);
+        return $prod->getdata();
     }
 
     private function setCat(){

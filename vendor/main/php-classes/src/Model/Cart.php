@@ -11,20 +11,43 @@ class Cart extends Model{
 
     const SESSION = "cart";
 
+    public static function get_resume($idcart)
+    {
+        $sql = new Sql;
+        $products = $sql->select(
+            "select distinct idproduct from tb_cartsproducts where idcart = '$idcart' and dtremoved is null;"
+        );
+        $amount = 0;
+        foreach($products as &$product){
+            $id_product = $product['idproduct'];
+            $qnt = $sql->select(
+                "select count(*) from tb_cartsproducts where idcart = '$idcart' and idproduct = '$id_product' and dtremoved is null;"
+                )[0]['count(*)'];
+            $prod_data = Product::find($id_product);
+            $money = $prod_data['vlprice'] * $qnt;
+            $amount += $money;     
+            $product = ['product' => $prod_data, 'qnt' => $qnt, 'money' => $money];
+        }
+        return [
+            'products' => $products,
+            'amount' => $amount
+        ];   
+    }
+    
     public static function add_prod($idcart, $idproduct)
     {
-       
         $sql = new Sql;
         $sql->select(
             "insert into tb_cartsproducts values (default,'$idcart','$idproduct',null,default);"
         );
     }
 
-    public static function rmv_prod($idcart, $idproduct, $all = false)
+    public static function rmv_prod($idcart, $idproduct, $all = 0)
     {           
         $sql = new Sql;
         //caso não queria remover todos limito o update para um elemento
-        $all = $all?'':' limit 1 ';
+        $all = $all == 0?' limit 1 ':' ';
+        
         $sql->select(
             "update tb_cartsproducts set dtremoved = now() where dtremoved is null and idcart = '$idcart' and idproduct = '$idproduct' $all;"
         );       
