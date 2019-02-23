@@ -12,8 +12,9 @@ use \main\Model\Product;
 $app = new Slim();
     $app->config('debug',debug());
 
-function get_config_header($activearea,$category_active = ""){
-    $data = ["active" => $activearea,"categories" => Category::listAll(),'category_active' => $category_active];
+function get_config_header($activearea, $category_active = "", $cart_amount = "",
+$cart_qtd = ""){
+    $data = ["active" => $activearea,"categories" => Category::listAll(),'category_active' => $category_active,"cart_amount" => $cart_amount, "cart_qtd" => $cart_qtd];
     return array("data" => $data);
 }
 
@@ -27,6 +28,18 @@ function get_user_header(){
 
 function get_product_header($category_active){
     return get_config_header('product',$category_active);
+}
+
+function get_home_header($cart_amount = "", $cart_qnt = ""){
+    return get_config_header("home","",$cart_amount,$cart_qnt);
+}
+
+function get_cart_header($cart_amount = "", $cart_qnt = ""){
+    return get_config_header("cart","",$cart_amount,$cart_qnt);
+}
+
+function get_prod_header($cart_amount = "", $cart_qnt = ""){
+    return get_config_header("prod","",$cart_amount,$cart_qnt);
 }
 
 ?>

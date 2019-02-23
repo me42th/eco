@@ -9,13 +9,18 @@ use \main\Model\Product;
 use \main\Model\Cart;
 
 $app->get('/',function(){
+
+    $resume = Cart::get_resume(Cart::find_by_session()['idcart']);
+    //print_r(get_home_header($resume['amount'], $resume['sum']));exit;
+    $page = new Page(debug(),get_home_header($resume['amount'], $resume['sum']));
+    
     $products = Product::listAll();    
     foreach($products as &$value){
         $product = new Product;
         $product->setdata($value);
         $value = $product->getdata();
     }
-    $page = new Page(debug());
+    
     $page->setTpl("index",[
         'products' => $products
     ]);
@@ -39,9 +44,10 @@ $app->get('/categoria/:idcategoria/:nome',function($idcategoria,$nome){
 });
 
 $app->get('/carrinho',function(){
-    //print_r(Cart::get_prod(Cart::find_by_session()['idcart']));exit;
-    $page = new Page(debug());
+
     $resume = Cart::get_resume(Cart::find_by_session()['idcart']);
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
+    
     $page->setTpl("cart",[
         "cart" => $resume['products'],
         "amount" => $resume['amount']
@@ -75,12 +81,15 @@ $app->get('/carrinho/:idproduct/minus',function($idproduct){
 });
 
 $app->get('/produto/:desurl',function($desurl){
+    $resume = Cart::get_resume(Cart::find_by_session()['idcart']);
+    $page = new Page(debug(),get_prod_header($resume['amount'], $resume['sum']));
+
     $product = Product::find_by_desurl($desurl);    
     $categories = $product['categories'];
     foreach($categories as &$category){
         $category = Category::find($category);
     }    
-    $page = new Page(debug());
+    
     $page->setTpl("product-detail",["product" => $product, "categories" => $categories]);
 });
 

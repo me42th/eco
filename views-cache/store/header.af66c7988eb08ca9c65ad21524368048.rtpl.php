@@ -85,7 +85,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="/eco/index.php/carrinho">Carrinho - <span class="cart-amunt">R$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
+                        <a href="/eco/index.php/carrinho">Carrinho - <span class="cart-amunt">R$ <?php echo htmlspecialchars( $cart_amount, ENT_COMPAT, 'UTF-8', FALSE ); ?></span> <i class="fa fa-shopping-cart"></i> <span class="product-count"><?php echo htmlspecialchars( $cart_qtd, ENT_COMPAT, 'UTF-8', FALSE ); ?></span></a>
                     </div>
                 </div>
             </div>
@@ -105,9 +105,9 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Produtos</a></li>
-                        <li><a href="/eco/index.php/carrinho">Carrinho</a></li>
+                        <li <?php if( $active === 'home' ){ ?>class="active"<?php } ?>><a href="/eco">Home</a></li>
+                        <li <?php if( $active === 'prod' ){ ?>class="active"<?php } ?>><a href="#">Produtos</a></li>
+                        <li <?php if( $active === 'cart' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/carrinho">Carrinho</a></li>
                     </ul>
                 </div>  
             </div>

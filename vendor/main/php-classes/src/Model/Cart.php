@@ -18,6 +18,7 @@ class Cart extends Model{
             "select distinct idproduct from tb_cartsproducts where idcart = '$idcart' and dtremoved is null;"
         );
         $amount = 0;
+        $sum = count($products);
         foreach($products as &$product){
             $id_product = $product['idproduct'];
             $qnt = $sql->select(
@@ -25,12 +26,14 @@ class Cart extends Model{
                 )[0]['count(*)'];
             $prod_data = Product::find($id_product);
             $money = $prod_data['vlprice'] * $qnt;
+             
             $amount += $money;     
             $product = ['product' => $prod_data, 'qnt' => $qnt, 'money' => $money];
         }
         return [
             'products' => $products,
-            'amount' => $amount
+            'amount' => $amount,
+            'sum' => $sum
         ];   
     }
     

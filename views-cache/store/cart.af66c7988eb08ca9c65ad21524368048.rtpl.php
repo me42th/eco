@@ -41,36 +41,30 @@
                                                 Carrinho Vazio!
                                         </div>
                                     <?php } ?>    
-                                    <?php $counter1=-1;  if( isset($cart) && ( is_array($cart) || $cart instanceof Traversable ) && sizeof($cart) ) foreach( $cart as $key1 => $value1 ){ $counter1++; ?>    
-                         
+                                    <?php $counter1=-1;  if( isset($cart) && ( is_array($cart) || $cart instanceof Traversable ) && sizeof($cart) ) foreach( $cart as $key1 => $value1 ){ $counter1++; ?>  
                                     <tr class="cart_item">
                                         <td class="product-remove">
                                             <a title="Remove this item" class="remove" onclick="window.location.href = '/eco/index.php/carrinho/<?php echo htmlspecialchars( $value1["product"]["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/minus'" >×</a> 
                                         </td>
-
                                         <td class="product-thumbnail">
                                             <a href="#"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="
                                                 <?php echo htmlspecialchars( $value1['product']['desphoto'], ENT_COMPAT, 'UTF-8', FALSE ); ?>
 
                                                 "></a>
                                         </td>
-
                                         <td class="product-name">
                                             <a href="/eco/index.php/produto/<?php echo htmlspecialchars( $value1['product']['desurl'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1['product']['desproduct'], ENT_COMPAT, 'UTF-8', FALSE ); ?></a> 
                                         </td>
-
                                         <td class="product-price">
                                             <span class="amount">R$ <?php echo formatPrice($value1['product']['vlprice']); ?></span> 
                                         </td>
-
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
                                                 <input type="button" class="minus" value="-" onclick="window.location.href = '/eco/index.php/carrinho/<?php echo htmlspecialchars( $value1["product"]["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/rmv'">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="<?php echo htmlspecialchars( $value1['qnt'], ENT_COMPAT, 'UTF-8', FALSE ); ?>" min="0" step="1">
+                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="<?php echo htmlspecialchars( $value1['qnt'], ENT_COMPAT, 'UTF-8', FALSE ); ?>" min="0" step="1" >
                                                 <input type="button" class="plus" value="+" onclick="window.location.href = '/eco/index.php/carrinho/<?php echo htmlspecialchars( $value1["product"]["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/add'">
                                             </div>
                                         </td>
-
                                         <td class="product-subtotal">
                                             <span class="amount">R$ <?php echo formatPrice($value1['money']); ?></span> 
                                         </td>
@@ -81,35 +75,26 @@
                             </table>
 
                             <div class="cart-collaterals">
-
                                 <div class="cross-sells">
-
-                                    <h2>Cálculo de Frete</h2>
-                                    
+                                    <h2>Cálculo de Frete</h2>                                    
                                     <div class="coupon">
                                         <label for="cep">CEP:</label>
                                         <input type="text" placeholder="00000-000" value="" id="cep" class="input-text" name="zipcode">
                                         <input type="submit" formmethod="post" formaction="/cart/freight" value="CÁLCULAR" class="button">
                                     </div>
-
                                 </div>
-
                                 <div class="cart_totals ">
-
                                     <h2>Resumo da Compra</h2>
-
                                     <table cellspacing="0">
                                         <tbody>
                                             <tr class="cart-subtotal">
                                                 <th>Subtotal</th>
                                                 <td><span class="amount">R$ <?php echo formatPrice($amount); ?></span></td>
                                             </tr>
-
                                             <tr class="shipping">
                                                 <th>Frete</th>
                                                 <td>$5.00 <small>prazo de 0 dia(s)</small></td>
                                             </tr>
-
                                             <tr class="order-total">
                                                 <th>Total</th>
                                                 <td><strong><span class="amount">$705.00</span></strong> </td>
@@ -117,15 +102,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                             </div>
-
                             <div class="pull-right">
                                 <input type="submit" value="Finalizar Compra" name="proceed" class="checkout-button button alt wc-forward">
                             </div>
-
                         </form>
-
                     </div>                        
                 </div>                    
             </div>

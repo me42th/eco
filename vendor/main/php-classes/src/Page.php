@@ -11,8 +11,10 @@
             "footer" => true,
             "data" => [
                 "active" => "",
-                "category_active" => ""
-            ]
+                "category_active" => "",
+                "cart_amount" => "5",
+                "cart_qtd" => ""
+                ]
         ];
 
         public function __construct($debug,$opts = array(),$tpl_dir = "/eco/views/store/")
@@ -32,7 +34,6 @@
             // envio os dados para o template
             $this->setData($this->options["data"]);    
         
-     
             // desenha header
             if($this->options["header"])
                 $this->tpl->draw("header");
