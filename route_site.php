@@ -51,7 +51,9 @@ $app->get('/carrinho',function(){
 $app->get('/carrinho/:idproduct/add',function($idproduct){
     $idcart = Cart::find_by_session()['idcart'];
     $idproduct = (int)$idproduct;
-    Cart::add_prod($idcart,$idproduct);
+    $qtd = isset($_GET['qtd'])?$_GET['qtd']:1;
+    for($cont = 0; $cont<$qtd; ++$cont)
+        Cart::add_prod($idcart,$idproduct);
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
