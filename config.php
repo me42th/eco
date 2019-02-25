@@ -2,6 +2,8 @@
     require_once("vendor/autoload.php");
     $debug = true;
 
+    header('Content-Type: text/html; charset=utf-8');
+
     function debug(){
         global $debug;
         return $debug;
