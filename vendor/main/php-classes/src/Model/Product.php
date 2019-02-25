@@ -1,5 +1,39 @@
 <?php
 
+//mysql> desc tb_products;
+//+------------+---------------+------+-----+-------------------+----------------+
+//| Field      | Type          | Null | Key | Default           | Extra          |
+//+------------+---------------+------+-----+-------------------+----------------+
+//| idproduct  | int(11)       | NO   | PRI | NULL              | auto_increment |
+//| desproduct | varchar(64)   | NO   |     | NULL              |                |
+//| vlprice    | decimal(10,2) | NO   |     | NULL              |                |
+//| vlwidth    | decimal(10,2) | NO   |     | NULL              |                |
+//| vlheight   | decimal(10,2) | NO   |     | NULL              |                |
+//| vllength   | decimal(10,2) | NO   |     | NULL              |                |
+//| vlweight   | decimal(10,2) | NO   |     | NULL              |                |
+//| desurl     | varchar(128)  | NO   |     | NULL              |                |
+//| dtregister | timestamp     | NO   |     | CURRENT_TIMESTAMP |                |
+//+------------+---------------+------+-----+-------------------+----------------+
+
+//mysql> show tables;
+//+-----------------------------+
+//| Tables_in_db_ecommerce      |
+//+-----------------------------+
+//| tb_addresses                |
+//| tb_carts                    |
+//| tb_cartsproducts            |
+//| tb_categories               |
+//| tb_orders                   |
+//| tb_ordersstatus             |
+//| tb_persons                  |
+//| tb_products                 |
+//| tb_productscategories       |
+//| tb_users                    |
+//| tb_userslogs                |
+//| tb_userspasswordsrecoveries |
+//+-----------------------------+
+
+
 namespace main\Model;
 
 use \main\Model;

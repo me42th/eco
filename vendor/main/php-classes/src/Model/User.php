@@ -1,4 +1,35 @@
 <?php
+
+//mysql> desc tb_users;
+//+-------------+--------------+------+-----+-------------------+----------------+
+//| Field       | Type         | Null | Key | Default           | Extra          |
+//+-------------+--------------+------+-----+-------------------+----------------+
+//| iduser      | int(11)      | NO   | PRI | NULL              | auto_increment |
+//| idperson    | int(11)      | NO   | MUL | NULL              |                |
+//| deslogin    | varchar(64)  | NO   |     | NULL              |                |
+//| despassword | varchar(256) | NO   |     | NULL              |                |
+//| inadmin     | tinyint(4)   | NO   |     | 0                 |                |
+//| dtregister  | timestamp    | NO   |     | CURRENT_TIMESTAMP |                |
+//+-------------+--------------+------+-----+-------------------+----------------+
+
+//mysql> show tables;
+//+-----------------------------+
+//| Tables_in_db_ecommerce      |
+//+-----------------------------+
+//| tb_addresses                |
+//| tb_carts                    |
+//| tb_cartsproducts            |
+//| tb_categories               |
+//| tb_orders                   |
+//| tb_ordersstatus             |
+//| tb_persons                  |
+//| tb_products                 |
+//| tb_productscategories       |
+//| tb_users                    |
+//| tb_userslogs                |
+//| tb_userspasswordsrecoveries |
+//+-----------------------------+
+
 namespace main\Model;
 
 use \main\DB\Sql;
@@ -22,6 +53,7 @@ class User extends Model{
     }
 
     public static function check_login($inadmin = true){
+        
         //verifico se existe uma sessão para aquele cliente
         if(
             //verifico se a sessão existe 
@@ -87,7 +119,7 @@ class User extends Model{
 
         if(count($results) === 0)
         {
-            throw new \Exception("Usuário inexistente ou senha inválida");
+            throw new \Exception("A Usuário inexistente ou senha inválida");
         }
 
         $data = $results[0];
@@ -101,7 +133,7 @@ class User extends Model{
         }
         else
         {
-            throw new \Exception("Usuário inexistente ou senha inválida");
+            throw new \Exception("B Usuário inexistente ou senha inválida");
         }
 
     }

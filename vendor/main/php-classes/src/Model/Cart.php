@@ -1,5 +1,36 @@
 <?php
 
+//mysql> desc tb_carts;
+//+--------------+---------------+------+-----+-------------------+----------------+
+//| Field        | Type          | Null | Key | Default           | Extra          |
+//+--------------+---------------+------+-----+-------------------+----------------+
+//| idcart       | int(11)       | NO   | PRI | NULL              | auto_increment |
+//| dessessionid | varchar(64)   | NO   |     | NULL              |                |
+//| iduser       | int(11)       | YES  | MUL | NULL              |                |
+//| deszipcode   | char(8)       | YES  |     | NULL              |                |
+//| vlfreight    | decimal(10,2) | YES  |     | NULL              |                |
+//| nrdays       | int(11)       | YES  |     | NULL              |                |
+//| dtregister   | timestamp     | NO   |     | CURRENT_TIMESTAMP |                |
+//+--------------+---------------+------+-----+-------------------+----------------+
+
+//mysql> show tables;
+//+-----------------------------+
+//| Tables_in_db_ecommerce      |
+//+-----------------------------+
+//| tb_addresses                |
+//| tb_carts                    |
+//| tb_cartsproducts            |
+//| tb_categories               |
+//| tb_orders                   |
+//| tb_ordersstatus             |
+//| tb_persons                  |
+//| tb_products                 |
+//| tb_productscategories       |
+//| tb_users                    |
+//| tb_userslogs                |
+//| tb_userspasswordsrecoveries |
+//+-----------------------------+
+
 namespace main\Model;
 
 use \main\Model;
@@ -19,18 +50,22 @@ class Cart extends Model{
         );
         $amount = 0;
         $sum = count($products);
+        $freight_data = ['vlwidth' => 0,'vlheight' => 0,'vllength' => 0,'vlweight' => 0];
         foreach($products as &$product){
             $id_product = $product['idproduct'];
             $qnt = $sql->select(
                 "select count(*) from tb_cartsproducts where idcart = '$idcart' and idproduct = '$id_product' and dtremoved is null;"
                 )[0]['count(*)'];
             $prod_data = Product::find($id_product);
-            $money = $prod_data['vlprice'] * $qnt;
-             
-            $amount += $money;     
+            $amount += ($money = $prod_data['vlprice'] * $qnt);
+            $freight_data['vlwidth'] += ($prod_data['vlwidth'] * $qnt);
+            $freight_data['vlheight'] += ($prod_data['vlheight'] * $qnt);
+            $freight_data['vllength'] += ($prod_data['vllength'] * $qnt); 
+            $freight_data['vlweight'] += ($prod_data['vlweight'] * $qnt); 
             $product = ['product' => $prod_data, 'qnt' => $qnt, 'money' => $money];
         }
         return [
+            'freight' => $freight_data,
             'products' => $products,
             'amount' => $amount,
             'sum' => $sum
@@ -104,7 +139,7 @@ class Cart extends Model{
         $idcart = "'".$data["idcart"]."'";
         $dessessionid = "'".$data["dessessionid"]."'";
         $iduser = isset($data["iduser"])?"'".$data["iduser"]."'":"null";
-        $deszipcode = isset($data["deszipecode"])?"'".$data["deszipecode"]."'":"null";
+        $deszipcode = isset($data["deszipcode"])?"'".str_replace('-','',$data["deszipcode"])."'":"null";
         $vlfreight = isset($data["vlfreight"])?"'".$data["vlfreight"]."'":"null";
         $nrdays = isset($data["nrdays"])?"'".$data["nrdays"]."'":"null";
         $sql = new Sql;

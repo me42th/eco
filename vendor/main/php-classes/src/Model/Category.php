@@ -1,5 +1,32 @@
 <?php
 
+//mysql> desc tb_categories;
+//+-------------+-------------+------+-----+-------------------+----------------+
+//| Field       | Type        | Null | Key | Default           | Extra          |
+//+-------------+-------------+------+-----+-------------------+----------------+
+//| idcategory  | int(11)     | NO   | PRI | NULL              | auto_increment |
+//| descategory | varchar(32) | NO   |     | NULL              |                |
+//| dtregister  | timestamp   | NO   |     | CURRENT_TIMESTAMP |                |
+//+-------------+-------------+------+-----+-------------------+----------------+
+
+//mysql> show tables;
+//+-----------------------------+
+//| Tables_in_db_ecommerce      |
+//+-----------------------------+
+//| tb_addresses                |
+//| tb_carts                    |
+//| tb_cartsproducts            |
+//| tb_categories               |
+//| tb_orders                   |
+//| tb_ordersstatus             |
+//| tb_persons                  |
+//| tb_products                 |
+//| tb_productscategories       |
+//| tb_users                    |
+//| tb_userslogs                |
+//| tb_userspasswordsrecoveries |
+//+-----------------------------+
+
 namespace main\Model;
 
 use \main\Model;
