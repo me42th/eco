@@ -42,8 +42,25 @@ class Cart extends Model{
 
     const SESSION = "cart";
 
-    public static function get_resume($idcart)
+
+    //dados para calculo do frete
+    public static function get_freight_data(){
+
+        $cart = Cart::find_by_session();
+
+        $data = Cart::get_resume($cart['idcart']); 
+        $cart_data['vlweight'] = $data['freight']['vlweight'];
+        $cart_data['vllength'] = $data['freight']['vllength'];
+        $cart_data['vlheight'] = $data['freight']['vlheight'];
+        $cart_data['vlwidth'] = $data['freight']['vlwidth'];
+        $cart_data['amount'] = $data['amount'];  
+
+    }
+
+    //itens adcionados ao carrinho
+    public static function get_resume()
     {
+        $idcart = Cart::find_by_session()['idcart'];
         $sql = new Sql;
         $products = $sql->select(
             "select distinct idproduct from tb_cartsproducts where idcart = '$idcart' and dtremoved is null;"
@@ -72,6 +89,7 @@ class Cart extends Model{
         ];   
     }
     
+    //add produto ao carrinho
     public static function add_prod($idcart, $idproduct)
     {
         $sql = new Sql;
@@ -80,6 +98,7 @@ class Cart extends Model{
         );
     }
 
+    //rmv produto ao carrinho
     public static function rmv_prod($idcart, $idproduct, $all = 0)
     {           
         $sql = new Sql;
@@ -91,6 +110,7 @@ class Cart extends Model{
         );       
     }
 
+    //localiza o carrinho pela sessão ou cria caso não exista
     public static function find_by_session()
     {  
        $cart = array();
@@ -133,7 +153,7 @@ class Cart extends Model{
         return $cart;
     }
 
-
+    //atualiza o carrinho
     public static function update($data)
     {
         $idcart = "'".$data["idcart"]."'";
@@ -150,6 +170,7 @@ class Cart extends Model{
 
     }
 
+    //cria o carrinho
     public static function create($data)
     {
         $dessessionid = "'".$data["dessessionid"]."'";

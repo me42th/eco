@@ -9,20 +9,16 @@ use \main\Model\Product;
 use \main\Model\Cart;
 use \main\Freight;
 
-
+//rever isso!
 $app->post('/carrinho/frete',function(){
     
     $cart = Cart::find_by_session();
     $cart['deszipcode'] = $_POST['deszipcode'];
     
-    $cart_data = Cart::get_resume($cart['idcart']);
+    $cart_data = Cart::get_resume();
 
     $freight_data['deszipcode'] = $cart['deszipcode'];
-    $freight_data['vlweight'] = $cart_data['freight']['vlweight'];
-    $freight_data['vllength'] = $cart_data['freight']['vllength'];
-    $freight_data['vlheight'] = $cart_data['freight']['vlheight'];
-    $freight_data['vlwidth'] = $cart_data['freight']['vlwidth'];
-    $freight_data['amount'] = $cart_data['amount'];    
+
     $freight_data = Freight::get_sedex10_data($freight_data);
     
     $cart["vlfreight"] = $freight_data["vlfreight"];
@@ -37,7 +33,7 @@ $app->post('/carrinho/frete',function(){
 $app->get('/carrinho',function(){
     $cart = Cart::find_by_session();
 
-    $resume = Cart::get_resume($cart['idcart']); 
+    $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    
     $page->setTpl("cart",[
         "cart" => $cart,
