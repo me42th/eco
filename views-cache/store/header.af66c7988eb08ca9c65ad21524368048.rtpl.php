@@ -72,8 +72,9 @@
                 </div>
             </div>
         </div>
+        
     </div> <!-- End header area -->
-    
+        
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
@@ -91,10 +92,33 @@
             </div>
         </div>
     </div> <!-- End site branding area -->
+    <?php if( $error_msg != false ){ ?>    
+     <div class="alert alert-danger" role="alert">
+        <?php echo htmlspecialchars( $error_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+
+     </div>
+    <?php } ?>
+
+    <?php if( $success_msg != false ){ ?>    
+     <div class="alert alert-success" role="alert">
+        <?php echo htmlspecialchars( $success_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+
+     </div>
+    <?php } ?>
+
+    <?php if( $alert_msg != false ){ ?>    
+     <div class="alert alert-info" role="alert">
+        <?php echo htmlspecialchars( $alert_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+
+     </div>
+    <?php } ?> 
+
+    
     
     <div class="mainmenu-area">
         <div class="container">
             <div class="row">
+                    
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>

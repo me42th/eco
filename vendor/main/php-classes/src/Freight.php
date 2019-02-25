@@ -7,8 +7,9 @@ class Freight {
 
     const URL = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazoData?";
     const CEP = "40240550";
+    const SESSION_ERROR = 'ERROR';
+
     public static function get_value($data){
-  
         return $data;
     }
 
@@ -41,24 +42,30 @@ class Freight {
         $data['nCdFormato'] = '1';
         $data['sCdMaoPropria'] = 'S';
         $data['sCdAvisoRecebimento'] = 'S';
-        $data = simplexml_load_file(Freight::get_query_string($data));
+        $data = simplexml_load_file(Freight::get_query_string($data))->Servicos->cServico;
+        if($data->MsgErro[0] != '')
+            MSN::set_error_msg('Erro: '.$data->MsgErro[0]);
         $data = [
-                'vlfreight' => $data->Servicos->cServico->Valor, 
-                'nrdays' => $data->Servicos->cServico->PrazoEntrega
-            ];        
-        
+            'vlfreight' => $data->Valor, 
+            'nrdays' => $data->PrazoEntrega
+        ];
         return $data;
     }
+
+    
 
     public static function get_sedex_data($data){
         return Freight::get_data('40010',$data);
     }
+
     public static function get_sedex10_data($data){
         return Freight::get_data('40215',$data);
     }
+
     public static function get_sedexhoje_data($data){
         return Freight::get_data('40290',$data);
     }
+
     public static function get_pac_data($data){
         return Freight::get_data('41106',$data);
     }

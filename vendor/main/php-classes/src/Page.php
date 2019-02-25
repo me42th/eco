@@ -13,8 +13,12 @@
                 "active" => "",
                 "category_active" => "",
                 "cart_amount" => "5",
-                "cart_qtd" => ""
-                ]
+                "cart_qtd" => "",
+                "categories" => "",
+                "error_msg" => "", 
+                "success_msg" => "", 
+                "alert_msg" => ""
+            ]
         ];
 
         public function __construct($debug,$opts = array(),$tpl_dir = "/eco/views/store/")

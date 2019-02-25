@@ -9,6 +9,7 @@ use \main\Model\Product;
 use \main\Model\Cart;
 use \main\Freight;
 
+
 $app->post('/carrinho/frete',function(){
     
     $cart = Cart::find_by_session();
