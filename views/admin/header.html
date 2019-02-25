@@ -254,7 +254,9 @@ desired effect
      
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
+          
         <li class="header">CRUD</li>
+        
         <!-- Optionally, you can add icons to the links -->
         <li {if="$active === 'user'"}class="active"{/if}><a href="/eco/index.php/admin/users"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
         <li  {if="$active === 'category'"}class="active"{/if}><a href="/eco/index.php/admin/categories"><i class="fa fa-check"></i> <span>Categorias </span></a></li>
@@ -278,5 +280,21 @@ desired effect
       </ul>
       <!-- /.sidebar-menu -->
     </section>
+    {if="$error_msg != false"}    
+    <div class="alert alert-danger" role="alert">
+       {$error_msg}
+    </div>
+   {/if}
+   {if="$success_msg != false"}    
+    <div class="alert alert-success" role="alert">
+       {$success_msg}
+    </div>
+   {/if}
+   {if="$alert_msg != false"}    
+    <div class="alert alert-info" role="alert">
+       {$alert_msg}
+    </div>
+   {/if} 
     <!-- /.sidebar -->
   </aside>
+  

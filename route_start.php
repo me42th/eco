@@ -12,9 +12,9 @@ use \main\MSN;
 
 
 $app = new Slim();
-    $app->config('debug',debug());
+$app->config('debug',debug());
 
-function get_config_header($activearea, $category_active = "", $cart_amount = "",$cart_qtd = "")
+function get_config_header($activearea, $category_active = "", $cart_amount = "", $cart_qtd = "")
 {
     
     
