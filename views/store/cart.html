@@ -41,7 +41,7 @@
                                                 Carrinho Vazio!
                                         </div>
                                     {/if}    
-                                    {loop="$cart"}  
+                                    {loop="$resume"}  
                                     <tr class="cart_item">
                                         <td class="product-remove">
                                             <a title="Remove this item" class="remove" onclick="window.location.href = '/eco/index.php/carrinho/{$value["product"]["idproduct"]}/minus'" >×</a> 
@@ -77,7 +77,7 @@
                                     <h2>Cálculo de Frete</h2>                                    
                                     <div class="coupon">
                                         <label for="cep">CEP:</label>
-                                        <input type="text" placeholder="00000-000" value="" id="cep" class="input-text" name="deszipcode">
+                                        <input type="text" placeholder="00000-000" value="{$cart['deszipcode']}" id="cep" class="input-text" name="deszipcode"> 
                                         <input type="submit" formmethod="post" formaction="/eco/index.php/carrinho/frete" value="CÁLCULAR" class="button">
                                     </div>
                                 </div>
@@ -91,11 +91,11 @@
                                             </tr>
                                             <tr class="shipping">
                                                 <th>Frete</th>
-                                                <td>$5.00 <small>prazo de 0 dia(s)</small></td>
+                                                <td>R$ {function="formatPrice($cart[vlfreight])"} <small>prazo de {$cart['nrdays']} dia(s)</small></td>
                                             </tr>
                                             <tr class="order-total">
                                                 <th>Total</th>
-                                                <td><strong><span class="amount">$705.00</span></strong> </td>
+                                                <td><strong><span class="amount">R$ {function="formatPrice($cart[vlfreight]+$amount)"}</span></strong> </td>
                                             </tr>
                                         </tbody>
                                     </table>

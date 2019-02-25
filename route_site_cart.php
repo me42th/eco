@@ -13,7 +13,7 @@ $app->post('/carrinho/frete',function(){
     
     $cart = Cart::find_by_session();
     $cart['deszipcode'] = $_POST['deszipcode'];
-    Cart::update($cart);
+    
     $cart_data = Cart::get_resume($cart['idcart']);
 
     $freight_data['deszipcode'] = $cart['deszipcode'];
@@ -22,26 +22,25 @@ $app->post('/carrinho/frete',function(){
     $freight_data['vlheight'] = $cart_data['freight']['vlheight'];
     $freight_data['vlwidth'] = $cart_data['freight']['vlwidth'];
     $freight_data['amount'] = $cart_data['amount'];    
-    var_dump(Freight::get_data($freight_data));
+    $freight_data = Freight::get_sedex_data($freight_data);
     
-    
+    $cart["vlfreight"] = $freight_data["vlfreight"];
+    $cart["nrdays"] = $freight_data["nrdays"];
 
-    exit;
-    
-    //'nVlComprimento'=>$data[],
-    //'nVlAltura' =>$data[],
-    //'nVlLargura'=>$data[],
-    //'nVlValorDeclarado'=>$data[],
+    Cart::update($cart);
     
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
 
 $app->get('/carrinho',function(){
-    $resume = Cart::get_resume(Cart::find_by_session()['idcart']); 
+    $cart = Cart::find_by_session();
+    $resume = Cart::get_resume($cart['idcart']); 
+    //print_r($cart);    exit;
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    
     $page->setTpl("cart",[
-        "cart" => $resume['products'],
+        "cart" => $cart,
+        "resume" => $resume['products'],
         "amount" => $resume['amount']
          ]);
 });

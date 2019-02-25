@@ -41,7 +41,7 @@
                                                 Carrinho Vazio!
                                         </div>
                                     <?php } ?>    
-                                    <?php $counter1=-1;  if( isset($cart) && ( is_array($cart) || $cart instanceof Traversable ) && sizeof($cart) ) foreach( $cart as $key1 => $value1 ){ $counter1++; ?>  
+                                    <?php $counter1=-1;  if( isset($resume) && ( is_array($resume) || $resume instanceof Traversable ) && sizeof($resume) ) foreach( $resume as $key1 => $value1 ){ $counter1++; ?>  
                                     <tr class="cart_item">
                                         <td class="product-remove">
                                             <a title="Remove this item" class="remove" onclick="window.location.href = '/eco/index.php/carrinho/<?php echo htmlspecialchars( $value1["product"]["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/minus'" >×</a> 
@@ -79,7 +79,7 @@
                                     <h2>Cálculo de Frete</h2>                                    
                                     <div class="coupon">
                                         <label for="cep">CEP:</label>
-                                        <input type="text" placeholder="00000-000" value="" id="cep" class="input-text" name="deszipcode">
+                                        <input type="text" placeholder="00000-000" value="<?php echo htmlspecialchars( $cart['deszipcode'], ENT_COMPAT, 'UTF-8', FALSE ); ?>" id="cep" class="input-text" name="deszipcode"> 
                                         <input type="submit" formmethod="post" formaction="/eco/index.php/carrinho/frete" value="CÁLCULAR" class="button">
                                     </div>
                                 </div>
@@ -93,11 +93,11 @@
                                             </tr>
                                             <tr class="shipping">
                                                 <th>Frete</th>
-                                                <td>$5.00 <small>prazo de 0 dia(s)</small></td>
+                                                <td>R$ <?php echo formatPrice($cart["vlfreight"]); ?> <small>prazo de <?php echo htmlspecialchars( $cart['nrdays'], ENT_COMPAT, 'UTF-8', FALSE ); ?> dia(s)</small></td>
                                             </tr>
                                             <tr class="order-total">
                                                 <th>Total</th>
-                                                <td><strong><span class="amount">$705.00</span></strong> </td>
+                                                <td><strong><span class="amount">R$ <?php echo formatPrice($cart["vlfreight"]+$amount); ?></span></strong> </td>
                                             </tr>
                                         </tbody>
                                     </table>
