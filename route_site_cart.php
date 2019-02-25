@@ -22,11 +22,11 @@ $app->post('/carrinho/frete',function(){
     $freight_data['vlheight'] = $cart_data['freight']['vlheight'];
     $freight_data['vlwidth'] = $cart_data['freight']['vlwidth'];
     $freight_data['amount'] = $cart_data['amount'];    
-    $freight_data = Freight::get_sedex_data($freight_data);
+    $freight_data = Freight::get_sedex10_data($freight_data);
     
     $cart["vlfreight"] = $freight_data["vlfreight"];
     $cart["nrdays"] = $freight_data["nrdays"];
-
+    
     Cart::update($cart);
     
     header("Location: /eco/index.php/carrinho#tabela");
@@ -35,14 +35,14 @@ $app->post('/carrinho/frete',function(){
 
 $app->get('/carrinho',function(){
     $cart = Cart::find_by_session();
+
     $resume = Cart::get_resume($cart['idcart']); 
-    //print_r($cart);    exit;
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    
     $page->setTpl("cart",[
         "cart" => $cart,
         "resume" => $resume['products'],
         "amount" => $resume['amount']
-         ]);
+    ]);
 });
 
 $app->get('/carrinho/:idproduct/add',function($idproduct){

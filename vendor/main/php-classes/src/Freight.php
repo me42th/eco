@@ -37,30 +37,29 @@ class Freight {
     }
 
     private static function get_data($nCdServico,$data){
-        $data['nCdServico'] = '41106';
+        $data['nCdServico'] = $nCdServico;
         $data['nCdFormato'] = '1';
         $data['sCdMaoPropria'] = 'S';
         $data['sCdAvisoRecebimento'] = 'S';
-        $data = json_decode(
-                    json_encode( 
-                        simplexml_load_file(
-                            Freight::get_query_string($data)
-                        )
-                    ),true);
-        $data = ['vlfreight' => $data['Servicos']['cServico']['Valor'], 'nrdays' => $data['Servicos']['cServico']['PrazoEntrega']];        
+        $data = simplexml_load_file(Freight::get_query_string($data));
+        $data = [
+                'vlfreight' => $data->Servicos->cServico->Valor, 
+                'nrdays' => $data->Servicos->cServico->PrazoEntrega
+            ];        
+        
         return $data;
     }
 
     public static function get_sedex_data($data){
         return Freight::get_data('40010',$data);
     }
-    public function get_sedex10_data($data){
+    public static function get_sedex10_data($data){
         return Freight::get_data('40215',$data);
     }
-    public function get_sedexhoje_data($data){
+    public static function get_sedexhoje_data($data){
         return Freight::get_data('40290',$data);
     }
-    public function get_pac_data($data){
+    public static function get_pac_data($data){
         return Freight::get_data('41106',$data);
     }
 

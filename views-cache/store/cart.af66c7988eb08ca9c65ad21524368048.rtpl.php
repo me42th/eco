@@ -36,7 +36,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if( count($cart) == 0 ){ ?>    
+                                    <?php if( count($resume) == 0 ){ ?>    
                                         <div class="alert alert-danger" role="alert">
                                                 Carrinho Vazio!
                                         </div>

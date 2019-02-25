@@ -140,10 +140,10 @@ class Cart extends Model{
         $dessessionid = "'".$data["dessessionid"]."'";
         $iduser = isset($data["iduser"])?"'".$data["iduser"]."'":"null";
         $deszipcode = isset($data["deszipcode"])?"'".str_replace('-','',$data["deszipcode"])."'":"null";
-        $vlfreight = isset($data["vlfreight"])?"'".str_replace(',','.',$data["vlfreight"])."'":"null";
+        $vlfreight = isset($data["vlfreight"])?"'".str_replace(',','.',str_replace('.','',$data["vlfreight"]))."'":"null";
         $nrdays = isset($data["nrdays"])?"'".$data["nrdays"]."'":"null";
         $sql = new Sql;
-       
+        
         $sql->select(
             "update tb_carts set dessessionid = $dessessionid, iduser = $iduser, deszipcode = $deszipcode, vlfreight = $vlfreight, nrdays = $nrdays where idcart = $idcart;"
         );
