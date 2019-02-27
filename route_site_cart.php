@@ -9,13 +9,16 @@ use \main\Model\Product;
 use \main\Model\Cart;
 
 $app->post('/carrinho/frete',function(){
-    Cart::set_freight_data($_POST['deszipcode']);    
+    $cart = Cart::find_by_session();
+    $cart['deszipcode'] = $_POST['deszipcode'];
+    Cart::update($cart);     
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
 
 $app->get('/carrinho',function(){        
     $cart = Cart::find_by_session();    
+    if(isset($cart['deszipcode'])) Cart::set_freight_data();
     $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    
     $page->setTpl("cart",[
@@ -29,8 +32,7 @@ $app->get('/carrinho/:idproduct/add',function($idproduct){
     $cart = Cart::find_by_session();
     $qtd = isset($_GET['qtd'])?$_GET['qtd']:1;
     for($cont = 0; $cont<$qtd; ++$cont)
-        Cart::add_prod($cart['idcart'],$idproduct);
-    if(isset($cart['deszipcode'])) Cart::set_freight_data();      
+        Cart::add_prod($cart['idcart'],$idproduct);       
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
@@ -39,7 +41,6 @@ $app->get('/carrinho/:idproduct/rmv',function($idproduct){
     $cart = Cart::find_by_session();
     $idproduct = (int)$idproduct;
     Cart::rmv_prod($cart['idcart'],$idproduct);
-    if(isset($cart['deszipcode'])) Cart::set_freight_data();  
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
@@ -47,10 +48,13 @@ $app->get('/carrinho/:idproduct/rmv',function($idproduct){
 $app->get('/carrinho/:idproduct/minus',function($idproduct){
     $cart = Cart::find_by_session();
     $idproduct = (int)$idproduct;
-    Cart::rmv_prod($cart['idcart'],$idproduct,1);
-    if(isset($cart['deszipcode'])) Cart::set_freight_data();  
+    Cart::rmv_prod($cart['idcart'],$idproduct,1);    
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
+});
+
+$app->get('/checkout', function(){
+    
 });
 
 ?>
