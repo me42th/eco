@@ -7,32 +7,15 @@ use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
 use \main\Model\Cart;
-use \main\Freight;
 
-//rever isso!
 $app->post('/carrinho/frete',function(){
-    
-    $cart = Cart::find_by_session();
-    $cart['deszipcode'] = $_POST['deszipcode'];
-    
-    $cart_data = Cart::get_resume();
-
-    $freight_data['deszipcode'] = $cart['deszipcode'];
-
-    $freight_data = Freight::get_sedex10_data($freight_data);
-    
-    $cart["vlfreight"] = $freight_data["vlfreight"];
-    $cart["nrdays"] = $freight_data["nrdays"];
-    
-    Cart::update($cart);
-    
+    Cart::set_freight_data($_POST['deszipcode']);    
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
 
-$app->get('/carrinho',function(){
-    $cart = Cart::find_by_session();
-
+$app->get('/carrinho',function(){        
+    $cart = Cart::find_by_session();    
     $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    
     $page->setTpl("cart",[
@@ -43,28 +26,31 @@ $app->get('/carrinho',function(){
 });
 
 $app->get('/carrinho/:idproduct/add',function($idproduct){
-    $idcart = Cart::find_by_session()['idcart'];
-    $idproduct = (int)$idproduct;
+    $cart = Cart::find_by_session();
     $qtd = isset($_GET['qtd'])?$_GET['qtd']:1;
     for($cont = 0; $cont<$qtd; ++$cont)
-        Cart::add_prod($idcart,$idproduct);
+        Cart::add_prod($cart['idcart'],$idproduct);
+    if(isset($cart['deszipcode'])) Cart::set_freight_data();      
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
 
 $app->get('/carrinho/:idproduct/rmv',function($idproduct){
-    $idcart = Cart::find_by_session()['idcart'];
+    $cart = Cart::find_by_session();
     $idproduct = (int)$idproduct;
-    Cart::rmv_prod($idcart,$idproduct);
+    Cart::rmv_prod($cart['idcart'],$idproduct);
+    if(isset($cart['deszipcode'])) Cart::set_freight_data();  
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
 
 $app->get('/carrinho/:idproduct/minus',function($idproduct){
-    $idcart = Cart::find_by_session()['idcart'];
+    $cart = Cart::find_by_session();
     $idproduct = (int)$idproduct;
-    Cart::rmv_prod($idcart,$idproduct,1);
+    Cart::rmv_prod($cart['idcart'],$idproduct,1);
+    if(isset($cart['deszipcode'])) Cart::set_freight_data();  
     header("Location: /eco/index.php/carrinho#tabela");
     exit;
 });
+
 ?>

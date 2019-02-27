@@ -37,24 +37,40 @@ use \main\Model;
 use \main\DB\Sql;
 use \main\Mailer;
 use \main\Model\User;
+use \main\Freight;
 
 class Cart extends Model{
 
     const SESSION = "cart";
 
 
-    //dados para calculo do frete
-    public static function get_freight_data(){
-
+    //dados para calculo do frete, caso não seja passado nenhum argumento 
+    //carrega o cep do banco e calcula como sedex
+    public static function set_freight_data($deszipcode = 'default',$type = 'sedex'){      
+        
         $cart = Cart::find_by_session();
+        $cart['deszipcode'] = ($deszipcode == 'default')?$cart['deszipcode']:$deszipcode;  
 
         $data = Cart::get_resume($cart['idcart']); 
+        
         $cart_data['vlweight'] = $data['freight']['vlweight'];
         $cart_data['vllength'] = $data['freight']['vllength'];
         $cart_data['vlheight'] = $data['freight']['vlheight'];
         $cart_data['vlwidth'] = $data['freight']['vlwidth'];
-        $cart_data['amount'] = $data['amount'];  
+        $cart_data['amount'] = $data['amount'];
+        $cart_data['deszipcode'] = $cart['deszipcode'];
+        $freight_data = null;
 
+        switch($type){
+            case 'pac':        $freight_data = Freight::get_pac_data($cart_data);
+            case 'sedex10':    $freight_data = Freight::get_sedex10_data($cart_data);
+            case 'sedexhoje':  $freight_data = Freight::get_sedexhoje_data($cart_data);
+            default:           $freight_data = Freight::get_sedex_data($cart_data); 
+        }
+
+        $cart["vlfreight"] = $freight_data["vlfreight"];
+        $cart["nrdays"] = $freight_data["nrdays"];
+        Cart::update($cart);
     }
 
     //itens adcionados ao carrinho
