@@ -55,4 +55,55 @@ $app->post('/login',function(){
 });
 
 
+
+$app->get("/forgot", function(){
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));  
+    $page->setTpl("forgot");
+});
+
+$app->post("/forgot", function(){
+    $email = $_POST['email'];
+    try{
+        $user = User::getForgot($email);
+        header("Location: /eco/index.php/forgot/sent");
+        exit;
+    }catch(\Exception $ex){
+        MSN::set_error_msg($ex->getMessage());
+        header("Location: /eco/index.php/forgot");
+        exit;
+    }
+});
+
+$app->get('/forgot/reset/:code',function($code){
+    if(User::verifyCode($code) && User::verifyTimeCode($code)){
+        $user = new User;
+        $user->setdata(User::find(json_decode(User::ssl_decrypt($code),true)["user"]));
+        $resume = Cart::get_resume(); 
+        $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));  
+        $page->setTpl("forgot-reset",array("code" => $code, 'name' => $user->getdesperson()));
+    }else{
+        header("Location: /eco/index.php/forgot");
+        exit;
+    }        
+});
+
+$app->post('/forgot/reset', function(){
+    if(User::verifyCode($_POST['code']) && User::verifyTimeCode($_POST['code'])){
+        User::paz_sword_update($_POST['code'],$_POST['password']);
+        header("Location: /eco/index.php/login");
+        exit;
+    } else {
+        MSN::set_error_msg('LINK EXPIRADO');
+        header("Location: /eco/index.php/forgot");
+        exit;
+    }
+});
+
+$app->get('/forgot/sent',function(){
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
+    $page->setTpl("forgot-sent");
+});
+
 ?>

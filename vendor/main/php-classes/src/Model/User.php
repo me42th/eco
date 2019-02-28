@@ -180,7 +180,8 @@ class User extends Model{
 
     public static function getForgot($email){
         $sql = new Sql;
-        if(count($sql->select("select * from tb_persons where desemail = '$email';") > 0)){
+        if(isset($sql->select("select * from tb_persons where desemail = '$email';")[0])){
+           
             $user = new User; 
             $user->setdata( $sql->select("select * from tb_persons a join tb_users b on a.idperson = b.idperson where desemail = '$email';")[0]);
             //captura os dados do cliente solicitante
@@ -191,14 +192,13 @@ class User extends Model{
             $log_id = $sql->select("select max(idrecovery) from tb_userspasswordsrecoveries;")[0]["max(idrecovery)"];
             //gera a url com o codigo cifrado
             $code = User::ssl_crypt(array("log" => $log_id,"user" => $user_id));
-            $link = "http://localhost/eco/index.php/admin/forgot/reset/".$code;
+            $link = "http://localhost/eco/index.php".($user->getinadmin()==1?'/admin':'')."/forgot/reset/".$code;
             $mailer = new Mailer($user->getdesemail(),$user->getdesperson(),"Rec de Senha","forgot",array('name'=>$user->getdesperson(),'link'=>$link));
             $mailer->send();
-            return $user;
-            
+            return $user;           
 
         }else{
-            echo "email inválido";
+            throw new \Exception("EMAIL INVÁLIDO");
         };
     }
 

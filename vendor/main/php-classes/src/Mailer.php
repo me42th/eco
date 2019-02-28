@@ -11,6 +11,7 @@ class Mailer{
 
     private $mail;
     
+    
     public function __construct($toAddress, $toName, $subject, $tplName, $data = array())
     {
 

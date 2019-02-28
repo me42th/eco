@@ -9,15 +9,15 @@ use \main\Model\Product;
 use \main\MSN;
 
 
+$app->get('/admin/login',function(){    
+    $page = new PageAdmin(debug(),get_login_admin_header());
+    $page->setTpl("login");
+});
+
 $app->get('/admin',function(){
     User::verify_admin_login();
     $page = new PageAdmin(debug(),get_config_header("index"));
     $page->setTpl("index");
-});
-
-$app->get('/admin/login',function(){    
-    $page = new PageAdmin(debug(),get_login_admin_header());
-    $page->setTpl("login");
 });
 
 $app->get('/admin/logout',function(){
@@ -42,12 +42,12 @@ $app->post('/admin/login',function(){
 
 
 $app->get("/admin/forgot", function(){
-    $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+    $page = new PageAdmin(debug(),get_login_admin_header());
     $page->setTpl("forgot");
 });
 
 $app->post("/admin/forgot", function(){
-   // $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+  
     $email = $_POST['email'];
     $user = User::getForgot($email);
     header("Location: /eco/index.php/admin/forgot/sent");
@@ -58,7 +58,7 @@ $app->get('/admin/forgot/reset/:code',function($code){
     if(User::verifyCode($code) && User::verifyTimeCode($code)){
         $user = new User;
         $user->setdata(User::find(json_decode(User::ssl_decrypt($code),true)["user"]));
-        $page = new PageAdmin(debug(),['header' => false, 'footer' => false]);
+        $page = new PageAdmin(debug(),get_login_admin_header());
         $page->setTpl("forgot-reset",array("code" => $code, 'name' => $user->getdesperson()));
     }else{
         header("Location: /eco/index.php/admin/forgot");
@@ -78,7 +78,7 @@ $app->post('/admin/forgot/reset', function(){
 });
 
 $app->get('/admin/forgot/sent',function(){
-    $page = new PageAdmin(debug(),["header" => false,"footer" => false]);
+    $page = new PageAdmin(debug(),get_login_admin_header());
     $page->setTpl("forgot-sent");
 });
 
