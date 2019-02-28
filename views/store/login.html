@@ -21,22 +21,21 @@
                         <p class="form-row form-row-first">
                             <label for="login">Login <span class="required">*</span>
                             </label>
-                            <input type="text" id="login" name="login" class="input-text">
+                            <input type="text" id="login" name="deslogin" class="input-text">
                         </p>
                         <p class="form-row form-row-last">
                             <label for="senha">Senha <span class="required">*</span>
                             </label>
-                            <input type="password" id="senha" name="senha" class="input-text">
+                            <input type="password" id="senha" name="despassword" class="input-text">
                         </p>
                         <div class="clear"></div>
                         <p class="form-row">
-                            <input type="submit" value="Login" name="login" class="button">
+                            <input type="submit" value="ACESSAR"  class="button">
                             <label class="inline" for="rememberme"><input type="checkbox" value="forever" id="rememberme" name="rememberme"> Manter conectado </label>
                         </p>
                         <p class="lost_password">
                             <a href="#">Esqueceu a senha?</a>
                         </p>
-
                         <div class="clear"></div>
                     </form>                    
                 </div>

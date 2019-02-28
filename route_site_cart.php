@@ -7,6 +7,7 @@ use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
 use \main\Model\Cart;
+use \main\Model\Address;
 
 $app->post('/carrinho/frete',function(){
     $cart = Cart::find_by_session();
@@ -54,7 +55,15 @@ $app->get('/carrinho/:idproduct/minus',function($idproduct){
 });
 
 $app->get('/checkout', function(){
-    
+    User::verify_login();
+    $cart = Cart::find_by_session();
+    $resume = Cart::get_resume(); 
+    $address = new Address;
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
+    $page->setTpl("checkout", [
+        'cart'=>$cart,
+        'address'=>$address->getdata()
+    ]);
 });
 
 ?>

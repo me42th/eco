@@ -1,4 +1,14 @@
 <?php 
+    use \main\Model\User;
+
+    function check_login($boo){
+       return User::check_login($boo);
+    }
+
+    function user_name(){
+        return User::find(User::find_by_session()['iduser'])['desperson'];
+    }
+
     function formatPrice(float $vlprice){
         return number_format($vlprice, 2, ',','.');
     }

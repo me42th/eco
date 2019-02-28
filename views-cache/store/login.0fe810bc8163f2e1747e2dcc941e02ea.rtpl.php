@@ -32,7 +32,21 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Informe seus dados e faça login</p>
-
+    <?php if( $error_msg != false ){ ?>
+    <div class="alert alert-danger" role="alert">
+       <?php echo htmlspecialchars( $error_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+    </div>
+   <?php } ?>
+   <?php if( $success_msg != false ){ ?>    
+    <div class="alert alert-success" role="alert">
+       <?php echo htmlspecialchars( $success_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+    </div>
+   <?php } ?>
+   <?php if( $alert_msg != false ){ ?>    
+    <div class="alert alert-info" role="alert">
+       <?php echo htmlspecialchars( $alert_msg, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+    </div>
+   <?php } ?> 
     <form action="/eco/index.php/admin/login" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Login" name="login"> 

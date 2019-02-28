@@ -6,6 +6,7 @@ use \main\PageAdmin;
 use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
+use \main\MSN;
 
 
 $app->get('/admin',function(){
@@ -14,19 +15,26 @@ $app->get('/admin',function(){
     $page->setTpl("index");
 });
 
-$app->get('/admin/login',function(){
-    $page = new PageAdmin(debug(),['header' => false,'footer'=>false]);
+$app->get('/admin/login',function(){    
+    $page = new PageAdmin(debug(),get_login_admin_header());
     $page->setTpl("login");
 });
 
 $app->get('/admin/logout',function(){
     User::logout();
+    MSN::set_success_msg('Usuário deslogado do sistema');
     header("Location: /eco/index.php/admin/login");
     exit;
 });
 
 $app->post('/admin/login',function(){
+    try{
     User::login($_POST["login"],$_POST["password"]);
+    }catch(\Exception $ex){
+        MSN::set_error_msg($ex->getMessage());
+        header("Location: /eco/index.php/admin/login");
+        exit;
+    }
     header("Location: /eco/index.php/admin");
     exit; 
 });

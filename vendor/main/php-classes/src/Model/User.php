@@ -75,14 +75,23 @@ class User extends Model{
             return true; 
     }
 
+    public static function verify_login(){
+   
+        if(!User::check_login(false))
+        {   
+            //redireciono para a tela de login
+            header("Location: /eco/index.php/login");
+            exit;                  
+        }    
+    }
+
     public static function verify_admin_login(){
-        //verifico se existe uma sessão para aquele cliente
+        
         if(!User::check_login(true))
         {     
-             //redireciono para a tela de login
-                header("Location: /eco/index.php/admin/login");
-                exit;
-                  
+            //redireciono para a tela de login
+            header("Location: /eco/index.php/admin/login");
+            exit;                  
         } 
     }
 
@@ -133,7 +142,7 @@ class User extends Model{
         }
         else
         {
-            throw new \Exception("B Usuário inexistente ou senha inválida");
+            throw new \Exception("O Usuário inexistente ou senha inválida");
         }
 
     }

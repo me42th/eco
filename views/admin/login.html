@@ -32,7 +32,21 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Informe seus dados e faça login</p>
-
+    {if="$error_msg != false"}
+    <div class="alert alert-danger" role="alert">
+       {$error_msg}
+    </div>
+   {/if}
+   {if="$success_msg != false"}    
+    <div class="alert alert-success" role="alert">
+       {$success_msg}
+    </div>
+   {/if}
+   {if="$alert_msg != false"}    
+    <div class="alert alert-info" role="alert">
+       {$alert_msg}
+    </div>
+   {/if} 
     <form action="/eco/index.php/admin/login" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Login" name="login"> 

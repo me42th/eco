@@ -40,10 +40,24 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#"><i class="fa fa-user"></i> Minha Conta</a></li>
                             <li><a href="#"><i class="fa fa-heart"></i> Lista de Desejos</a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i> Meu Carrinho</a></li>
-                            <li><a href="#"><i class="fa fa-lock"></i> Login</a></li>
+                            <?php if( check_login(false) ){ ?>
+
+                            <li><a href="#"><i class="fa fa-user"></i> <?php echo user_name(); ?></a></li>
+
+                            <?php }else{ ?>
+
+                            <li><a href="/eco/index.php/login"><i class="fa fa-lock"></i> Login</a></li>
+                            <?php } ?>
+
+                            <li><a href="/eco/index.php/carrinho"><i class="fa fa-shopping-cart"></i> Meu Carrinho</a></li>
+
+                            <?php if( check_login(false) ){ ?>
+
+                            <li><a href="/eco/index.php/logout"><i class="fa fa-lock"></i> Sair</a></li>
+                            <?php } ?>
+
+                            
                         </ul>
                     </div>
                 </div>

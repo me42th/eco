@@ -29,6 +29,12 @@ function get_config_header($activearea, $category_active = "", $cart_amount = ""
     return array("data" => $data);
 }
 
+function get_login_admin_header(){
+    
+    return array_merge(get_config_header('none'),['header' => false,'footer'=>false]);
+    
+}
+
 function get_category_header(){
     return get_config_header('category');    
 }
