@@ -109,7 +109,7 @@ class User extends Model{
     public function update($data = null)
     {
         $sql = new Sql();
-        $deslogin = $data['deslogin'];
+        $deslogin = isset($data['deslogin'])?$data['deslogin']:$this->getdeslogin();
         $despassword = isset($data['despassword'])?User::paz_sword_cripta($data['despassword']):$this->getdespassword();
         $inadmin = isset($data['inadmin'])?1:0;
         $sql->query("update tb_users set deslogin = :deslogin, despassword = :despassword, inadmin = :inadmin where iduser = :iduser;",array(":deslogin" => $deslogin,":despassword" => $despassword,":inadmin" => $inadmin,":iduser" => $this->getiduser()));
@@ -193,7 +193,7 @@ class User extends Model{
             //gera a url com o codigo cifrado
             $code = User::ssl_crypt(array("log" => $log_id,"user" => $user_id));
             $link = "http://localhost/eco/index.php".($user->getinadmin()==1?'/admin':'')."/forgot/reset/".$code;
-            $mailer = new Mailer($user->getdesemail(),$user->getdesperson(),"Rec de Senha","forgot",array('name'=>$user->getdesperson(),'link'=>$link));
+            $mailer = new Mailer($user->getdesemail(),$user->getdesperson(),"SENHA","forgot",array('name'=>$user->getdesperson(),'link'=>$link));
             $mailer->send();
             return $user;           
 

@@ -43,7 +43,7 @@
                             <li><a href="#"><i class="fa fa-heart"></i> Lista de Desejos</a></li>
                             <?php if( check_login(false) ){ ?>
 
-                            <li><a href="#"><i class="fa fa-user"></i> <?php echo user_name(); ?></a></li>
+                            <li><a href="/eco/index.php/perfil"><i class="fa fa-user"></i> <?php echo user_name(); ?></a></li>
 
                             <?php }else{ ?>
 

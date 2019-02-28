@@ -15,4 +15,9 @@
     function hasCategory($id_category, $categories){
         return in_array($id_category, $categories);
     }
+    function create_user_date(){
+       
+        return date('m/Y',strtotime(User::find(User::find_by_session()['iduser'])['dtregister']));
+        
+    }
 ?>

@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width" />
-  <title>Airmail Ping</title>
+  <title>EMAIL AUTOMATICO</title>
   <style type="text/css">
 
   * {
@@ -384,7 +384,7 @@
           <div class="content">
             <span class="brand">
               <a href="#">
-                Hcode Store
+                RECUPERACAO DE SENHA
               </a>
             </span>
           </div>
@@ -400,20 +400,16 @@
             <table cellspacing="0">
               <tr>
                 <td>
-                  <table class="soapbox">
-                    <tr>
-                      <td class="soapbox-title">Recuperação de Senha</td>
-                    </tr>
-                  </table>
+                  
                   <table class="body">
                     <tr>
                       <td class="body-padding"></td>
                       <td class="body-padded">
-                        <div class="body-title">Olá <?php echo htmlspecialchars( $name, ENT_COMPAT, 'UTF-8', FALSE ); ?>,</div>
+                        <div class="body-title">Ola <?php echo htmlspecialchars( $name, ENT_COMPAT, 'UTF-8', FALSE ); ?>,</div>
                         <table class="body-text">
                           <tr>
                             <td class="body-text-cell">
-                              Para redefinir a sua senha acesse o link <a href="<?php echo htmlspecialchars( $link, ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $link, ENT_COMPAT, 'UTF-8', FALSE ); ?></a>.
+                              Para redefinir a sua senha <a href="<?php echo htmlspecialchars( $link, ENT_COMPAT, 'UTF-8', FALSE ); ?>">CLIQUE AQUI!</a>.
                             </td>
                           </tr>
                         </table>

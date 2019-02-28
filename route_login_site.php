@@ -106,4 +106,38 @@ $app->get('/forgot/sent',function(){
     $page->setTpl("forgot-sent");
 });
 
+$app->get('/perfil',function(){
+    User::verify_login();
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
+    $page->setTpl("profile",[
+        'user' => User::find(User::find_by_session()['iduser']),
+        'profileMsg' => '',
+        'profileError' => ''
+    ]);
+});
+
+$app->post("/perfil",function(){
+    User::verify_login();
+    $user = new User();
+    
+    $user->setdata(User::find(User::find_by_session()['iduser']));      
+    $user->update($_POST);
+    header("Location: /eco/index.php/perfil");
+    MSN::set_success_msg('DADOS ATUALIZADOS COM SUCESSO');
+    exit;        
+});
+
+$app->post('/perfil', function(){
+    if(User::verifyCode($_POST['code']) && User::verifyTimeCode($_POST['code'])){
+        User::paz_sword_update($_POST['code'],$_POST['password']);
+        header("Location: /eco/index.php/login");
+        exit;
+    } else {
+        MSN::set_error_msg('LINK EXPIRADO');
+        header("Location: /eco/index.php/forgot");
+        exit;
+    }
+});
+
 ?>
