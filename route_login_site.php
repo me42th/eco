@@ -19,13 +19,28 @@ $app->get('/login',function(){
 
 $app->get('/logout',function(){
     User::logout();
-    MSN::set_success_msg('Usuário deslogado do sistema');
+    MSN::set_success_msg('USUÁRIO DESLOGADO COM SUCESSO');
     header("Location: /eco");
     exit;
 });
 
+$app->post('/register',function(){
+    try{
+        User::create_user($_POST);
+    }catch(\Exception $ex){
+        $_SESSION['register'] = $_POST;
+    }
+    //caso dê ruim no cadastro as info não se perdem
+    //e o usuário pode apenas corrigir o erro  
+    
+
+    MSG::set_success_msg('USUÁRIO CRIADO COM SUCESSO, INFORME SUAS CREDENCIAIS');
+    header("Location: /eco/index.php/login");
+    exit;
+});
+
 $app->post('/login',function(){
-   
+  
     try{
         User::login($_POST["deslogin"],$_POST["despassword"]);
     }
@@ -34,7 +49,7 @@ $app->post('/login',function(){
         header("Location: /eco/index.php/checkout");
         exit;
     }
-    MSN::set_success_msg('LOGADO');
+    MSN::set_success_msg('BEM VINDO '.user_name().' :D');
     header("Location: /eco");
     exit;    
 });

@@ -18,7 +18,7 @@ $app->post('/carrinho/frete',function(){
 });
 
 $app->get('/carrinho',function(){        
-    $cart = Cart::find_by_session();    
+    $cart = Cart::find_by_session();
     if(isset($cart['deszipcode'])) Cart::set_freight_data();
     $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));    

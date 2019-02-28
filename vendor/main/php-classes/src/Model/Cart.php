@@ -138,7 +138,7 @@ class Cart extends Model{
             $cart = $by_session[0];
         //carrinho inexistente, crio um para aquele usuário                
         } else {
-            $cart = ["dessessionid" => session_id()];            
+            $cart = ["dessessionid" => session_id(), "vlfreight" => 0, "nrdays" => 0];            
             //verifico se o usuário da sessão e armazeno os dados caso aja carrinho abandonado
             if(User::check_login(false)){
                 $cart['iduser'] = User::find_by_session()["iduser"];
