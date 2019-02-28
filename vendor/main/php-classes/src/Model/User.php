@@ -35,6 +35,7 @@ namespace main\Model;
 use \main\DB\Sql;
 use \main\Model;
 use \main\Mailer;
+use \main\Validate;
 
 define('SECRET_IV', pack('a16','senha'));
 define('SECRET', pack('a16','senha'));
@@ -43,7 +44,51 @@ date_default_timezone_set('America/Bahia');
 class User extends Model{
 
     const SESSION = "User";
+    const RULES = [
+                        "deslogin" =>   [
+                                            "unique" => [
+                                                            "msg" => "login em uso",
+                                                            "table" => "tb_users",
+                                                            "field" => "deslogin"
+                                                        ],
+                                            "required"=>[
+                                                            "msg" => "campo obrigatorio"
+                                                        ]                        
+                                        ],
+                        "nrphone" => [
+                                            "number"=>  [     
+                                                            "msg" => "informe um numero"
+                                                        ]
+                                        ],
+                        "desperson" =>  [
+                                            "regex"=>   [
+                                                            "msg" => "informe apenas letras"
+                                                        ],
+                                            "required"=>[
+                                                            "msg" => "campo obrigatorio"
+                                                        ]
+                                        ],
+                        "desemail" =>   [
+                                            "email"=>[
+                                                            "msg" => "informe um email valido"
+                                            ],
+                                            "unique"=> [
+                                                            "msg" => "email em uso",
+                                                            "table" => "tb_persons",
+                                                            "field" => "desemail"
+                                        ],
+                                            "required"=>[
+                                                            "msg" => "campo obrigatorio"
+                                                        ]
+                                        ]
+                    ];
     
+    public static function validate($data){
+        $validator = new Validate(User::RULES);
+        
+        $validator->you_shall_not_pass($data);
+    }
+
     public static function find_by_session(){
         $user = array();
         if(isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION] > 0){

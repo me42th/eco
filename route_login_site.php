@@ -128,6 +128,12 @@ $app->post("/perfil",function(){
     exit;        
 });
 
+$app->get("/validate",function(){
+    
+    User::validate(User::find(User::find_by_session()['iduser']));      
+    exit;        
+});
+
 $app->post('/perfil', function(){
     if(User::verifyCode($_POST['code']) && User::verifyTimeCode($_POST['code'])){
         User::paz_sword_update($_POST['code'],$_POST['password']);
