@@ -47,45 +47,65 @@ class User extends Model{
     const RULES = [
                         "deslogin" =>   [
                                             "unique" => [
-                                                            "msg" => "login em uso",
+                                                            "msg" => "LOGIN EM USO",
                                                             "table" => "tb_users",
                                                             "field" => "deslogin"
                                                         ],
                                             "required"=>[
-                                                            "msg" => "campo obrigatorio"
+                                                            "msg" => "O LOGIN É UM CAMPO OBRIGATORIO"
                                                         ]                        
                                         ],
-                        "nrphone" => [
+                        "nrphone" =>    [
                                             "number"=>  [     
-                                                            "msg" => "informe um numero"
-                                                        ]
+                                                            "msg" => "INFORME UM NUMERO DE TELEFONE VÁLIDO"
+                                                        ],
+                                            "required"=>[
+                                                "msg" => "O TELEFONE É UM CAMPO OBRIGATORIO"
+                                            ]            
                                         ],
                         "desperson" =>  [
                                             "regex"=>   [
-                                                            "msg" => "informe apenas letras"
+                                                            "msg" => "INFORME APENAS LETRAS NO CAMPO NOME",
+                                                            "rule"=> ".*"
                                                         ],
                                             "required"=>[
-                                                            "msg" => "campo obrigatorio"
+                                                            "msg" => "O NOME É UM CAMPO OBRIGATORIO"
                                                         ]
                                         ],
-                        "desemail" =>   [
+                        "despassword" =>   [
+                                            "regex"=> [
+                                                            "msg" => "SENHA INVÁLIDA",
+                                                            "rule" => ".*"
+                                                        ],
+                                            "required"=>[
+                                                            "msg" => "A SENHA É UM CAMPO OBRIGATÓRIO"
+                                                        ]
+                                            ],
+                                        "desemail" =>   [
                                             "email"=>[
-                                                            "msg" => "informe um email valido"
+                                                            "msg" => "INFORME UM EMAIL VALIDO"
                                             ],
                                             "unique"=> [
-                                                            "msg" => "email em uso",
+                                                            "msg" => "EMAIL EM USO",
                                                             "table" => "tb_persons",
                                                             "field" => "desemail"
-                                        ],
+                                                        ],
                                             "required"=>[
-                                                            "msg" => "campo obrigatorio"
+                                                            "msg" => "O EMAIL É UM CAMPO OBRIGATORIO"
                                                         ]
-                                        ]
+                                        ]                
                     ];
     
-    public static function validate($data){
-        $validator = new Validate(User::RULES);
+    public static function validate($data,$iduser = null){
+        if(isset($iduser)){
+            $data_from_db = USER::find($iduser);
+            foreach($data as $key => $value){
+                if($value == $data_from_db[$key])
+                    unset($data[$key]);
+            }
+        }
         
+        $validator = new Validate(User::RULES);        
         $validator->you_shall_not_pass($data);
     }
 

@@ -20,4 +20,10 @@
         return date('m/Y',strtotime(User::find(User::find_by_session()['iduser'])['dtregister']));
         
     }
+
+    function unset_register($field){
+        $_SESSION['register'][$field] = '';
+        //return $field;
+    }
+
 ?>

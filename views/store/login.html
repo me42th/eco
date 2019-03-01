@@ -45,24 +45,24 @@
                         <p class="form-row form-row-first">
                             <label for="nome">Nome Completo <span class="required">*</span>
                             </label>
-                            <input type="text" id="nome" name="desperson" class="input-text">
+                            <input type="text" id="nome" name="desperson" class="input-text" value="{$_SESSION['register']['desperson']}">{function="unset_register('desperson')"}
                         </p>
                         <div class="form-row form-row-first">
                             <label for="email">E-mail <span class="required">*</span>
                             </label>
-                            <input type="email" id="email" name="desemail" class="input-text">
+                            <input type="email" id="email" name="desemail" class="input-text" value="{$_SESSION['register']['desemail']}">{function="unset_register('desemail')"}
                         </div>
                         <p class="form-row form-row-first">
                                 <label for="phone">Telefone <span class="required">*</span>
                                 </label>
-                                <input type="text" id="phone" name="nrphone" class="input-text">
+                                <input type="text" id="phone" name="nrphone" class="input-text" value="{$_SESSION['register']['nrphone']}">{function="unset_register('nrphone')"}
                             </p>
                         <p class="form-row form-row-first">
                             <label for="login">Login <span class="required">*</span>
                             </label>
-                            <input type="text" id="login" name="deslogin" class="input-text">
+                            <input type="text" id="login" name="deslogin" class="input-text" value="{$_SESSION['register']['deslogin']}">{function="unset_register('deslogin')"}
                         </p>
-                        Felipe
+                       
                         <p class="form-row form-row-last">
                             <label for="senha">Password <span class="required">*</span>
                             </label>

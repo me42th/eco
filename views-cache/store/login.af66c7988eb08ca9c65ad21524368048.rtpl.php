@@ -45,23 +45,24 @@
                         <p class="form-row form-row-first">
                             <label for="nome">Nome Completo <span class="required">*</span>
                             </label>
-                            <input type="text" id="nome" name="desperson" class="input-text">
+                            <input type="text" id="nome" name="desperson" class="input-text" value="<?php echo htmlspecialchars( $_SESSION['register']['desperson'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo unset_register('desperson'); ?>
                         </p>
                         <div class="form-row form-row-first">
                             <label for="email">E-mail <span class="required">*</span>
                             </label>
-                            <input type="email" id="email" name="desemail" class="input-text">
+                            <input type="email" id="email" name="desemail" class="input-text" value="<?php echo htmlspecialchars( $_SESSION['register']['desemail'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo unset_register('desemail'); ?>
                         </div>
                         <p class="form-row form-row-first">
                                 <label for="phone">Telefone <span class="required">*</span>
                                 </label>
-                                <input type="text" id="phone" name="nrphone" class="input-text">
+                                <input type="text" id="phone" name="nrphone" class="input-text" value="<?php echo htmlspecialchars( $_SESSION['register']['nrphone'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo unset_register('nrphone'); ?>
                             </p>
                         <p class="form-row form-row-first">
                             <label for="login">Login <span class="required">*</span>
                             </label>
-                            <input type="text" id="login" name="deslogin" class="input-text">
+                            <input type="text" id="login" name="deslogin" class="input-text" value="<?php echo htmlspecialchars( $_SESSION['register']['deslogin'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo unset_register('deslogin'); ?>
                         </p>
+                       
                         <p class="form-row form-row-last">
                             <label for="senha">Password <span class="required">*</span>
                             </label>
