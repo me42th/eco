@@ -95,7 +95,11 @@ class User extends Model{
                                                         ]
                                         ]                
                     ];
-    
+    /** 
+     * Essa função valida os dados antes de serem salvos no banco. As regras estão escritas na constante RULE. 
+     * Se for uma verificação para um usuário existente o id deste usuário deve ser passado, se for um objeto novo
+     * nada deve ser informado.
+    */
     public static function validate($data,$iduser = null){
         if(isset($iduser)){
             $data_from_db = USER::find($iduser);
@@ -103,12 +107,14 @@ class User extends Model{
                 if($value == $data_from_db[$key])
                     unset($data[$key]);
             }
-        }
-        
+        }        
         $validator = new Validate(User::RULES);        
         $validator->you_shall_not_pass($data);
     }
 
+    /** 
+     * Retorna os dados do usuário logado que está armazenado na Session,
+    */
     public static function find_by_session(){
         $user = array();
         if(isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION] > 0){
@@ -117,6 +123,10 @@ class User extends Model{
         return $user;
     }
 
+    /**
+     * Esta classe verifica se há um usuário logado e por padrão verifica se é um usuário admin.
+     * Caso seja um usuário sem provilégios deverá ser informado false ao invocar a função.
+    */
     public static function check_login($inadmin = true){
         
         //verifico se existe uma sessão para aquele cliente
@@ -140,6 +150,9 @@ class User extends Model{
             return true; 
     }
 
+    /** 
+     * Verifica se há um usuário logado, com ou sem privilégios administrativos 
+    */
     public static function verify_login(){
    
         if(!User::check_login(false))
@@ -150,6 +163,9 @@ class User extends Model{
         }    
     }
 
+    /** 
+     * Verifica se há um usuário logado com privilégios administrativos 
+    */
     public static function verify_admin_login(){
         
         if(!User::check_login(true))
@@ -160,17 +176,25 @@ class User extends Model{
         } 
     }
 
+    /** 
+     * Desligo o usuário do sistema 
+    */
     public static function logout(){
         $_SESSION[User::SESSION] = null;
     }
 
+    /** 
+     *  CRUD: Deleto o usuário e seus dados pessoais
+    */
     public function del(){
         $sql = new Sql();
         $sql->query("delete from tb_persons where idperson = :idperson;",array(":idperson"=>$this->getidperson()));
-        echo 'a';
         $sql->query("delete from tb_users where iduser = :iduser;",array(":iduser"=>$this->getiduser()));
     }
 
+    /** 
+     *  CRUD: Atualizo o usuário e seus dados pessoais, validate deve ser invocada antes desta função
+    */
     public function update($data = null)
     {
         $sql = new Sql();
@@ -185,19 +209,19 @@ class User extends Model{
 
 
     }
-
+    
+    /**
+     * Logo o usuário no sistema
+     */
     public static function login($login,$password)
     {
         $sql = new Sql();
         $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN",array(":LOGIN" => $login));
-
         if(count($results) === 0)
         {
             throw new \Exception("A Usuário inexistente ou senha inválida");
         }
-
         $data = $results[0];
-
         if(password_verify($password, $data['despassword']))
         {
             $user = new User();
@@ -212,17 +236,26 @@ class User extends Model{
 
     }
 
+     /** 
+     * Lista todos os usuários cadastrados com respectivos dados pessoais 
+     */
     public static function listAll(){
         $sql = new Sql();
         return $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
     }
 
+    /** 
+     * Localiza um usuário cadastrado e seus dados cadastrados apartir de seu id
+     */
     public static function find($id){
         $sql = new Sql();
         return $sql->select("select * from tb_users join tb_persons on tb_users.idperson = tb_persons.idperson where iduser = $id")[0];
          
     }
 
+   /** 
+    *  CRUD: Insere no banco os dados pessoais, validate deve ser invocada antes desta função
+    */
     public static function create_person($data){
         $sql = new Sql();
         $desperson = $data["desperson"];
@@ -233,6 +266,9 @@ class User extends Model{
     
     }
 
+    /** 
+     *  CRUD: Insere no banco os dados referentes ao usuário, validate deve ser invocada antes desta função
+     */
     public static function create_user($data){
         $sql = new Sql();
         $idperson = User::create_person($data);
@@ -243,10 +279,13 @@ class User extends Model{
 
     }
 
+    /** 
+     * Dispara um email para o usuário recuperar a senha, o token é composto pelo 
+     * id do log e do usuário cifrados com ssl  
+     */
     public static function getForgot($email){
         $sql = new Sql;
-        if(isset($sql->select("select * from tb_persons where desemail = '$email';")[0])){
-           
+        if(isset($sql->select("select * from tb_persons where desemail = '$email';")[0])){           
             $user = new User; 
             $user->setdata( $sql->select("select * from tb_persons a join tb_users b on a.idperson = b.idperson where desemail = '$email';")[0]);
             //captura os dados do cliente solicitante
@@ -267,6 +306,7 @@ class User extends Model{
         };
     }
 
+    
     public static function verifyCode($code){
         if(User::ssl_decrypt($code)) return true;
         else return false;

@@ -112,15 +112,12 @@ $app->get('/perfil',function(){
     $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
     $page->setTpl("profile",[
-        'user' => User::find(User::find_by_session()['iduser']),
-        'profileMsg' => '',
-        'profileError' => ''
+        'user' => User::find(User::find_by_session()['iduser'])
     ]);
 });
 
 $app->post("/perfil",function(){
-    User::verify_login();
- 
+    User::verify_login(); 
     $iduser = User::find_by_session()['iduser'];
     $user = new User();    
     $user->setdata(User::find($iduser));      
@@ -129,12 +126,11 @@ $app->post("/perfil",function(){
         $user->update($_POST);
         header("Location: /eco/index.php/perfil");
         MSN::set_success_msg('DADOS ATUALIZADOS COM SUCESSO');
-    }catch(\Exception $ex){
-                
+    }catch(\Exception $ex){                
         header("Location: /eco/index.php/perfil");
         MSN::set_error_msg($ex->getMessage());
     }
-    exit;        
+    exit;
 });
 
 ?>
