@@ -31,7 +31,7 @@ function get_config_header($activearea, $category_active = "", $cart_amount = ""
 
 function get_login_admin_header(){
     
-    return array_merge(get_config_header('none'),['header' => false,'footer'=>false]);
+    return array_merge(get_config_header('cart'),['header' => false,'footer'=>false]);
     
 }
 

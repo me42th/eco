@@ -5,9 +5,7 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
                         <div class="footer-about-us">
-                 
-                            <h2>SHEEP</h2>
-                     
+                            <h2>Hcode Store</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur, modi aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint! Suscipit, debitis, quisquam. Laborum commodi veritatis magni at?</p>
                             <div class="footer-social">
                                 <a href="https://www.facebook.com/hcodebr" target="_blank"><i class="fa fa-facebook"></i></a>
@@ -74,11 +72,9 @@
                 </div>
             </div>
         </div> <!-- End footer bottom area -->
-        
+       
         <!-- Latest jQuery form server -->
         <script src="https://code.jquery.com/jquery.min.js"></script>
-
-        
         
         <!-- Bootstrap JS form CDN -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -90,23 +86,11 @@
         <!-- jQuery easing -->
         <script src="/eco/js/jquery.easing.1.3.min.js"></script>
         
-        
         <!-- Main Script -->
         <script src="/eco/js/main.js"></script>
         
         <!-- Slider -->
         <script type="text/javascript" src="/eco/js/bxslider.min.js"></script>
         <script type="text/javascript" src="/eco/js/script.slider.js"></script>
-
-        <?php if( $js['ajax-vlfreight'] ){ ?>   
-            <?php require $this->checkTemplate("custom-js/a-vlfreight");?>
-
-        <?php } ?>
-
-        <?php if( $js['mask-deszipcode'] ){ ?>   
-            <?php require $this->checkTemplate("custom-js/m-deszipcode");?>
-
-        <?php } ?>
-
-        </body>
+      </body>
     </html>
