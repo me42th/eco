@@ -36,7 +36,7 @@ class Freight {
         ]);
         return Freight::URL.$query;
     }
-
+    
     private static function get_data($nCdServico,$data){
         $data['nCdServico'] = $nCdServico;
         $data['nCdFormato'] = '1';
@@ -52,8 +52,7 @@ class Freight {
         return $data;
     }
 
-    
-
+   
     public static function get_sedex_data($data){
         return Freight::get_data('40010',$data);
     }
@@ -70,7 +69,19 @@ class Freight {
         return Freight::get_data('41106',$data);
     }
 
-
+    /**
+     * Captura os dados do endereço a partir do CEP
+     */
+    public static function get_address($deszipcode){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://viacep.com.br/ws/$deszipcode/json");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $data = curl_exec($ch);
+        $data = json_decode($data,true);       
+        curl_close($ch);
+        return $data;
+    }
 
 }
 
