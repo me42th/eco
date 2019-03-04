@@ -17,7 +17,11 @@
                 "categories" => "",
                 "error_msg" => "", 
                 "success_msg" => "", 
-                "alert_msg" => ""
+                "alert_msg" => "",
+                "js" => [
+                    "a-vlfreight" => false,
+                    "m-deszipcode" => false
+                    ]
             ]
         ];
 

@@ -92,5 +92,9 @@
         <!-- Slider -->
         <script type="text/javascript" src="/eco/js/bxslider.min.js"></script>
         <script type="text/javascript" src="/eco/js/script.slider.js"></script>
+
+        <?php require $this->checkTemplate("custom-js/custom-js");?>
+
+        
       </body>
     </html>
