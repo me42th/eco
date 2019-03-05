@@ -1,6 +1,8 @@
 <?php
 
 use \Slim\Slim;
+use \main\MSN;
+
 use \main\Page;
 use \main\PageAdmin;
 use \main\Model\User;
@@ -58,12 +60,27 @@ $app->get('/checkout', function(){
     User::verify_login();
     $cart = Cart::find_by_session();
     $resume = Cart::get_resume(); 
-    $address = new Address;
-    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
-    $page->setTpl("checkout", [
-        'cart'=>$cart,
-        'address'=>$address->getdata()
-    ]);
+    try{
+        $address = Address::get_by_zipcode($cart['deszipcode']);
+        $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
+        $page->setTpl("checkout", [
+            'cart'=>$cart,
+            'address'=>$address
+        ]);
+    }
+    catch(\Exception $ex){
+        MSN::set_error_msg($ex->getMessage());
+        $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
+        $page->setTpl("checkout", [
+            'cart'=>$cart,
+            'address'=>null
+        ]);
+    }
+
 });
 
+
+$app->get("/get_cep",function(){
+    var_dump(Address::get_by_zipcode($_GET['cep']));
+});
 ?>

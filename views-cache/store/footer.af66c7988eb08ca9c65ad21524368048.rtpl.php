@@ -72,9 +72,16 @@
                 </div>
             </div>
         </div> <!-- End footer bottom area -->
+
+        
+      
+
        
         <!-- Latest jQuery form server -->
         <script src="https://code.jquery.com/jquery.min.js"></script>
+
+        <!-- Latest Mask jQuery -->
+        <script type="text/javascript" src="/eco/js/jquery.mask.min.js"></script>
         
         <!-- Bootstrap JS form CDN -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -92,9 +99,9 @@
         <!-- Slider -->
         <script type="text/javascript" src="/eco/js/bxslider.min.js"></script>
         <script type="text/javascript" src="/eco/js/script.slider.js"></script>
-
+        
         <?php require $this->checkTemplate("custom-js/custom-js");?>
 
-        
-      </body>
+
+    </body>
     </html>

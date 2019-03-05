@@ -8,4 +8,4 @@
 
     <?php require $this->checkTemplate("custom-js/a-vlfreight");?>
 
-<?php } ?>
+<?php } ?> 
