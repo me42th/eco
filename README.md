@@ -1,4 +1,5 @@
-FRAMEWORK PARA DESENVOLVIMENTO ÁGIL DE LOJAS VIRTUAIS
+<h1>ECO</h1>
+<h3>FRAMEWORK PARA DESENVOLVIMENTO ÁGIL DE LOJAS VIRTUAIS</h3>
 
 <img src="http://cabra.io/images/logo.png" width="350px">
 Este código foi desenvolvido pela equipe <a href="http://cabra.io">CABRA IO</a> e está sob a licença GNU Affero General Public License
