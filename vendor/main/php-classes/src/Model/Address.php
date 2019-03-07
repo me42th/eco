@@ -10,7 +10,8 @@ use \main\Model\User;
 class Address extends Model{
 
 public static function get_by_zipcode($deszipcode){     
-    if(!($address = Address::find_by_zipcode($deszipcode))){
+    if(!($address = Address::find_by_zipcode($deszipcode)))
+    {
         $address =  Freight::get_address($deszipcode);
         if(!isset($address['logradouro']))
             throw new \Exception("CEP INVÁLIDO");
@@ -27,8 +28,9 @@ public static function get_by_zipcode($deszipcode){
         unset($address['complemento']);
         $address['deszipcode'] = str_replace("-","",$address['cep']);
         unset($address['cep']);
-        Address::create($address);        
-    }    
+        Address::create($address);
+        $address = Address::find_by_zipcode($deszipcode);       
+    }
     return $address; 
 }
 

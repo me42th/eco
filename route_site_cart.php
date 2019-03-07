@@ -2,7 +2,6 @@
 
 use \Slim\Slim;
 use \main\MSN;
-
 use \main\Page;
 use \main\PageAdmin;
 use \main\Model\User;
@@ -60,27 +59,32 @@ $app->get('/checkout', function(){
     User::verify_login();
     $cart = Cart::find_by_session();
     $resume = Cart::get_resume(); 
+    
     try{
         $address = Address::get_by_zipcode($cart['deszipcode']);
         $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
         $page->setTpl("checkout", [
             'cart'=>$cart,
-            'address'=>$address
+            'address'=>$address,
+            'products'=>$resume['products'],
+            'amount'=>$resume['amount'],
+            'cart'=>$cart
         ]);
     }
     catch(\Exception $ex){
         MSN::set_error_msg($ex->getMessage());
-        $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
-        $page->setTpl("checkout", [
-            'cart'=>$cart,
-            'address'=>null
-        ]);
+        header("Location: /eco/index.php/carrinho#tabela");
+        exit;
     }
 
 });
 
-
-$app->get("/get_cep",function(){
-    var_dump(Address::get_by_zipcode($_GET['cep']));
+$app->post('/checkout', function(){
+    User::verify_login();
+    $resume = Cart::get_resume(); 
+    Cart::set_address();
 });
+
+
+
 ?>

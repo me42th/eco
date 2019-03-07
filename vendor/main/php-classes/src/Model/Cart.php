@@ -37,6 +37,7 @@ use \main\Model;
 use \main\DB\Sql;
 use \main\Mailer;
 use \main\Model\User;
+use \main\Model\Cart;
 use \main\Freight;
 
 class Cart extends Model{
@@ -71,6 +72,14 @@ class Cart extends Model{
         $cart["vlfreight"] = $freight_data["vlfreight"];
         $cart["nrdays"] = $freight_data["nrdays"];
         Cart::update($cart);
+    }
+
+    public static function set_address(){
+        $cart = Cart::find_by_session();
+        $idaddress = Address::get_by_zipcode($cart['deszipcode'])['idaddress'];
+        $idcart = $cart['idcart'];
+        $sql = new Sql;
+        $sql->select("insert into tb_addressescarts values (default,'$idaddress','$idcart',null,default);");
     }
 
     //itens adcionados ao carrinho

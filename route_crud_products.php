@@ -7,7 +7,6 @@ use \main\Model\User;
 use \main\Model\Category;
 use \main\Model\Product;
 
-
 $app->get('/admin/products/all',function(){
     User::verify_admin_login();
     $category_name = 'Produtos';
