@@ -4,8 +4,36 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f187470d82f5f772efec68f2223e39af",
+    "content-hash": "8a4f91ec880e792d4a30d57423043c8f",
     "packages": [
+        {
+            "name": "cobregratis/boletophp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CobreGratis/boletophp.git",
+                "reference": "a59d8b525c5960aa98215a0e285204744962e9b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CobreGratis/boletophp/zipball/a59d8b525c5960aa98215a0e285204744962e9b6",
+                "reference": "a59d8b525c5960aa98215a0e285204744962e9b6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Projeto Código-Aberto de Sistema de Boletos bancários em PHP",
+            "homepage": "http://boletophp.com.br/",
+            "keywords": [
+                "boleto",
+                "boletophp",
+                "php"
+            ],
+            "time": "2016-11-30T12:23:13+00:00"
+        },
         {
             "name": "phpmailer/phpmailer",
             "version": "v5.2.22",
@@ -144,7 +172,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "cobregratis/boletophp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

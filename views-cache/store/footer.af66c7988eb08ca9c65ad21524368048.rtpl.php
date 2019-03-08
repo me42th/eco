@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="copyright">
-                            <p>&copy; 2019 <a href="http://cabra.io" target="_blank">Cabra.IO</a></p>
+                            <p>&copy; 2019 Sheep Store, Um Produto <a href="http://cabra.io" target="_blank">Cabra.IO</a></p>
                         </div>
                     </div>
                     
