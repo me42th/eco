@@ -83,24 +83,22 @@ $app->get('/checkout', function(){
 $app->post('/checkout', function(){
     User::verify_login();
     $resume = Cart::get_resume(); 
-    Cart::find_by_session;
+    $cart =Cart::find_by_session();
     Cart::set_address();
-
-//    Order::create(['idcart' => ,'vltotal']);
-
-
-
-    header("Location: /eco/index.php/pedido/");
+    $idorder = Order::create(['idcart' => $cart['idcart'],'vltotal' => $resume['amount']]);
+    header("Location: /eco/index.php/pedido/".$idorder);
+    exit;
 });
+
 
 $app->get('/pedido/:idorder',function($idorder){
-    User::verify_login();
-    $page = new page();
+    User::verify_login();    
     $resume = Cart::get_resume(); 
     $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
-    $page->setTpl("payment");
+    $page->setTpl("payment",['idorder' => $idorder]);
     
 });
+
 
 
 ?>

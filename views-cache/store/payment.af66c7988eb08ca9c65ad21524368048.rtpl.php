@@ -1,14 +1,14 @@
-<div class="single-product-area">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 
-                <h1>Pagamento N°{$idorder}</h1>
+                <h1>Pagamento N°<?php echo htmlspecialchars( $idorder, ENT_COMPAT, 'UTF-8', FALSE ); ?></h1>
 
                 <button type="submit" id="btn-print" class="button alt" style="margin-bottom:10px">Imprimir</button>
 
-                <iframe src="/eco/index.php/boleto/{$idorder}" name="boleto" frameborder="0" style="width:100%; min-height:1000px; border:1px solid #CCC; padding:20px;"></iframe>
+                <iframe src="/eco/index.php/boleto/<?php echo htmlspecialchars( $idorder, ENT_COMPAT, 'UTF-8', FALSE ); ?>" name="boleto" frameborder="0" style="width:100%; min-height:1000px; border:1px solid #CCC; padding:20px;"></iframe>
 
                 <script>
                 document.querySelector("#btn-print").addEventListener("click", function(event){

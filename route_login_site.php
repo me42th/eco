@@ -51,8 +51,8 @@ $app->post('/login',function(){
         header("Location: /eco/index.php/checkout");
         exit;
     }
-    MSN::set_success_msg('BEM VINDO '.user_name().' :D');
-    header("Location: /eco");
+    Cart::set_user();   
+    header("Location: /eco/index.php");
     exit;    
 });
 

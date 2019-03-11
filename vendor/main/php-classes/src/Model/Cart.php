@@ -74,13 +74,40 @@ class Cart extends Model{
         Cart::update($cart);
     }
 
+    public static function set_user(){
+        $user = User::find_by_session();
+        $cart = Cart::find_by_session();
+        $cart['iduser'] = $user['iduser'];
+      
+
+        Cart::update($cart);
+    }
+
     public static function set_address(){
         $cart = Cart::find_by_session();
         $idaddress = Address::get_by_zipcode($cart['deszipcode'])['idaddress'];
-        $idcart = $cart['idcart'];
+        $idcart = $cart['idcart'];      
+       
+
         $sql = new Sql;
-        $sql->select("insert into tb_addressescarts values (default,'$idaddress','$idcart',null,default);");
+        
+        $pivot = $sql->select(
+            "select * from tb_addressescarts where idcart = '$idcart' and idaddress <> '$idaddress' and dtremoved is null;"
+        );
+        if(count($pivot) != 0){
+            $idaddressescarts = $pivot[0]['idaddressescarts'];
+            $agora = date('Y-m-d H:i:s',time());        
+            $sql->select("update tb_addressescarts set dtremoved = '$agora' where idaddressescarts = '$idaddressescarts';");
+        }
+        $pivot = $sql->select(
+            "select * from tb_addressescarts where idcart = '$idcart' and idaddress = '$idaddress' and dtremoved is null;"
+        );
+        if(count($pivot) == 0){
+            $sql->select("insert into tb_addressescarts values (default,'$idaddress','$idcart',null,default);");
+        }    
     }
+
+    
 
     //itens adcionados ao carrinho
     public static function get_resume()
@@ -184,6 +211,7 @@ class Cart extends Model{
     //atualiza o carrinho
     public static function update($data)
     {
+
         $idcart = "'".$data["idcart"]."'";
         $dessessionid = "'".$data["dessessionid"]."'";
         $iduser = isset($data["iduser"])?"'".$data["iduser"]."'":"null";
@@ -195,6 +223,7 @@ class Cart extends Model{
         $sql->select(
             "update tb_carts set dessessionid = $dessessionid, iduser = $iduser, deszipcode = $deszipcode, vlfreight = $vlfreight, nrdays = $nrdays where idcart = $idcart;"
         );
+        $_SESSION[Cart::SESSION] = $data;
 
     }
 
