@@ -118,8 +118,11 @@ class Cart extends Model{
     public static function add_prod($idcart, $idproduct)
     {
         $sql = new Sql;
+        $product = $sql->select("select desproduct, vlprice from tb_products where idproduct = '$idproduct';")[0];
+        $desproduct = $product['desproduct'];
+        $vlprice = $product['vlprice'];
         $sql->select(
-            "insert into tb_cartsproducts values (default,'$idcart','$idproduct',null,default);"
+            "insert into tb_cartsproducts values (default,'$idcart','$idproduct',null,default,'$desproduct','$vlprice');"
         );
     }
 

@@ -9,6 +9,7 @@ use \main\Model\Category;
 use \main\Model\Product;
 use \main\Model\Cart;
 use \main\Model\Address;
+use \main\Model\Order;
 
 $app->post('/carrinho/frete',function(){
     $cart = Cart::find_by_session();
@@ -82,9 +83,24 @@ $app->get('/checkout', function(){
 $app->post('/checkout', function(){
     User::verify_login();
     $resume = Cart::get_resume(); 
+    Cart::find_by_session;
     Cart::set_address();
+
+//    Order::create(['idcart' => ,'vltotal']);
+
+
+
+    header("Location: /eco/index.php/pedido/");
 });
 
+$app->get('/pedido/:idorder',function($idorder){
+    User::verify_login();
+    $page = new page();
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
+    $page->setTpl("payment");
+    
+});
 
 
 ?>
