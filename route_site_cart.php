@@ -92,13 +92,15 @@ $app->post('/checkout', function(){
 
 
 $app->get('/pedido/:idorder',function($idorder){
-    User::verify_login();    
-    $resume = Cart::get_resume(); 
-    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum'])); 
+    User::verify_login();
+    $resume = Cart::get_resume();
+    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
     $page->setTpl("payment",['idorder' => $idorder]);
-    
+
 });
 
-
+$app->get('/boleto/:idorder',function($idorder){
+    User::verify_login();
+});
 
 ?>
