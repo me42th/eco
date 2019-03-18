@@ -107,6 +107,15 @@ class Cart extends Model{
         }    
     }
 
+    public static function get_address(){
+        $cart = Cart::find_by_session();
+        $idcart = $cart['idcart'];
+        $sql = new Sql;
+        $address = $sql->select("select desaddress, descomplement, descity, desstate, descountry, deszipcode,desdistrict from tb_addressescarts as tb_ac join tb_addresses as tb_a using(idaddress) where tb_ac.dtremoved is  null and tb_ac.idcart = '$idcart' ;")[0];
+        return $address;
+        
+
+    }
     
 
     //itens adcionados ao carrinho
