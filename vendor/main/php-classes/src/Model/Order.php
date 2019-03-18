@@ -3,6 +3,7 @@
 namespace main\Model;
 
 use \main\Model;
+use \main\Ticket;
 use \main\DB\Sql;
 
 class Order extends Model{
@@ -39,23 +40,23 @@ class Order extends Model{
         return $order[0];        
     }
 
-    public static function boleto_data($id_order,$bank){
+    public static function get_boleto($id_order,$bank){
         $order = Order::find_by_id($id_order);
-        $cart = Cart::find_by_session();
-        $user = User::find(User::find_by_session()['iduser']);
-        $address = Cart::get_address();
+        $status = Order::AGUARDANDO_PAGAMENTO;
+        $sql = new Sql;
+        $sql->select("update tb_orders set idstatus = '$status' where idorder = '$id_order';");
         $data = array();
         if($bank == 'itau'){
             $data['vltotal'] = $order['vltotal'];
-            $data['vlfreight'] = $cart['vlfreight'];
+            $data['vlfreight'] = $order['vlfreight'];
             $data['idorder'] = $order['idorder'];
-            $data['desperson'] = $user['desperson'];
-            $data['desaddress'] = $address['desaddress'];
-            $data['descity'] = $address['descity'];
-            $data['desstate'] = $address['desstate'];
-            $data['deszipcode'] = $address['deszipcode'];
+            $data['desperson'] = $order['desperson'];
+            $data['desaddress'] = $order['desaddress'];
+            $data['descity'] = $order['descity'];
+            $data['desstate'] = $order['desstate'];
+            $data['deszipcode'] = $order['deszipcode'];
         }
-        return $data;
+        Ticket::ticket_factory($bank,$data);
     }
 
 }

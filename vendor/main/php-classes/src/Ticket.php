@@ -1,5 +1,6 @@
 <?php
-namespace main\Model;
+
+namespace main;
 
 class Ticket{
     public static function ticket_factory($bank,$data){
@@ -61,9 +62,9 @@ class Ticket{
 
         // SEUS DADOS
         $dadosboleto["identificacao"] = "Sheep - Framework Open Source para Comércio Virtual Cabra IO";
-        $dadosboleto["cpf_cnpj"] = "";
-        $dadosboleto["endereco"] = "Coloque o endereço da sua empresa aqui";
-        $dadosboleto["cidade_uf"] = "Cidade / Estado";
+        $dadosboleto["cpf_cnpj"] = "42 3.14 0201";
+        $dadosboleto["endereco"] = "Rua Nagé 20";
+        $dadosboleto["cidade_uf"] = "Salvador / Bahia";
         $dadosboleto["cedente"] = "Cabra IO Gestão Ágil de Projetos";
         
         include("vendor/cobregratis/boletophp/include/funcoes_itau.php"); 

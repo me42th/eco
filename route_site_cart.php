@@ -103,7 +103,7 @@ $app->get('/pedido/:idorder',function($idorder){
 
 $app->get('/boleto/:idorder',function($idorder){
     User::verify_login();
-    Ticket::ticket_factory('itau',Order::boleto_data($idorder,'itau'));
+    Order::get_boleto($idorder,'itau');
 
 });
 
