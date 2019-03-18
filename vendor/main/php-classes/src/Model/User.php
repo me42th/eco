@@ -109,6 +109,10 @@ class User extends Model{
         $validator->you_shall_not_pass($data);
     }
 
+    /**
+     * Retorno o usuário armazenado na sessão
+     */
+
     public static function find_by_session(){
         $user = array();
         if(isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION] > 0){
@@ -117,8 +121,13 @@ class User extends Model{
         return $user;
     }
 
+
+    /**
+     * Verifica se há um usuário logado na sessão daquele cliente, se inadmin for true 
+     * validará se este usuário é um administrador 
+     * */    
+
     public static function check_login($inadmin = true){
-        
         //verifico se existe uma sessão para aquele cliente
         if(
             //verifico se a sessão existe 
@@ -140,6 +149,11 @@ class User extends Model{
             return true; 
     }
 
+
+    /**  
+     * Valida se há um usuário logado, caso não aja ele redireciona para a página de login
+     * da loja virtual
+    */
     public static function verify_login(){
    
         if(!User::check_login(false))
@@ -150,6 +164,10 @@ class User extends Model{
         }    
     }
 
+    /**  
+     * Valida se há um usuário admin logado, caso não aja ele redireciona para a página de login 
+     * da dasboard
+    */
     public static function verify_admin_login(){
         
         if(!User::check_login(true))
@@ -160,10 +178,16 @@ class User extends Model{
         } 
     }
 
+    /**  
+     * Apago os dados do usuário da sessão
+    */
     public static function logout(){
         $_SESSION[User::SESSION] = null;
     }
 
+     /**  
+     * Deleto o usuário do banco
+     */
     public function del(){
         $sql = new Sql();
         $sql->query("delete from tb_persons where idperson = :idperson;",array(":idperson"=>$this->getidperson()));
@@ -171,6 +195,9 @@ class User extends Model{
         $sql->query("delete from tb_users where iduser = :iduser;",array(":iduser"=>$this->getiduser()));
     }
 
+    /**
+     * Atualizo os dados do usuário
+     */
     public function update($data = null)
     {
         $sql = new Sql();

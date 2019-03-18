@@ -119,9 +119,11 @@ class Cart extends Model{
     
 
     //itens adcionados ao carrinho
-    public static function get_resume()
+    public static function get_resume($idcart = null)
     {
-        $idcart = Cart::find_by_session()['idcart'];
+        if(is_null($idcart)){
+            $idcart = Cart::find_by_session()['idcart'];
+        }    
         $sql = new Sql;
         $products = $sql->select(
             "select distinct idproduct from tb_cartsproducts where idcart = '$idcart' and dtremoved is null;"

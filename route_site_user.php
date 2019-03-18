@@ -8,6 +8,8 @@ use \main\Model\Category;
 use \main\Model\Product;
 use \main\Model\Cart;
 use \main\Model\Freight;
+use \main\Model\Order;
+
 use \main\MSN;
 
 $app->get('/login',function(){
@@ -110,7 +112,7 @@ $app->get('/perfil',function(){
     User::verify_login();
 
     $resume = Cart::get_resume(); 
-    $page = new Page(debug(),get_cart_header($resume['amount'], $resume['sum']));
+    $page = new Page(debug(),get_home_header($resume['amount'], $resume['sum']));
     $page->setTpl("profile",[
         'user' => User::find(User::find_by_session()['iduser']),
         'profileMsg' => '',
@@ -119,8 +121,8 @@ $app->get('/perfil',function(){
 });
 
 $app->post("/perfil",function(){
-    User::verify_login();
- 
+    User::verify_login(); 
+
     $iduser = User::find_by_session()['iduser'];
     $user = new User();    
     $user->setdata(User::find($iduser));      
@@ -129,12 +131,40 @@ $app->post("/perfil",function(){
         $user->update($_POST);
         header("Location: /eco/index.php/perfil");
         MSN::set_success_msg('DADOS ATUALIZADOS COM SUCESSO');
-    }catch(\Exception $ex){
-                
+    }catch(\Exception $ex){                
         header("Location: /eco/index.php/perfil");
         MSN::set_error_msg($ex->getMessage());
     }
     exit;        
+});
+
+$app->get("/perfil/pedidos",function(){
+    User::verify_login();
+
+    $orders = Order::list_by_user();
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_home_header($resume['amount'], $resume['sum']));
+    $page->setTpl("profile-orders",[
+        'orders' => $orders
+    ]);
+});
+
+$app->get("/perfil/pedido/:idorder",function($idorder){
+    User::verify_login();
+
+    $order = Order::find_by_id($idorder);
+    $resume = Cart::get_resume();
+    $page = new Page(debug(),get_home_header($resume['amount'], $resume['sum']));
+    $resume = Cart::get_resume($order['idcart']); 
+    $products = $resume['products'];
+    $amount = $resume['amount'];
+    $vlfreight = Cart::find($order['idcart'])[0]['vlfreight'];
+    $page->setTpl("profile-orders-detail",[
+        'order' => $order,
+        'products' => $products,
+        'amount' => $amount,
+        'vlfreight' => $vlfreight
+    ]);
 });
 
 ?>

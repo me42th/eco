@@ -32,15 +32,22 @@ $app->get('/function/:model/:function/:data',function($model,$function,$data){
   if($model == 'cart')
   { 
     if($function == "resume")
-      print_r(Cart::get_resume());
+      print_r(Cart::get_resume($data));
     if($function == "get_address")
       print_r(Cart::get_address());
     exit;
   }
+
   if($model == 'order'){
       if($function == "boleto_itau")
-        print_r(Order::boleto_data($data,'itau'));
-        exit;
+        print_r(Order::get_boleto($data,'itau'));
+ 
+      if($function == "list_by_session_user"){
+        print_r(Order::list_by_user()); 
+      }
+      if($function == "list_by_user"){
+        print_r(Order::list_by_user($data)); 
+      }
   }
 
   if($model == 'ticket'){
