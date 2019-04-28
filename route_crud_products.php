@@ -47,9 +47,8 @@ $app->post('/admin/products/edit/:idproduct/:idcategory',function($idproduct,$id
     Product::update($_POST);
     $product = new Product;
     $product->setdata(Product::find($idproduct));
-    $idcategory = ($idcategory==0)?'all':$idcategory;
-    
-    if(isset($_FILES['files'])){
+    $idcategory = ($idcategory==0)?'all':$idcategory;    
+    if(isset($_FILES['file'])){      
         $product->addPhoto($_FILES['file']);
     }
     header('Location: /eco/index.php/admin/products/'.$idcategory);
@@ -69,7 +68,6 @@ $app->get('/admin/products/delete/:idproduct/:idcategory',function($idproduct,$i
 
 $app->post('/admin/products/create/:idcategory',function($idcategory){
     User::verify_admin_login();
-
     Product::create($_POST);      
     $idcategory = ($idcategory==0)?'all':$idcategory;  
     header('Location: /eco/index.php/admin/products/'.$idcategory);

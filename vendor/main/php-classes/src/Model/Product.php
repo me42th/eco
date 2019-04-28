@@ -192,7 +192,9 @@ class Product extends Model{
     //o nome do arquivo contem a data de criação do mesmo
     private function setImg()
     {
+        
         $files = scandir($this->getImgFolder());
+        
         unset($files[0]);
         unset($files[1]);
         $file = '/eco/prdimg/default.jpg';        
