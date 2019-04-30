@@ -43,7 +43,7 @@ date_default_timezone_set('America/Bahia');
 
 class User extends Model{
 
-    const SESSION = "User";
+    const SESSION = "user";
     const RULES = [
                         "deslogin" =>   [
                                             "unique" => [
@@ -80,8 +80,9 @@ class User extends Model{
                                             "required"=>[
                                                             "msg" => "A SENHA É UM CAMPO OBRIGATÓRIO"
                                                         ]
-                                            ],
-                                        "desemail" =>   [
+                                            ],                             
+
+                        "desemail" =>   [
                                             "email"=>[
                                                             "msg" => "INFORME UM EMAIL VALIDO"
                                             ],
@@ -310,6 +311,39 @@ class User extends Model{
         if((time()-strtotime($time_log))/3600 < 1)
             return ((bool)true*$use_time_log);
         return false;          
+    }
+
+    public static function change_paz_sword($data,$iduser){
+        $sql = new Sql;
+        $results = $sql->select("SELECT * FROM tb_users WHERE iduser = '$iduser'");    
+        $password_old = $results[0]['despassword'];
+    
+        if(!isset($data['current_pass']))
+           throw new \Exception("INFORME A SENHA ATUAL"); 
+        else if($data['current_pass'] == '')
+            throw new \Exception("INFORME A SENHA ATUAL");
+        
+        if(!isset($data['new_pass']))
+            throw new \Exception("INFORME UMA NOVA SENHA"); 
+        else if($data['new_pass'] == '')
+            throw new \Exception("INFORME UMA NOVA SENHA");
+        
+        if(!isset($data['new_pass_confirm']))
+            throw new \Exception("INFORME UMA NOVA SENHA"); 
+        else if($data['new_pass_confirm'] == '')
+            throw new \Exception("INFORME UMA NOVA SENHA");
+        
+            
+        if(!password_verify($data['current_pass'], $password_old))
+            throw new \Exception("A SENHA ATUAL ESTÁ INCORRETA"); 
+
+        if(password_verify($data['new_pass'], $password_old))
+            throw new \Exception("INFORME UMA NOVA SENHA");        
+        
+        if($data["new_pass"] <> $data["new_pass_confirm"])
+            throw new \Exception("A CONFIRMAÇÃO DE SENHA ESTÁ INCORRETA");
+        
+
     }
 
     public static function paz_sword_update($code,$paz_sword){

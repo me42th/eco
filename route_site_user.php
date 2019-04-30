@@ -167,4 +167,29 @@ $app->get("/perfil/pedido/:idorder",function($idorder){
     ]);
 });
 
+$app->get("/perfil/alterar-senha",function(){
+    User::verify_login();
+    
+  
+    $resume = Cart::get_resume(); 
+    $page = new Page(debug(),get_home_header($resume['amount'], $resume['sum']));
+    $page->setTpl("profile-change-password");
+
+});
+
+$app->post("/perfil/alterar-senha",function(){
+ 
+    
+    try{
+        User::change_paz_sword($_POST,$_SESSION['user']['iduser']);
+        MSN::set_success_msg('SENHA ALTERADA COM SUCESSO');
+        header("Location: /eco/index.php/login");
+    }catch(\Exception $ex){
+        MSN::set_error_msg($ex->getMessage());
+        header("Location: /eco/index.php/perfil/alterar-senha");
+  
+    }
+    exit;
+});
+
 ?>
