@@ -338,11 +338,13 @@ class User extends Model{
             throw new \Exception("A SENHA ATUAL ESTÁ INCORRETA"); 
 
         if(password_verify($data['new_pass'], $password_old))
-            throw new \Exception("INFORME UMA NOVA SENHA");        
+            throw new \Exception("INFORME UMA NOVA SENHA DIFERENTE DA ATUAL");        
         
         if($data["new_pass"] <> $data["new_pass_confirm"])
             throw new \Exception("A CONFIRMAÇÃO DE SENHA ESTÁ INCORRETA");
-        
+
+        $paz_sword = User::paz_sword_cripta($data['new_pass']);
+        $sql->select("update tb_users set despassword = '$paz_sword' where iduser = '$iduser';");
 
     }
 

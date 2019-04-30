@@ -177,17 +177,15 @@ $app->get("/perfil/alterar-senha",function(){
 
 });
 
-$app->post("/perfil/alterar-senha",function(){
- 
+$app->post("/perfil/alterar-senha",function(){ 
     
     try{
         User::change_paz_sword($_POST,$_SESSION['user']['iduser']);
         MSN::set_success_msg('SENHA ALTERADA COM SUCESSO');
-        header("Location: /eco/index.php/login");
+        header("Location: /eco/index.php/perfil");
     }catch(\Exception $ex){
         MSN::set_error_msg($ex->getMessage());
-        header("Location: /eco/index.php/perfil/alterar-senha");
-  
+        header("Location: /eco/index.php/perfil/alterar-senha");  
     }
     exit;
 });
