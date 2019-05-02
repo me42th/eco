@@ -72,9 +72,9 @@
                 <tbody>
                 {loop="$products"}
                 <tr>
-                    <td>{$value.nrqtd}</td>
-                    <td>{$value.desproduct}</td>
-                    <td>{$value.idproduct}</td>
+                    <td>{$value.qnt}</td>
+                    <td>{$value['product']['desproduct']}</td>
+                    <td>{$value['product']['idproduct']}</td>
                     <td>R${function="formatPrice($order.vltotal)"}</td>
                 </tr>
                 {/loop}

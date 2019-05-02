@@ -4,6 +4,8 @@ use \Slim\Slim;
 use \main\Page;
 use \main\PageAdmin;
 use \main\Model\User;
+use \main\Model\Cart;
+
 use \main\Model\Order;
 
 $app->get("/admin/orders",function(){
@@ -21,10 +23,13 @@ $app->get("/admin/orders/:idorder/delete",function($idorder){
 });
 
 $app->get("/admin/orders/:idorder",function($idorder){
-    User::verify_admin_login();    
-    $page = new PageAdmin(debug(),get_order_header());
+    User::verify_admin_login();   
     $order = Order::find_by_id($idorder);
-    $page->setTpl("order",array("order" => $order));
+    $products = Cart::get_resume($order['idcart'])["products"];
+    
+    $page = new PageAdmin(debug(),get_order_header());
+    
+    $page->setTpl("order",array("order" => $order,"products" => $products));
 });
 
 ?>
