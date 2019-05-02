@@ -39,7 +39,7 @@ class Order extends Model{
         join tb_carts tb_c on tb_o.idcart = tb_c.idcart
         join tb_addressescarts tb_ac on tb_ac.idcart = tb_c.idcart
         join tb_addresses tb_a on tb_a.idaddress = tb_ac.idaddress 
-        where tb_c.iduser = '$user_id' and tb_ac.dtremoved is null;");
+        where tb_c.iduser = '$user_id' and tb_ac.dtremoved is null and tb_o.dtremoved is null;");
     }
 
     /**
@@ -56,7 +56,7 @@ class Order extends Model{
                 join tb_persons tb_p on tb_p.idperson = tb_u.idperson
                 join tb_addressescarts tb_ac on tb_ac.idcart = tb_c.idcart
                 join tb_addresses tb_a on tb_a.idaddress = tb_ac.idaddress 
-                where tb_o.idorder = '$id_order' and tb_ac.dtremoved is null;"
+                where tb_o.idorder = '$id_order' and tb_ac.dtremoved is null and tb_o.dtremoved is null;"
             );
         if(count($order) == 0)
             throw new \Exception('Pedido não encontrado');
@@ -94,9 +94,22 @@ class Order extends Model{
 
     public static function list_all(){
         $sql = new Sql;
-        $orders = $sql->select('select * from tb_orders as a join tb_carts as b using(idcart) join tb_users as c using(iduser) join tb_persons as d using(idperson) join tb_ordersstatus as e using(idstatus)');
+        $orders = $sql->select(
+            'select * from tb_orders as a 
+            join tb_carts as b using(idcart) 
+            join tb_users as c using(iduser) 
+            join tb_persons as d using(idperson) 
+            join tb_ordersstatus as e using(idstatus) where dtremoved is null'
+        );
+        if(count($orders) == 0)
+            throw new \Exception('Nenhum pedido realizado');
         return $orders;
     }
 
+    public static function delete($idorder){
+        $dtremoved = date('Y-m-d h:i:s');
+        $sql = new Sql;
+        $sql->select("update tb_orders set dtremoved = '$dtremoved' where idorder = $idorder");
+    }
 }
 ?>
