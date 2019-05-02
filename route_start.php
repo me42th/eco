@@ -56,6 +56,10 @@ function get_user_header(){
     return get_config_header('user');
 }
 
+function get_order_header(){
+    return get_config_header('order');
+}
+
 function get_product_header($category_active){
     return get_config_header('product',$category_active);
 }

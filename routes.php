@@ -20,6 +20,8 @@ require_once('route_site_product.php');
 require_once('route_crud_categories.php');
 require_once('route_crud_products.php');
 require_once('route_crud_users.php');
+require_once('route_crud_orders.php');
+
 require_once('route_debug.php');
 $app->run();
 ?>
