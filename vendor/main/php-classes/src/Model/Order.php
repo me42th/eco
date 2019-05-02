@@ -92,5 +92,11 @@ class Order extends Model{
         Ticket::ticket_factory($bank,$data);
     }
 
+    public static function list_all(){
+        $sql = new Sql;
+        $orders = $sql->select('select * from tb_orders as a join tb_carts as b using(idcart) join tb_users as c using(iduser) join tb_persons as d using(idperson) join tb_ordersstatus as e using(idstatus)');
+        return $orders;
+    }
+
 }
 ?>

@@ -259,8 +259,9 @@ desired effect
         
         <!-- Optionally, you can add icons to the links -->
         <li <?php if( $active === 'user' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/users"><i class="fa fa-users"></i> <span>Usuarios</span></a></li>
-        <li  <?php if( $active === 'category' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/categories"><i class="fa fa-check"></i> <span>Categorias </span></a></li>
         <li  <?php if( $active === 'order' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/orders"><i class="fa fa-cart-plus"></i> <span>Pedidos </span></a></li>
+        <li  <?php if( $active === 'category' ){ ?>class="active"<?php } ?>><a href="/eco/index.php/admin/categories"><i class="fa fa-check"></i> <span>Categorias </span></a></li>
+        
         <li  <?php if( $active === 'product' ){ ?>class="treeview active"<?php } ?>  <?php if( $active != 'product' ){ ?>class="treeview"<?php } ?>>
           <a href="#"><i class="fa fa-link"></i> <span>Produtos</span>
             <span class="pull-right-container">
