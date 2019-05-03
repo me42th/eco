@@ -196,6 +196,27 @@ class User extends Model{
         $sql->query("delete from tb_users where iduser = :iduser;",array(":iduser"=>$this->getiduser()));
     }
 
+    public static function get_with_pagination($search = '', $page = 1, $itemsPerPage = 8){
+        $start = $page - 1;
+        $sql = new Sql();
+        $query = ($search == '')?
+            "SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson limit $start, $itemsPerPage":
+            "SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) where b.desperson like '%$search%' ORDER BY b.desperson limit $start, $itemsPerPage";
+        $users = $sql->select($query);       
+
+        $query = ($search == '')?
+            "select count(*) from tb_users;":
+            "select count(*) FROM tb_users a INNER JOIN tb_persons b USING(idperson) where b.desperson like '%$search%';";
+
+        $total = $sql->select($query)[0]['count(*)'];
+        
+        return [
+            'users' => $users,
+            'total' => $total,
+            'pages' => ceil($total/$itemsPerPage)
+        ];
+    }
+
     /**
      * Atualizo os dados do usuário
      */

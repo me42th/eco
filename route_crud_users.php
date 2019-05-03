@@ -10,9 +10,23 @@ use \main\Model\Product;
 
 $app->get("/admin/users",function(){
     User::verify_admin_login();
-    $users = User::listAll();
+    $search = isset($_GET['search'])?$_GET['search']:'';
+    $page = isset($_GET['page'])?$_GET['page']:1;
+    $data = User::get_with_pagination($search,$page);
+
+    $users = $data['users'];
+    $total = $data['total'];
+    $page_total = $data['pages'];
+    $pages = array();
+    $search_href = ($search == '')?$search:"search=$search&";
+
+    for($cont = 1; $cont <= $page_total; $cont++){
+        $pages[$cont]['href'] = "/eco/index.php/admin/users?".$search_href."page=$cont"; 
+        $pages[$cont]['text'] = $cont;
+    }
+    
     $page = new PageAdmin(debug(),get_user_header());
-    $page->setTpl("users",array("users" => $users));
+    $page->setTpl("users",array("users" => $users,'page_total' => $page_total, "pages" => $pages ,"search" => $search));
 });
 
 $app->get("/admin/users/create",function(){

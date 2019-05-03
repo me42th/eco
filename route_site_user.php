@@ -13,6 +13,7 @@ use \main\Model\Order;
 use \main\MSN;
 
 $app->get('/login',function(){
+ 
     $_SESSION['register']['desperson'] = isset($_SESSION['register']['desperson'])?$_SESSION['register']['desperson']:'';      $_SESSION['register']['desemail'] = isset($_SESSION['register']['desemail'])?$_SESSION['register']['desemail']:'';   
     $_SESSION['register']['nrphone'] = isset($_SESSION['register']['nrphone'])?$_SESSION['register']['nrphone']:'';   
     $_SESSION['register']['deslogin'] = isset($_SESSION['register']['deslogin'])?$_SESSION['register']['deslogin']:'';   
