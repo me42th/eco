@@ -1,14 +1,14 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
     <h1>
-        Pedido N°{$order.idorder}
+        Pedido N°<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="/admin/orders">Pedidos</a></li>
-        <li class="active"><a href="/admin/orders/{$order.idorder}">Pedido N°{$order.idorder}</a></li>
+        <li class="active"><a href="/admin/orders/<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">Pedido N°<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
     </ol>
     </section>
 
@@ -24,14 +24,14 @@
             <!-- /.box-header -->
            
             <!-- form start -->
-            <form role="form" action="/eco/index.php/admin/orders/{$order.idorder}/status" method="post">
+            <form role="form" action="/eco/index.php/admin/orders/<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/status" method="post">
                 <div class="box-body">
                     <div class="form-group">
                         <label for="desproduct">Status do Pedido</label>
                         <select class="form-control" name="idstatus">
-                            {loop="$status"}
-                            <option {if="$value['idstatus'] === $order['idstatus']"}selected="selected"{/if} value="{$value['idstatus']}">{$value.desstatus}</option>
-                            {/loop}
+                            <?php $counter1=-1;  if( isset($status) && ( is_array($status) || $status instanceof Traversable ) && sizeof($status) ) foreach( $status as $key1 => $value1 ){ $counter1++; ?>
+                            <option <?php if( $value1['idstatus'] === $order['idstatus'] ){ ?>selected="selected"<?php } ?> value="<?php echo htmlspecialchars( $value1['idstatus'], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["desstatus"], ENT_COMPAT, 'UTF-8', FALSE ); ?></option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>

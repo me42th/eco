@@ -50,8 +50,8 @@
             <div class="col-sm-4 invoice-col">
             <b>Pedido #<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?></b><br>
             <br>
-            <b>Emitido em:</b> <?php echo htmlspecialchars( $order["dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?><br>
-            <b>Pago em:</b> <?php echo htmlspecialchars( $order["dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
+            <b>Emitido em:</b> <?php echo date("d/m/Y",strtotime($order["dtregister"])); ?><br>
+            <b>Pago em:</b> <?php echo date("d/m/Y",strtotime($order["dtregister"])); ?>
             </div>
             <!-- /.col -->
         </div>

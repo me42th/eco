@@ -66,7 +66,7 @@ class Order extends Model{
     /**
      * Seta o status do pedido com as constantes declaradas no inicio desta classe
      */
-    private static function set_status($id_order,$status){
+    public static function set_status($id_order,$status){
         $sql = new Sql;
         $sql->select("update tb_orders set idstatus = '$status' where idorder = '$id_order';");
     }
@@ -104,6 +104,12 @@ class Order extends Model{
         if(count($orders) == 0)
             throw new \Exception('Nenhum pedido realizado');
         return $orders;
+    }
+
+    public static function list_status(){
+        $sql = new Sql;
+        $data = $sql->select("select * from tb_ordersstatus;");
+        return $data;
     }
 
     public static function delete($idorder){

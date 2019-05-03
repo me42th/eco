@@ -50,8 +50,8 @@
             <div class="col-sm-4 invoice-col">
             <b>Pedido #{$order.idorder}</b><br>
             <br>
-            <b>Emitido em:</b> {$order.dtregister}<br>
-            <b>Pago em:</b> {$order.dtregister}
+            <b>Emitido em:</b> {function="date("d/m/Y",strtotime($order.dtregister))"}<br>
+            <b>Pago em:</b> {function="date("d/m/Y",strtotime($order.dtregister))"}
             </div>
             <!-- /.col -->
         </div>

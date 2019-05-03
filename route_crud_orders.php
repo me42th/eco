@@ -15,6 +15,27 @@ $app->get("/admin/orders",function(){
     $page->setTpl("orders",array("orders" => $orders));
 });
 
+$app->get("/admin/orders/:idorder/status",function($idorder){
+    User::verify_admin_login();
+    $order = Order::find_by_id($idorder);
+    $status = Order::list_status();
+
+
+    $page = new PageAdmin(debug(),get_order_header());
+    
+    $page->setTpl("order-status",array("order" => $order,"status" => $status));
+});
+
+
+$app->post("/admin/orders/:idorder/status",function($idorder){
+    User::verify_admin_login();
+
+    Order::set_status($idorder,$_POST['idstatus']);
+    header("Location: /eco/index.php/admin/orders");
+    exit;
+        
+});
+
 $app->get("/admin/orders/:idorder/delete",function($idorder){
     User::verify_admin_login();
     Order::delete($idorder);
