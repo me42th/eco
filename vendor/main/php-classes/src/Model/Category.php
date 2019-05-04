@@ -39,6 +39,31 @@ class Category extends Model{
         return $sql->select("SELECT * FROM tb_categories");
     }
 
+    public static function get_with_pagination($search = '', $page = 1, $itemsPerPage = 8){
+        $start = $page - 1;
+        $sql = new Sql();
+        $query = ($search == '')?
+            "SELECT * FROM tb_categories limit $start, $itemsPerPage":
+            "SELECT * FROM tb_categories where descategory like '%$search%' limit $start, $itemsPerPage";
+        $categories = $sql->select($query);       
+
+       
+        
+    
+
+        $query = ($search == '')?
+            "select count(*) FROM tb_categories":
+            "select count(*) FROM FROM tb_categories where descategory like '%$search%';";
+
+        $total = $sql->select($query)[0]['count(*)'];
+        
+        return [
+            'categories' => $categories,
+            'total' => $total,
+            'pages' => ceil($total/$itemsPerPage)
+        ];
+    }
+
     public static function del($id_category){
         $sql = new Sql;
         $sql->select("delete from tb_categories where idcategory = '$id_category';");
@@ -89,6 +114,8 @@ class Category extends Model{
         $sql = new Sql;
         return $sql->select("select * from tb_categories where idcategory = '$idcategory';")[0];
     }
+
+    
 
     public static function updateFile(){
         

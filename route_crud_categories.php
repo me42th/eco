@@ -63,9 +63,25 @@
 
     $app->get('/admin/categories',function(){
         User::verify_admin_login();
-        $categories = Category::listAll();        
+        $search = isset($_GET['search'])?$_GET['search']:'';
+        $page = isset($_GET['page'])?$_GET['page']:1;
+
+
+        
+        $data = Category::get_with_pagination($search,$page);
+
+        $page_total = $data['pages'];
+        $pages = array();
+        $search_href = ($search == '')?$search:"search=$search&";
+
+        for($cont = 1; $cont <= $page_total; $cont++){
+            $pages[$cont]['href'] = "/eco/index.php/admin/categories?".$search_href."page=$cont"; 
+            $pages[$cont]['text'] = $cont;
+        }
+        
+
         $page = new PageAdmin(debug(),get_category_header());
-        $page->setTpl("categories",["categories" => $categories]);
+        $page->setTpl("categories",["categories" => $data['categories'], 'page_total' => $page_total, "pages" => $pages ,"search" => $search]);
     });
 
 
